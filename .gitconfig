@@ -1,0 +1,10 @@
+[user]
+	name = Alex Vergara
+	email = alex.vergara.dev@gmail.com
+	password = $in_$key
+[credentials]
+	helper = store
+[core]
+	autocrlf = input
+[init]
+	defaultBranch = main

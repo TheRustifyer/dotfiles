@@ -8,6 +8,17 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
+## Quickstart
+
+Assuming that you're on the **ROOT** of your users directory. `~` on Unix (or Windows if you use git bash)
+
+Installing:
+1. echo ".cfg" >> .gitignore
+2. git clone --bare <remote-git-repo-url> $HOME/.cfg
+3. alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+4. config config --local status.showUntrackedFiles no
+5. config checkout
+
 ## Why?
 
 On a regular job day (from Monday to Friday), I almost end using three different machines along the day.

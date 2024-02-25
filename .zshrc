@@ -8,8 +8,13 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    ZSH_THEME="agnoster"
+else
+    ZSH_THEME="powerlevel10k/powerlevel10k"
+fi
 
 # zsh-completions
 fpath=(path/to/zsh-completions/src $fpath)
@@ -17,14 +22,6 @@ fpath=(path/to/zsh-completions/src $fpath)
 # auto-update behavior
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 zstyle ':omz:update' frequency 7
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Custom timestamp format
 HIST_STAMPS="dd.mm.yyyy"
@@ -35,7 +32,6 @@ HIST_STAMPS="dd.mm.yyyy"
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    "$HOME/.cargo/env"
     plugins=(
         git
         zsh-autosuggestions
@@ -53,7 +49,6 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export TERM=xterm-256color
-
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
@@ -94,7 +89,7 @@ alias gco='git commit -m $2'
 alias gp='git push'
 alias gpo='git push origin'
 alias gpll='git pull'
-    alias gcl='git clone'
+alias gcl='git clone'
 alias gst='git stash'
 alias gpop='git stash pop'
 alias ga='git add'
@@ -104,12 +99,8 @@ alias gm='git merge'
 alias gm='git merge'
 alias gmnff='git merge --no-ff'
 
-# Cargo
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    "$HOME/.cargo/env"
-fi
-
 # For work with my bare git repo for the dotfiles
+# TODO review this .git (when cloning, just change it)
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
 else

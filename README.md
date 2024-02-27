@@ -8,16 +8,28 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
+## Previous considerations:
+
+>[!NOTE]
+>
+> This documentation assumes that you have at least, **git** installed in your machine
+> and correctly added in path (this is special important in Windows to use `git-bash`)
+
 ## Quickstart
 
 Assuming that you're on the **ROOT** of your users directory. `~` on Unix (or Windows if you use git bash)
 
 Installing:
-1. echo ".cfg" >> .gitignore
-2. git clone --bare <remote-git-repo-url> $HOME/.cfg
-3. alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-4. config config --local status.showUntrackedFiles no
-5. config checkout
+
+1. `git clone --bare https://github.com/TheRustifyer/.dotfiles $HOME/.cfg
+(replace the URL for the *SSH* variant if you need)
+2. git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
+
+>[!NOTE]
+>
+> Just copy and paste the second point for checkout and directly "install" the configuration files.
+> Other tutorials configure again the (TODO link to alias) and the gitignore, which will cause merge conflicts,
+> and it's completely unnecesary.
 
 ## Why?
 
@@ -41,9 +53,9 @@ If you haven't been tracking your configurations in a Git repository before, you
 
 ```bash
 git init --bare $HOME/.cfg
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 config config --local status.showUntrackedFiles no
-echo "alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshrc
+echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshrc
 ```
 
 >[!NOTE]

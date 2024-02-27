@@ -16,14 +16,6 @@ else
     ZSH_THEME="powerlevel10k/powerlevel10k"
 fi
 
-# zsh-completions
-fpath=(path/to/zsh-completions/src $fpath)
-
-# auto-update behavior
-zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-zstyle ':omz:update' frequency 7
-
-# Custom timestamp format
 HIST_STAMPS="dd.mm.yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
@@ -32,6 +24,9 @@ HIST_STAMPS="dd.mm.yyyy"
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # zsh-completions
+    fpath=(path/to/zsh-completions/src $fpath)
+
     plugins=(
         git
         zsh-autosuggestions
@@ -53,7 +48,7 @@ export TERM=xterm-256color
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 # Preferred editor
-export EDITOR='mvim'
+export EDITOR='nvim'
 
 # Set personal aliases TODO move them to their own mod
 alias zshconfig="nvim ~/.zshrc"
@@ -62,9 +57,6 @@ alias vi=nvim
 
 alias .='cd .'
 alias ..='cd ..'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
 alias bashcls='echo "" > ~/.bash_history'
 alias cls='clear'
 alias ls='ls -F --color=auto --show-control-chars'

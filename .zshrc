@@ -72,7 +72,7 @@ alias appdata='cd ~/AppData'
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias nvimdir='cd ~/.config/nvim'
-    alias rmnvimwin='find ~/.cache ~/.local -type d -name '*nvim*' -exec rm -rf {} +'
+    alias rmnvim="find ~/.cache ~/.local -type d -name '*nvim*' -exec rm -rf {} +"
 else
     alias nvimdir='cd ~/AppData/Local/nvim'
     alias rmnvim='rm -rf ~/AppData/Local/nvim && rm -rf ~/AppData/Local/nvim-data'

@@ -65,12 +65,18 @@ alias ll.='ls -la'
 alias lls='ls -la --sort=size'
 alias llt='ls -la --sort=time'
 alias rmdir='rm -rf'
+
 alias wincode='cd ~/code'
 alias appdata='cd ~/AppData'
 
 
-alias nvimdir='cd ~/AppData/Local/nvim'
-alias rmnvimwin='rm -rf ~/AppData/Local/nvim && rm -rf ~/AppData/Local/nvim-data'
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias nvimdir='cd ~/.config/nvim'
+    alias rmnvimwin='find ~/.cache ~/.local -type d -name '*nvim*' -exec rm -rf {} +'
+else
+    alias nvimdir='cd ~/AppData/Local/nvim'
+    alias rmnvim='rm -rf ~/AppData/Local/nvim && rm -rf ~/AppData/Local/nvim-data'
+fi
 
 # Git aliases
 alias gs='git status -sb'

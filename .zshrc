@@ -23,22 +23,14 @@ HIST_STAMPS="dd.mm.yyyy"
 
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    # zsh-completions
-    fpath=(path/to/zsh-completions/src $fpath)
 
-    plugins=(
-        git
-        zsh-autosuggestions
-        zsh-syntax-highlighting
-    )
-else
-    plugins=(
-        git
-        zsh-autosuggestions
-        # zsh-syntax-highlighting
-    )
-fi
+fpath=(./zsh-completions/src $fpath)
+
+plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -98,12 +90,8 @@ alias gm='git merge'
 alias gmnff='git merge --no-ff'
 
 # For work with my bare git repo for the dotfiles
-# TODO review this .git (when cloning, just change it)
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
-else
-    alias config='git --git-dir=$HOME/.cfg.git/ --work-tree=$HOME/'
-fi
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
+
 
 # Adding Clang and LLVM Project to the PATH TODO deprecated. Change the path
 # with the git submodule that comes with the dotfiles
@@ -112,4 +100,4 @@ export LD_LIBRARY_PATH="$HOME/tools/llvm-project/build/lib:$LD_LIBRARY_PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

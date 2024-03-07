@@ -8,10 +8,9 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    ZSH_THEME="agnoster"
+   ZSH_THEME="agnoster"
 else
     ZSH_THEME="powerlevel10k/powerlevel10k"
 fi
@@ -97,6 +96,11 @@ alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
 # with the git submodule that comes with the dotfiles
 export PATH="$HOME/tools/llvm-project/build/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/tools/llvm-project/build/lib:$LD_LIBRARY_PATH"
+
+# Having GitHub CLI avaliable on path on Windows
+if [[ "$OSTYPE" != "linux-gnu"* ]]; then
+    export PATH="$HOME/gh-cli/bin:$PATH"
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

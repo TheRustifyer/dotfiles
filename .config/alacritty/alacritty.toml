@@ -1,0 +1,51 @@
+[colors.bright]
+black = "#3d3a3a"
+blue = "#8fa7b9"
+cyan = "#6ec2a8"
+green = "#8fb676"
+magenta = "#bd89de"
+red = "#d28abf"
+white = "#dad3d3"
+yellow = "#c8bc45"
+
+[colors.cursor]
+cursor = "#ffffff"
+text = "#000000"
+
+[colors.normal]
+black = "#1c1c1c"
+blue = "#77b6c5"
+cyan = "#7fcab3"
+green = "#9acc79"
+magenta = "#a488d9"
+red = "#d770af"
+white = "#8d8d8d"
+yellow = "#d0d26b"
+
+[colors.primary]
+background = "#000000"
+foreground = "#ffffff"
+
+[env]
+LANG = "en_US.UTF-8"
+LC_CTYPE = "en_US.UTF-8"
+TERM = "xterm-256color"
+
+[font]
+size = 7.0
+
+[font.normal]
+family = "monospace"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 0
+
+[shell]
+program = "/usr/bin/tmux"
+
+[window]
+decorations = "full"
+opacity = 0.72
+startup_mode = "Windowed"

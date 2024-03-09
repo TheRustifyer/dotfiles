@@ -1,3 +1,4 @@
 [submodule "llvm-project"]
-	path = ./code/third_party/llvm-project
-	url = git@github.com:llvm/llvm-project.git
+    active = true
+    url = https://github.com/llvm/llvm-project.git
+    path = code/third_party/llvm-project

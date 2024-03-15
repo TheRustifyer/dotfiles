@@ -41,14 +41,30 @@ build_llvm_suite() {
     ninja -C build
 }
 
+
+function update_wezterm() {
+    config submodule update --init --remote --recursive code/third-party/wezterm  # Adjust 'code/third-party/wezterm' if needed
+    cd code/third-party/wezterm                                        # Navigate to the submodule directory
+    ./get-deps                                               # Fetch dependencies
+    cargo build --release                                    # Build wezterm in release mode
+    cd ~
+}
+
+function general_tools() {
+    cargo install --locked bat # A better `cat`
+}
+
+
 # Check the arguments to determine which component to build
 while [[ "$#" -gt 0 ]]; do
     case $1 in
+        -t|--general-tools) general_tools ;;
         -z|--zsh) setup_zsh ;;
         -g|--gh-cli-windows) gh_cli_windows ;;
         -l|--gh-cli-linux) gh_cli_linux ;;
         -ullvm|--update-llvm-suite) update_llvm_suite ;;
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
+        -uw|--update_wezterm) update_wezterm ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift

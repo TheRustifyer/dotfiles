@@ -92,6 +92,9 @@ alias gmnff='git merge --no-ff'
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
 
 
+# Using `bat` as a better `cat`
+alias cat='bat'
+
 # Adding Clang and LLVM Project to the PATH TODO deprecated. Change the path
 # with the git submodule that comes with the dotfiles
 export PATH="$HOME/tools/llvm-project/build/bin:$PATH"

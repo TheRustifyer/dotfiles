@@ -44,9 +44,17 @@ build_llvm_suite() {
 
 function update_wezterm() {
     config submodule update --init --remote --recursive code/third-party/wezterm  # Adjust 'code/third-party/wezterm' if needed
-    cd code/third-party/wezterm                                        # Navigate to the submodule directory
+    cd code/third_party/wezterm                                        # Navigate to the submodule directory
     ./get-deps                                               # Fetch dependencies
     cargo build --release                                    # Build wezterm in release mode
+    cd ~
+}
+
+
+function update_zellij() {
+    config submodule update --init --remote --recursive code/third-party/zellij
+    cd code/third_party/zellij
+    cargo build --release
     cd ~
 }
 
@@ -65,6 +73,7 @@ while [[ "$#" -gt 0 ]]; do
         -ullvm|--update-llvm-suite) update_llvm_suite ;;
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
         -uw|--update_wezterm) update_wezterm ;;
+        -uz|--update_zellij) update_zellij ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift

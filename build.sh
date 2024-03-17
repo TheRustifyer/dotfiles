@@ -5,6 +5,45 @@ config() {
     git --git-dir=$HOME/.cfg/ --work-tree=$HOME "$@"
 }
 
+# Install all the CMD utilities directly with Cargo
+terminal_tools() {
+    # Terminal multiplexer. It doens't work yet on Windows:
+    # but looks promising: https://github.com/zellij-org/zellij/pull/2926
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        cargo install zellij --locked
+    fi
+    # Terminal prompt
+    cargo install starship --locked
+    # A better `cat`
+    cargo install --locked bat
+    # Replacements for the `ls` command
+    cargo install exa
+    # Improved `rm` command
+    cargo install rm-improved
+    # xcp is a partial clone of the `cp` command
+    cargo install xcp
+    # zoxide is a smarter `cd` replacement
+    cargo install zoxide --locked
+    # A much better `du` command
+    cargo install du-dust
+    # ripgrep, the real search-tool (`grep` replacement)
+    cargo install ripgrep
+    # Simpler alternative to find (more intuitive, better defaults)
+    cargo install fd-find
+    # Modern and (much) more user friendly `sed` and `awk`
+    cargo install sd
+    # `ps` replacement
+    cargo install procs
+    # `top` replacement, completly cross-platform
+    cargo install bottom --locked
+    # Have your system up-to-date, completly cross-platform
+    cargo install topgrade --locked
+    # a `tree` alternative
+    cargo install broot --locked
+    # nice utility to count lines and stats of code
+    cargo install tokei
+}
+
 setup_zsh() {
     echo "Setting up Zsh..."
     config submodule update --init --remote code/third_party/oh-my-zsh
@@ -58,11 +97,6 @@ function update_zellij() {
     cd ~
 }
 
-function general_tools() {
-    cargo install --locked bat # A better `cat`
-}
-
-
 # Check the arguments to determine which component to build
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -74,6 +108,7 @@ while [[ "$#" -gt 0 ]]; do
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
         -uw|--update_wezterm) update_wezterm ;;
         -uz|--update_zellij) update_zellij ;;
+        -tt|--terminal-tools) terminal_tools ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift

@@ -1,11 +1,18 @@
+import = [
+    "~/.config/alacritty/themes/github.toml"
+]
+
 [env]
+# HOME = "C:/Users/'Alex Vergara'" Would be nice for setting up MSYS2 user's home as the same that W2 uses
 LC_CTYPE = "en_US.UTF-8"
+HOME="/c/Users/'Alex Vergara'"
 TERM = "xterm-256color"
 
 [shell]
-program = 'C:/Program Files/Git/bin/bash.exe'
+# program = 'C:/Program Files/Git/bin/bash.exe'
+program = 'tmux'
 args = ["--login"]
-# working_directory = "~/code"
+# working_directory = 'C:/Users/"Alex l/code'
 
 [window]
 opacity = 0.75
@@ -14,16 +21,22 @@ opacity = 0.75
 [bell]
 duration = 10
 
-
 ### Font(s)
 
 [font]
-size = 11
+size = 10
 
 [font.normal]
 family = "MonaspiceAr Nerd Font Mono"
 style = "Regular"
 
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.offset]
+x = 0
+y = 0
 
 # Keyboard bindings
 
@@ -39,66 +52,3 @@ bindings = [
     { key = "R", mods = "Control|Shift", chars = "h" },
 ]
 
-# (Github Dark High Contrast) Colors for Alacritty
-
-# Default colors
-[colors.primary]
-background = '#0a0c10'
-foreground = '#f0f3f6'
-
-# Cursor colors
-[colors.cursor]
-text = '#0a0c10'
-cursor = '#f0f3f6'
-
-# Normal colors
-[colors.normal]
-black = '#7a828e'
-red = '#ff9492'
-green = '#26cd4d'
-yellow = '#f0b72f'
-blue = '#71b7ff'
-magenta = '#cb9eff'
-cyan = '#39c5cf'
-white = '#d9dee3'
-
-# Bright colors
-[colors.bright]
-black = '#9ea7b3'
-red = '#ffb1af'
-green = '#4ae168'
-yellow = '#f7c843'
-blue = '#91cbff'
-magenta = '#cb9eff'
-cyan = '#39c5cf'
-white = '#d9dee3'
-
-# # Colors (Ayu Dark)
-#
-# # Default colors
-# [colors.primary]
-# background = '#0A0E14'
-# foreground = '#B3B1AD'
-#
-# # Normal colors
-# [colors.normal]
-# black   = '#01060E'
-# red     = '#EA6C73'
-# green   = '#91B362'
-# yellow  = '#F9AF4F'
-# blue    = '#53BDFA'
-# magenta = '#FAE994'
-# cyan    = '#90E1C6'
-# white   = '#C7C7C7'
-#
-# # Bright colors
-# [colors.bright]
-# black   = '#686868'
-# red     = '#F07178'
-# green   = '#C2D94C'
-# yellow  = '#FFB454'
-# blue    = '#59C2FF'
-# magenta = '#FFEE99'
-# cyan    = '#95E6CB'
-# white   = '#FFFFFF'
-#

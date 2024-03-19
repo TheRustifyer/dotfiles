@@ -1,4 +1,4 @@
-# Set zsh as the default shell
+# Set the default shell when bash is invoked
 if [ -t 1 ]; then
-  exec zsh
+  eval "$(starship init bash)"
 fi

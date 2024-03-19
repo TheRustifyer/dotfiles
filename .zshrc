@@ -1,31 +1,17 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
+# HOME as $HOME, pls ;)
 export HOME="$HOME"
+
+# Starship!
+eval "$(starship init zsh)"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-   ZSH_THEME="agnoster"
-else
-    ZSH_THEME="powerlevel10k/powerlevel10k"
-fi
-
 HIST_STAMPS="dd.mm.yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-
-fpath=(./zsh-completions/src $fpath)
+# fpath=(./zsh-completions/src $fpath)
 
 plugins=(
     git
@@ -43,7 +29,7 @@ export LANG=en_US.UTF-8
 # Preferred editor
 export EDITOR='nvim'
 
-# Set personal aliases TODO move them to their own mod
+# Set personal aliases TODO: move them to their own mod
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vi=nvim
@@ -97,7 +83,7 @@ alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
 # Using `bat` as a better `cat`
 alias cat='bat'
 
-# Adding Clang and LLVM Project to the PATH TODO deprecated. Change the path
+# Adding Clang and LLVM Project to the PATH TODO: deprecated. Change the path
 # with the git submodule that comes with the dotfiles
 export PATH="$HOME/tools/llvm-project/build/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/tools/llvm-project/build/lib:$LD_LIBRARY_PATH"
@@ -107,6 +93,5 @@ if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     export PATH="$HOME/gh-cli/bin:$PATH"
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+

@@ -9,6 +9,14 @@ export ZSH="$HOME/.oh-my-zsh"
 
 HIST_STAMPS="dd.mm.yyyy"
 
+# User configuration
+export TERM=xterm-256color
+
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+# Preferred editor
+export EDITOR='nvim'
+
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # fpath=(./zsh-completions/src $fpath)
@@ -21,15 +29,9 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-export TERM=xterm-256color
-
-# You may need to manually set your language environment
-export LANG=en_US.UTF-8
-# Preferred editor
-export EDITOR='nvim'
 
 # Set personal aliases TODO: move them to their own mod
+alias me = '~'
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vi=nvim
@@ -93,5 +95,5 @@ if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     export PATH="$HOME/gh-cli/bin:$PATH"
 fi
 
-source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 

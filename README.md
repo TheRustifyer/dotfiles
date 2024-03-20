@@ -8,12 +8,53 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
+## Installation process
+
+Typically, in my daily basis I use a **Linux** distro (native) and a **Windows**, so I always liked the idea of using
+the same tools, regarding which operating system I am using at a particular moment. But that's a hard thing to acomplish,
+because I also tend to be happier using community-driver open source tools (or at least, open source), and the tools have
+to be crossplatform by default or at least, be available in runtimes like `Cygwin` or `Msys2`, or at least, natively compilable
+in `Windows` via tools like `Mingw`.
+
+The fact is that, all the tools presented below are easy to get, or they already come with your Linux installation. So simply.
+Yet `Windows` is another thing.
+
 ## Previous considerations:
+
+>[!WARNING]
+>
+> This documentation assumes that `Linux` distros will be any kind of `Arch` variants, or that they use (have installed)
+> `Pacman` in any other `Linux` distro.
+
+>[!CAUTION]
+>
+> Note for myself. Remember to check in the bash script for the presence of `pacman` in the system.
+> If not present, just install it, so we can make more kind of distros compatibles with this *setup*
+
+
+>[!CAUTION]
+>
+> Note for myself. Remember to create `Github` actions to check that the packages are installable without problem in
+> all the supported OS
+
+## The key in Windows, [MSYS2](https://www.msys2.org/)
+
+>[!TIP]
+>
+> If you plan to use this guide for install the *setup* only on `Linux`, just skip this [TODO, change skip this for a link]
+
+**MSYS2** is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software.
+
+For more details see ['What is MSYS2?'](https://www.msys2.org/docs/what-is-msys2/)
+
+So basically, the first step to get everything running in Windows is to download the installer. So click on the hyperlink, download it
+and then double click on your installer.
 
 >[!NOTE]
 >
-> This documentation assumes that you have at least, **git** installed in your machine
-> and correctly added in path (this is special important in Windows to use `git-bash`)
+> Installation extremely fast-forward process, the unique doubt could be the installation location. `MSYS2` is typically well placed directly
+> under `C:\`. You can install it in other place, but this guide assumes that you will be using `C:\msys64`, as recommended in their documentation. 
+
 
 ## Quickstart
 

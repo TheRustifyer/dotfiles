@@ -105,7 +105,62 @@ After you read the documentation, you can go back here, and start working in the
   pacman-key --init
   pacman-key --populate msys2
 ```
-5.
+
+5. Authorize the signing key with:
+
+```bash
+  curl -L https://raw.githubusercontent.com/git-for-windows/build-extra/HEAD/git-for-windows-keyring/git-for-windows.gpg |
+  pacman-key --add - &&
+  pacman-key --lsign-key E8325679DFFF09668AD8D7B67115A57376871B1C &&
+  pacman-key --lsign-key 3B6D86A1BA7701CD0F23AED888138B9E1A9F3986
+```
+
+6. Then synchronize with new repositories with ```bash pacman -Syyuu```. This will install a different `msys2` runtime, and you'll probably see a `downgrade` version message. Don't worry at all, just press `[Y]` and proceed with the installation. Then, you'll be asked to shutdown your `msys2` tools, press `[Y]`.
+
+7. Open again the `clang64` environment shell, and ```bash pacman -Suu``` to syncronize the remaining tools.
+
+8. And finally install the packages containing Git, its documentation and some extra things:
+
+```bash
+pacman -S mingw-w64-x86_64-{git,git-doc-html,git-doc-man} mingw-w64-x86_64-git-credential-manager
+```
+>[!CAUTION]
+>
+> I've modified the last step to remove the `git-extra` package, since it modifies the `MSYS2` instalation heavily, and doesn't bring any
+> advantages to my workflow nor enhace my tools. Read the extra steps carefully if you think that is worth for you, and just run the installation
+> command with `pacman`.
+>
+> Also, I added there the `git-credential-manager` package, since it's a **must have** for any comfortable workflow. 
+
+And this would be all. Close you shell and re-open it again. Type:
+
+```bash
+  git --version
+```
+and if git shows version details without issues, the installation process will be complete.
+
+### Adding `MSYS2` shells to the Windows Path
+
+This is a critical and crucial step. You see how easy where installing software, but what about using it?
+
+I won't use the `Mintty` term of `MSYS2` for anything but install software. I want to use other terminals, like `Wezterm` or `Alacritty`, and have
+all my tools on path available. This is an easy one step. You can add the `/bin` folders where your `MSYS2` gathered tools lives via the **Windows GUI**
+approach, or just open a `cmd` shell with **Administrator** privileges, and type the following:
+
+```cmd
+setx PATH "%PATH%;C:\msys64\usr\bin"
+setx PATH "%PATH%;C:\msys64\usr\local\bin"
+setx PATH "%PATH%;C:\msys64\bin"
+setx PATH "%PATH%;C:\msys64\opt\bin"
+setx PATH "%PATH%;C:\msys64\clang64\bin"
+setx PATH "%PATH%;C:\msys64\mingw64\bin"
+```
+
+>[!NOTE]
+>
+> This is the magic step where everything makes sense. From now, any tool that you install via `MSYS2` (and should be any one available via *MSYS2* in this world)
+> would be directly available from any point in your *Windows* installation. That's what will make you to be amazed, since you can have any tool that you like
+> even the ones from `Linux` running natively or emulated if its only available in the msys2 runtime in your *Windows* installation.
 
 
 ## The installation process

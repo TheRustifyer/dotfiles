@@ -8,7 +8,7 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
-## Installation process
+## Motivation
 
 Typically, in my daily basis I use a **Linux** distro (native) and a **Windows**, so I always liked the idea of using
 the same tools, regarding which operating system I am using at a particular moment. But that's a hard thing to acomplish,
@@ -86,18 +86,33 @@ There's now two different options from here.
 
 #### [Install GIT inside MSYS2 proper](https://github.com/git-for-windows/git/wiki/Install-inside-MSYS2-proper)
 
-Instead of describing the steps here, just follow the hyperlink on the header above. They will have the latest known working version to efficiently install
-**Git** inside **MSYS2** properly, and I don't want to update the instructions when it changes. Is not exactly easy and you can run into some issues (even they are unlikely) so I warn you to read first all the documentation and then go again from the beggining, so you can jugde by yourself if this method really suits you.
+First of all, follow the hyperlink on the header above. They will have the latest known working documentation to understand and efficiently install
+**Git** inside **MSYS2** properly. Is not exactly easy and you can run into some issues (even they are unlikely) so I warn you to read first all the documentation and then go again from the beggining, so you can jugde by yourself if this method really suits you.
+
+After you read the documentation, you can go back here, and start working in the installation.
 
 >[!TIP]
 >
-> Just remember to open the `msys2 msys` shell, aka `msys2_shell.cmd` in the tutorial.
+> There's only one key difference, we will use the `clang64` enviroment instead the `mingw64` one, and other minor one, I'll skip the usage of the *32 bits* `mingw32` installation.
+> So, directly open the `clang64` shell, instead any other.
 
-## Quickstart
+1. Make a backup for just in case if anything goes wrong, by typing ```bash cp /etc/pacman.conf /etc/pacman-bu.conf```
+2. Run: ```bash sed -i '/^\[mingw32\]/{ s|^|[git-for-windows]\nServer = https://wingit.blob.core.windows.net/x86-64\n\n|; }' /etc/pacman.conf```
+3. Ensure that everything went fine, by typing: ```cat /etc/pacman.conf``` and ensure that there's a new entry for `[git-for-windows]`
+4. To avoid the future signature related issues, run the following commands first
+```bash 
+  rm -r /etc/pacman.d/gnupg/
+  pacman-key --init
+  pacman-key --populate msys2
+```
+5.
 
-Assuming that you're on the **ROOT** of your users directory. `~` on Unix (or Windows if you use git bash)
 
-Installing:
+## The installation process
+
+Assuming that you're on the **ROOT** of your users directory. `~` on **Unix** or `%USERPROFILE%` on **Windows**
+
+Cloning and installing:
 
 1. `git clone --bare https://github.com/TheRustifyer/dotfiles $HOME/.cfg
 (replace the URL for the *SSH* variant if you need)
@@ -125,7 +140,7 @@ This is a git bare repo. The technique consists in storing a Git bare repository
 whatever) using a specially crafted alias so that commands are run against that repository and not the usual `.git`
 local folder, which would interfere with any other *Git* repositories around.
 
-## Friendly reminder, starting from scratch
+## Friendly reminder, starting from scratch your own `dotfiles` bare repo
 
 If you haven't been tracking your configurations in a Git repository before, you can start using this technique easily with these lines:
 

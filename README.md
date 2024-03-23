@@ -53,8 +53,45 @@ and then double click on your installer.
 >[!NOTE]
 >
 > Installation extremely fast-forward process, the unique doubt could be the installation location. `MSYS2` is typically well placed directly
-> under `C:\`. You can install it in other place, but this guide assumes that you will be using `C:\msys64`, as recommended in their documentation. 
+> under `C:\`. You can install it in other place, but this guide assumes that you will be using `C:\msys64`, as recommended in their documentation.
 
+You'll see the in latest slide of the installation prompt a ticked checkbox asking you for execute `msys2` now. Discard it and close the installation prompt.
+
+Now, on the `Windows` search bar, type msys2, and open the "purple" shell (msys2 msys), and type:
+
+```bash
+pacman -Syu
+```
+
+Obviously, type **[Y]** and hit `Enter`. This will update your `msys2` subsystem with the latest packages.
+
+### The `clang64` enviroment.
+
+Now, type `clang64` on the Windows search bar, and open such prompt. Then, run again `pacman -Syu`.
+
+You can learn more about this `msys2` enviroment and more about all of them [here](https://www.msys2.org/docs/environments/). I'll recommend you
+to take your time to carefully read about them. Isn't an easy thing to grasp at first if you're not experienced in this kind of complex setups, 
+so take a deep breath and just **read the docs**. // TODO pls insert meme here
+
+The very key thing about here is that you'll have all the coolest environment configuration available to work with the `llvm-suite` compiler tech and build
+amazing software with them. That's not exactly the whole point, but once you taste it, you'll won't change it.
+
+### Git
+
+There's now two different options from here.
+
+1. Install the `Git for Windows` project. This uses a custom `msys2` self-contained `msys2` environment, slightly different from the upstream one. But it has some advantages, like a GUI installer, based on *click, accept, next* and it is ready to go. It is nice, and if you don't want to complicate thing you may consider it as you option.
+2. Using the `msys2` git installation. Since we already have a `msys2` installation, and you don't care about performance, you could use the already embeed git (posix compliant) git installation on the `msys2 msys` base environment. But it has its flaws. Since is in the *msys* environemnt, it works on the *POSIX* emulation layer, using the `msys` runtime tools and shared libraries. This has the downside that it will introduce overheat to the git binary tools when you invoke it, specially noticeable when you work with medium to large *git* based projects.
+3. Use the `mingw` based *git* installation. This is far the most complicated one to set up, but it has the best of both worlds. It is performant (since is natively compiled for *Windows*) and you can't avoid to install yet another `git` tool on your system, polluting your development environment with more and more binaries, potentially running into **PATH** issues when invoking tools and other stuff. This guide will use this approach, but feel free to use the one that better suits your purposes.
+
+#### [Install GIT inside MSYS2 proper](https://github.com/git-for-windows/git/wiki/Install-inside-MSYS2-proper)
+
+Instead of describing the steps here, just follow the hyperlink on the header above. They will have the latest known working version to efficiently install
+**Git** inside **MSYS2** properly, and I don't want to update the instructions when it changes. Is not exactly easy and you can run into some issues (even they are unlikely) so I warn you to read first all the documentation and then go again from the beggining, so you can jugde by yourself if this method really suits you.
+
+>[!TIP]
+>
+> Just remember to open the `msys2 msys` shell, aka `msys2_shell.cmd` in the tutorial.
 
 ## Quickstart
 
@@ -62,7 +99,7 @@ Assuming that you're on the **ROOT** of your users directory. `~` on Unix (or Wi
 
 Installing:
 
-1. `git clone --bare https://github.com/TheRustifyer/.dotfiles $HOME/.cfg
+1. `git clone --bare https://github.com/TheRustifyer/dotfiles $HOME/.cfg
 (replace the URL for the *SSH* variant if you need)
 2. git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 
@@ -79,7 +116,7 @@ My main coding workstation (for personal projects), which is just an **MSi** lap
 my gaming and secondary code workstation, that runs on *Windows*, and my job workstation, a corporative laptop
 that runs on *Windows* but I mostly use *WSL2* these days.
 
-By having my `.dotfiles` in this repo, I can quickly go to another workstation and start to work as I like,
+By having my `dotfiles` in this repo, I can quickly go to another workstation and start to work as I like,
 format my system without causing me too much trouble for losing my tools and having to reinstall them...
 
 ## How?
@@ -101,7 +138,7 @@ echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshr
 
 >[!NOTE]
 >
-> My configuration assumes that the base shell for the configuration uses `zsh`. Obviously, feel free to use
+> My configuration assumes that the base shell for the configuration uses [**starship**](https://starship.rs/). Obviously, feel free to use
 > whatever shell suits you better.
 
 ### The alias `config`

@@ -259,16 +259,34 @@ clip < "%USERPROFILE%"/.ssh/id_ed25519.pub
 
 Assuming that you're on the **ROOT** of your users directory. `~` on **Unix** or `%USERPROFILE%` on **Windows**
 
-Cloning and installing:
+### Make a backup of your *dotfiles*
 
-1. `git clone --bare https://github.com/TheRustifyer/dotfiles $HOME/.cfg (replace the URL for the *SSH* variant if you need) // TODO change the default to the `SSH` variant
-2. git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
+You must do a full backup of any of your `dotfiles` before cloning and checkout the bare repo to avoid running into any merge conflict.
+Take a look at the root of this repo and see what files you have per duplicated, and directly move them to any other place.
+I recommend you to create a new folder in your home directory and move them there.
+
+> The most important one that you must backup is your `.gitconfig` file, and later replace it again with the one cloned from this repo,
+> or directly add your `user details` and save my configuration if it suits you
+
+### Cloning and installing:
+
+>[!TIP]
+>
+> Optional:
+> If you're on *Windows*, as the time of writing your system most likely come with `Windows Terminal` by deafult.
+> So pick a `cmd` shell and run `c:\msys64\usr\bin\env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit c:\msys64\usr\bin\bash -i -l`
+> and you'll have a login bash shell powered with the `mingw64` *git for Windows* but from **MSYS2** installation
+
+1. Ensure that you did everything properly before and run ```bash pwd``` and check if your opened shell points to your native *Windows* home directory
+2. `git clone --bare git@github.com:TheRustifyer/dotfiles.git "$HOME"/.cfg` (replace the URL for the *HTTPS* variant if you need)
+3. `git --git-dir="$HOME"/.cfg/ --work-tree="$HOME" checkout`
 
 >[!NOTE]
 >
 > Just copy and paste the second point for checkout and directly "install" the configuration files.
-> Other tutorials configure again the (TODO link to alias) and the gitignore, which will cause merge conflicts,
-> and it's completely unnecesary.
+> Other tutorials configure again the alias for the bare repo and the gitignore, which will cause merge conflicts,
+> and it's completely unnecesary. As stated, use the provided commands above to cleanly install the dotfiles. The `config`
+> alias will be set up later
 
 ## Why?
 

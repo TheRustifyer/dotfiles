@@ -209,6 +209,51 @@ setx PATH "%PATH%;C:\msys64\mingw64\bin"
 > would be directly available from any point in your *Windows* installation. That's what will make you to be amazed, since you can have any tool that you like
 > even the ones from `Linux` running natively or emulated if its only available in the msys2 runtime in your *Windows* installation.
 
+## Setting the `SSH` agent to authenticate over SSH
+
+>[!NOTE]
+>
+> It is recommended to follow the `GitHub` documentation in order to use GitHub remote actions with authentication via `SSH`. If you plan to stick
+> with the legacy `HTTPS` way, you can skip this step.
+
+> [The steps below are obtained from here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+1. Open a `cmd` shell without *elevated permissions* and paste the chunk below, replacing the email used in the example with your GitHub email address
+```cmd
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+2. When you're prompted to "Enter a file in which to save the key", you can press Enter to accept the default file location. Please note that if you created SSH keys previously, ssh-keygen may ask you to rewrite another key, in which case we recommend creating a custom-named SSH key. To do so, type the default file location and replace id_ALGORITHM with your custom key name.
+3. Open a new Powershell instance to ensure that the *ssh-agent* is active and running. If isn't the case, it will be spawned
+```powershell
+Get-Service -Name ssh-agent | Set-Service -StartupType Manual
+Start-Service ssh-agent
+```
+4. Now come back to the previous `cmd` shell, and add the previous generated *ssh-key* to the *ssh agent*
+```cmd
+ssh-add "%USERPROFILE%"/.ssh/id_ed25519
+```
+5. If everything went correct, you'll see a message like this one:
+```cmd
+C:\Users\"YourWindowsUser">ssh-add "%USERPROFILE%"/.ssh/id_ed25519
+Enter passphrase for C:\Users\"YourWindowsUser"/.ssh/id_ed25519:
+Identity added: C:\Users\"YourWindowsUser"/.ssh/id_ed25519 (alex.vergara.dev@gmail.com)
+```
+> Remember to use the same identifier that you used to generate the *ssh key*
+
+6. Copy the public ***SSH*** key to the clipboard
+
+`Unix shells`
+
+```bash
+clip < ~/.ssh/id_ed25519.pub
+```
+`Windows CMD`
+
+```cmd
+clip < "%USERPROFILE%"/.ssh/id_ed25519.pub
+```
+
+7. Now follow the remaining steps directly from the [GitHub SSH documentation](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add the generated key to your *GitHub* account
 
 ## The ***dotfiles*** installation process
 

@@ -65,6 +65,37 @@ pacman -Syu
 
 Obviously, type **[Y]** and hit `Enter`. This will update your `msys2` subsystem with the latest packages.
 
+When ends, open the `mingw64` *msys2* shell and do the same.
+
+### Setting the **HOME** environmental variable and
+
+Most of the `POSIX` compliant tools available via `MSYS2` will look for an environmental variable known as `$HOME` to resolve some
+PATH when certain actions requires it. The quickest and universal way of solving this is to set a new `Windows` system variable
+pointing directly to the user's root directory. Simply open a new `cmd` with administrator privileges and type:
+
+```cmd
+setx HOME "%USERPROFILE%"
+```
+
+This also will do a nice and neat thing, that will turbo overpower our `dotfiles` configuration. Use **HOME** as the *MSYS2* user's root directory.
+Yes, this implies that now, instead of being `/home/user` the user's home directory from within `MSYS2`, it will be the *Windows* native
+user's home directory.
+
+That will allow us to avoid any kind of path conflicts with certain tools that are expecting to have their dotfiles at a certain place (based on Unix paths)
+now pointing to the most logical place in Windows that are eventually the equivalent of the `Linux` ones.,lk
+
+### 
+In order to enhace how the dotfiles are easily shared among different `OS`, we can use our Windows *HOME* folder as the home folder for MSYS2
+instead of the one that comes by default with the `MSYS2` installation. So, edit `/etc/nsswitch.conf` and write:
+
+```
+db_home: windows
+```
+
+`%USERPROFILE% will be resolved to your user's Windows directory, and will be permanently added to the Windows **PATH**
+
+> Don't close yet this cmd shell, since you'll need it again briefly
+
 ### The `clang64` enviroment.
 
 Now, type `clang64` on the Windows search bar, and open such prompt. Then, run again `pacman -Syu`.
@@ -74,15 +105,28 @@ to take your time to carefully read about them. Isn't an easy thing to grasp at 
 so take a deep breath and just **read the docs**. // TODO pls insert meme here
 
 The very key thing about here is that you'll have all the coolest environment configuration available to work with the `llvm-suite` compiler tech and build
-amazing software with them. That's not exactly the whole point, but once you taste it, you'll won't change it.
+amazing software with them. But for such thing we will need first to gather our `clang` compiling tools.
+Open the `msys2 clang64` shell, and paste the following:
+
+```bash
+pacman -S mingw-w64-clang-x86_64-{make,cmake,ninja,clang,libunwind,clang-tools-extra,gcc-compat} 
+```
+
+> [!NOTE]
+>
+> // TODO explain why what one of the few things that we change about the general recommendations of `MSYS2` official docs is to use a different
+> shell rather than the default one of the mingw one
 
 ### Git
 
-There's now two different options from here.
+`Git` is the fastest and universal version control system out there. There's no other rival in terms of what `git` is capable of doing, and is widely
+adopted in all the open-source community as well as in the most of companies out there. Also, is the core "trick" of the *dotfiles* repo.
+
+In order to install `git` on Windows from here, there's now three different options available:
 
 1. Install the `Git for Windows` project. This uses a custom `msys2` self-contained `msys2` environment, slightly different from the upstream one. But it has some advantages, like a GUI installer, based on *click, accept, next* and it is ready to go. It is nice, and if you don't want to complicate thing you may consider it as you option.
 2. Using the `msys2` git installation. Since we already have a `msys2` installation, and you don't care about performance, you could use the already embeed git (posix compliant) git installation on the `msys2 msys` base environment. But it has its flaws. Since is in the *msys* environemnt, it works on the *POSIX* emulation layer, using the `msys` runtime tools and shared libraries. This has the downside that it will introduce overheat to the git binary tools when you invoke it, specially noticeable when you work with medium to large *git* based projects.
-3. Use the `mingw` based *git* installation. This is far the most complicated one to set up, but it has the best of both worlds. It is performant (since is natively compiled for *Windows*) and you can't avoid to install yet another `git` tool on your system, polluting your development environment with more and more binaries, potentially running into **PATH** issues when invoking tools and other stuff. This guide will use this approach, but feel free to use the one that better suits your purposes.
+3. Use the `mingw` based *git* installation. This is far the most complicated one to set up, but it has the best of both worlds. It is performant (since is natively compiled for *Windows*) and you can't avoid to install yet another `git` tool on your system, polluting your development environment with more and more binaries, potentially running into **PATH** issues when invoking tools and other stuff. **This guide will use this approach**, but feel free to use the one that better suits your purposes.
 
 #### [Install GIT inside MSYS2 proper](https://github.com/git-for-windows/git/wiki/Install-inside-MSYS2-proper)
 
@@ -91,10 +135,10 @@ First of all, follow the hyperlink on the header above. They will have the lates
 
 After you read the documentation, you can go back here, and start working in the installation.
 
->[!TIP]
+>[!NOTE]
 >
-> There's only one key difference, we will use the `clang64` enviroment instead the `mingw64` one, and other minor one, I'll skip the usage of the *32 bits* `mingw32` installation.
-> So, directly open the `clang64` shell, instead any other.
+> There's only one minor difference, I'll skip the usage of the *32 bits* `mingw32` installation.
+> So, open the `msys2 mingw64` shell, and start to work in the points of the list below:
 
 1. Make a backup for just in case if anything goes wrong, by typing ```bash cp /etc/pacman.conf /etc/pacman-bu.conf```
 2. Run: ```bash sed -i '/^\[mingw32\]/{ s|^|[git-for-windows]\nServer = https://wingit.blob.core.windows.net/x86-64\n\n|; }' /etc/pacman.conf```
@@ -117,18 +161,21 @@ After you read the documentation, you can go back here, and start working in the
 
 6. Then synchronize with new repositories with ```bash pacman -Syyuu```. This will install a different `msys2` runtime, and you'll probably see a `downgrade` version message. Don't worry at all, just press `[Y]` and proceed with the installation. Then, you'll be asked to shutdown your `msys2` tools, press `[Y]`.
 
-7. Open again the `clang64` environment shell, and ```bash pacman -Suu``` to syncronize the remaining tools.
+7. Open again the `mingw64` environment shell, and ```bash pacman -Suu``` to syncronize the remaining tools.
 
 8. And finally install the packages containing Git, its documentation and some extra things:
 
 ```bash
 pacman -S mingw-w64-x86_64-{git,git-doc-html,git-doc-man} mingw-w64-x86_64-git-credential-manager
 ```
+
 >[!CAUTION]
 >
 > I've modified the last step to remove the `git-extra` package, since it modifies the `MSYS2` instalation heavily, and doesn't bring any
 > advantages to my workflow nor enhace my tools. Read the extra steps carefully if you think that is worth for you, and just run the installation
 > command with `pacman`.
+
+>[!TIP]
 >
 > Also, I added there the `git-credential-manager` package, since it's a **must have** for any comfortable workflow. 
 
@@ -163,14 +210,13 @@ setx PATH "%PATH%;C:\msys64\mingw64\bin"
 > even the ones from `Linux` running natively or emulated if its only available in the msys2 runtime in your *Windows* installation.
 
 
-## The installation process
+## The ***dotfiles*** installation process
 
 Assuming that you're on the **ROOT** of your users directory. `~` on **Unix** or `%USERPROFILE%` on **Windows**
 
 Cloning and installing:
 
-1. `git clone --bare https://github.com/TheRustifyer/dotfiles $HOME/.cfg
-(replace the URL for the *SSH* variant if you need)
+1. `git clone --bare https://github.com/TheRustifyer/dotfiles $HOME/.cfg (replace the URL for the *SSH* variant if you need) // TODO change the default to the `SSH` variant
 2. git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 
 >[!NOTE]

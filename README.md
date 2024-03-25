@@ -8,16 +8,31 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
-## Motivation
+## Why?
 
-Typically, in my daily basis I use a **Linux** distro (native) and a **Windows**, so I always liked the idea of using
-the same tools, regarding which operating system I am using at a particular moment. But that's a hard thing to acomplish,
-because I also tend to be happier using community-driver open source tools (or at least, open source), and the tools have
-to be crossplatform by default or at least, be available in runtimes like `Cygwin` or `Msys2`, or at least, natively compilable
-in `Windows` via tools like `Mingw`.
+On a regular job day (from Monday to Friday), I almost end using three different machines along the day. 
+My main coding workstation (for personal projects), which is just an **MSi** laptop running exclusively a *Manjaro*,
+my gaming and secondary code workstation, that runs on *Windows*, and my job workstation, a corporative laptop
+that runs on *Windows* using native programs and some tools via *WSL2*.
+
+So I always liked the idea of using the same tools, regarding which operating system I am using at a particular moment.
+But that's a hard thing to acomplish, because I also tend to be happier using community-driver open source tools (or at least, open source), and the tools have
+to be crossplatform by default or at least, be available in runtimes like `Cygwin` or `Msys2`, or at least, natively compilable in `Windows` via tools like `Mingw`.
 
 The fact is that, all the tools presented below are easy to get, or they already come with your Linux installation. So simply.
 Yet `Windows` is another thing.
+
+## How?
+
+This is a git bare repo. The technique consists in storing a Git bare repository in a "side" folder (like $HOME/.cfg or
+whatever) using a specially crafted alias so that commands are run against that repository and not the usual `.git`
+local folder, which would interfere with any other *Git* repositories around.
+
+### The alias `config`
+
+By having the **config** alias set, now I can invoke *Git* from any place, and it will now that I am interacting
+with my configuration bare repository. So I can be in any place an directly add anything that I want to be track by
+my configuration repository.
 
 ## Previous considerations:
 
@@ -370,25 +385,9 @@ I recommend you to create a new folder in your home directory and move them ther
 Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`?
 // TODO complete
 
-## Why?
-
-On a regular job day (from Monday to Friday), I almost end using three different machines along the day.
-My main coding workstation (for personal projects), which is just an **MSi** laptop running exclusively a *Manjaro*,
-my gaming and secondary code workstation, that runs on *Windows*, and my job workstation, a corporative laptop
-that runs on *Windows* but I mostly use *WSL2* these days.
-
-By having my `dotfiles` in this repo, I can quickly go to another workstation and start to work as I like,
-format my system without causing me too much trouble for losing my tools and having to reinstall them...
-
-## How?
-
-This is a git bare repo. The technique consists in storing a Git bare repository in a "side" folder (like $HOME/.cfg or
-whatever) using a specially crafted alias so that commands are run against that repository and not the usual `.git`
-local folder, which would interfere with any other *Git* repositories around.
-
 ## Friendly reminder, starting from scratch your own `dotfiles` bare repo
 
-If you haven't been tracking your configurations in a Git repository before, you can start using this technique easily with these lines:
+If you haven't been tracking your configurations in a Git repository before, and you want to do it on your own from scratch, or copying the parts of this guide that you're interested, you can start using this technique easily with these lines:
 
 ```bash
 git init --bare $HOME/.cfg
@@ -401,10 +400,3 @@ echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshr
 >
 > My configuration assumes that the base shell for the configuration uses [**starship**](https://starship.rs/). Obviously, feel free to use
 > whatever shell suits you better.
-
-### The alias `config`
-
-By having the **config** alias set, now I can invoke *Git* from any place, and it will now that I am interacting
-with my configuration bare repository. So I can be in any place an directly add anything that I want to be track by
-my configuration repository.
-

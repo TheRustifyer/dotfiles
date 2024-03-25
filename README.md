@@ -65,7 +65,13 @@ pacman -Syu
 
 Obviously, type **[Y]** and hit `Enter`. This will update your `msys2` subsystem with the latest packages.
 
-When ends, open the `mingw64` *msys2* shell and do the same.
+When ends, open the `mingw64` *msys2* shell and do the same. When it ends, run the following:
+
+```bash
+pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+```
+
+> Don't miss this by any chance, since it will be required later to fully complete our `Rust` installation targeting the `GNU` ABI.
 
 ### Setting the **HOME** environmental variable and
 
@@ -255,6 +261,76 @@ clip < "%USERPROFILE%"/.ssh/id_ed25519.pub
 
 7. Now follow the remaining steps directly from the [GitHub SSH documentation](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add the generated key to your *GitHub* account
 
+## Installing Rust
+
+No secret for anyone. I just love `Rust`. But not only the language, the full ecosystem. And that's includes my favourite tool, `Cargo`.
+As you may notice, now we have available a `Unix` like environment within `Windows` thanks to `MSYS2`. Also, we have a `bash` like terminal,
+and all the typical command line utilities that we've expected to work, like `grep`, `awk`, `seed` and so on and so forth.
+
+The thing is that, after years of using them, they are quite obsolete. They need hard syntax sometimes to acomplish a simple task, and they don't
+look really modern nor are extremely productive to abrange a wide variety of levels of kwoledge of the command line utitiles.
+
+So I thought one day, didn't someone rewrite these tools in `Rust`, make them modern, solving their issues, make them *cross-platform* by default
+and available directly with a simple command like `cargo install "--args..."?`
+
+The answer is a tremendous ***YES***, but first we need to have `Cargo`, so we will install `Rust`.
+
+But, for having the full advantage of open-source tools, we will go further. `Rust` installation is managed via a command line utility known as `rustup`.
+`rustup` let's you easily manage every aspect of your `Rust's` installation, and even install multiple different `toolchains` in your machine.
+
+### `Rust` on Linux
+
+Just go to the `Rust` home page, and follow the download/installation instructions. Accept everything by default. You're good to go.
+
+### `Rust` on Windows using the `GNU` ABI via the `windows-pc-gnu` target triple
+
+In `Windows`, by default `Rust` will need to have the `MSVC` tools to work. That means to use the `Windows` native API, the `MSVC` linked and others.
+But, since we've installed `MSYS2`, we have all the `GCC GNU` utilities, and `Rust` has first class support (even in Windows) for using them.
+And even more, we even can go further and avoid to use the `GCC` toolchain, and use the ones provided by the `llvm-project`, the umbrella project to which
+`clang` (for example) belongs and the tools that created the `Rust` compiler itself.
+
+Open the `mingw64` terminal or any of the `MSYS2` terminals and run the following:
+
+```bash
+$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
+```
+
+A prompt will appear. Do this in order:
+
+    - choose "Continue? (y/N)" by typing y and hitting the Enter key.
+    - choose "2) Customize installation" using the keyboard.
+    - paste or type the option: x86_64-pc-windows-gnu .
+    - Press enter for the rest of the options.
+    - Finally type "1" as input in the console, then press Enter, to choose the option "1 to proceed" with the Current installation Options.
+
+>[!NOTE]
+>
+> Technically, there's packages for the different flavours of `MSYS2` to download `Rust`, like [this](https://packages.msys2.org/package/mingw-w64-x86_64-rust)
+> The problem is that misses one key component, [`rustup`](https://rust-lang.github.io/rustup), which allows us to quickly download and interchange between *toolchains*
+> among other niceties, like installing `nightly` versions of the compiler to test the latest and/or unstable features.
+> If you plan to stick with the `gnu` variant triple and the `stable` channel, it could be a better option to consider.
+
+Last, but not least, here comes the trick. To use the gcc or clang linker and compiler from MSYS2 you have to create the `C:\Users\user\.cargo\config` file
+and just paste the folowing:
+
+```
+[target.x86_64-pc-windows-gnu]
+linker = "C:\\msys64\\mingw64\\bin\\clang++.exe"
+ar = "C:\\msys64\\mingw64\\bin\\llvm-ar.exe"
+```
+
+We are here instructing `Cargo` to use the `llvm-suite` tools to compile our `Rust` code targeting the `GNU` ABI.
+
+// TODO make a list talking about the advantages of using the `GNU ABI` and using `clang and lld` instead of their defaults
+// TODO isn't clang and lld the default as of 2024 of `rustc`?
+
+> ***And that's all. We can compile `Rust` code in `Windows` without requiring any of the `MSVC` Microsoft tools!***
+
+>[!TIP]
+>
+> When targeting the GNU ABI, no additional software is strictly required for basic use. However, many library crates will not be able to compile until the full `MSYS2`
+> with MinGW has been installed. That's why we installed the full `mingw-w64-x86_64-toolchain` previously.
+
 ## The ***dotfiles*** installation process
 
 Assuming that you're on the **ROOT** of your users directory. `~` on **Unix** or `%USERPROFILE%` on **Windows**
@@ -274,19 +350,25 @@ I recommend you to create a new folder in your home directory and move them ther
 >
 > Optional:
 > If you're on *Windows*, as the time of writing your system most likely come with `Windows Terminal` by deafult.
-> So pick a `cmd` shell and run `c:\msys64\usr\bin\env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit c:\msys64\usr\bin\bash -i -l`
+> So pick a `cmd` shell and run `C:\msys64\usr\bin\env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit c:\msys64\usr\bin\bash -i -l`
 > and you'll have a login bash shell powered with the `mingw64` *git for Windows* but from **MSYS2** installation
 
-1. Ensure that you did everything properly before and run ```bash pwd``` and check if your opened shell points to your native *Windows* home directory
+1. [Windows only] Ensure that you did everything properly before and run ```bash pwd``` and check if your opened shell points to your native *Windows* home directory
 2. `git clone --bare git@github.com:TheRustifyer/dotfiles.git "$HOME"/.cfg` (replace the URL for the *HTTPS* variant if you need)
 3. `git --git-dir="$HOME"/.cfg/ --work-tree="$HOME" checkout`
 
 >[!NOTE]
 >
 > Just copy and paste the second point for checkout and directly "install" the configuration files.
-> Other tutorials configure again the alias for the bare repo and the gitignore, which will cause merge conflicts,
-> and it's completely unnecesary. As stated, use the provided commands above to cleanly install the dotfiles. The `config`
-> alias will be set up later
+> Other tutorials configure again the alias for the bare repo and the gitignore, which will cause merge conflicts, and it's completely unnecesary.
+> As stated, use the provided commands above to cleanly install the dotfiles. The `config` alias will be set up later automatically.
+
+## Completing the setup
+
+### Terminal tools
+
+Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`?
+// TODO complete
 
 ## Why?
 

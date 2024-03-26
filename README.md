@@ -8,6 +8,24 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
+## The tools
+
+### Terminals
+
+#### Wezterm
+
+#### Alacritty + tmux
+
+### Editor: Neovim
+
+### Shell and Shell framework
+
+#### ZSH + Starship
+
+### Command line utilities
+
+// TODO list them here
+
 ## Why?
 
 On a regular job day (from Monday to Friday), I almost end using three different machines along the day. 
@@ -34,29 +52,55 @@ By having the **config** alias set, now I can invoke *Git* from any place, and i
 with my configuration bare repository. So I can be in any place an directly add anything that I want to be track by
 my configuration repository.
 
-## Previous considerations:
+## The setup
 
->[!WARNING]
->
-> This documentation assumes that `Linux` distros will be any kind of `Arch` variants, or that they use (have installed)
-> `Pacman` in any other `Linux` distro.
+// TODO explain it here, with all the tools used, and paste some nice screenshots
 
->[!CAUTION]
->
-> Note for myself. Remember to check in the bash script for the presence of `pacman` in the system.
-> If not present, just install it, so we can make more kind of distros compatibles with this *setup*
+## Prerequisites:
 
+These are the mandatory general prerequisites in order to succesfully install the dotfiles and all the tools described above
+that conforms this setup
+
+- `Git`
+- `Rust` and `Cargo`
 
 >[!CAUTION]
 >
 > Note for myself. Remember to create `Github` actions to check that the packages are installable without problem in
 > all the supported OS
 
-## The key in Windows, [MSYS2](https://www.msys2.org/)
+## Linux machines (`pacman` based)
+
+>[!WARNING]
+>
+> This part is not yet tested completly in a fresh installation for the moment 
+
+>[!WARNING]
+>
+> This documentation assumes that `Linux` distros will be any kind of `Arch` variants, or that they use (or they have installed)
+> `Pacman` as package manager. If your distro doesn't have `pacman` you can download it.
+
+Since almost any `Linux` flavour comes with a `Git` installation
+
+>[!CAUTION]
+>
+> Note for myself. Remember to check in the bash script for the presence of `pacman` in the system.
+> If not present, just install it, so we can make more kind of distros compatibles with this *setup*
+
+## Windows
 
 >[!TIP]
 >
 > If you plan to use this guide for install the *setup* only on `Linux`, just skip this [TODO, change skip this for a link]
+
+Well, this setup is not exactly easy to replicate in a `Windows` machine. The fact is that requires a lot of configurations and tools that aren't
+available in `Windows` by default, nor are easy to understand how to emulate it/natively compile them, since all the tools are `Unix` based.
+
+As said, as developers we most of the time need the ***Microsoft's Visual Studio** tools at some point. And even that some of them are great tools
+(for example, `MSVC` and the `C++` tools are comfortable, and `MS Studio` is really a great editor) the idea of this setup is to have a unique set of
+tools sharable between any `OS` and completly **open source** based, as stated before.
+
+### The key in Windows, [MSYS2](https://www.msys2.org/)
 
 **MSYS2** is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software.
 
@@ -135,13 +179,26 @@ pacman -S mingw-w64-clang-x86_64-{make,cmake,ninja,clang,libunwind,clang-tools-e
 
 > [!NOTE]
 >
+> // TODO can we change all the `clang` separated tools for the `[MSYS2 llvm-suite package`](https://packages.msys2.org/package/mingw-w64-x86_64-llvm)
+> 
 > // TODO explain why what one of the few things that we change about the general recommendations of `MSYS2` official docs is to use a different
 > shell rather than the default one of the mingw one
 
-### Git
+### Git in Windows
 
 `Git` is the fastest and universal version control system out there. There's no other rival in terms of what `git` is capable of doing, and is widely
 adopted in all the open-source community as well as in the most of companies out there. Also, is the core "trick" of the *dotfiles* repo.
+
+> [!WARNING]
+>
+> This step isn't easy to get it working. Be really cautious doing the steps described below, or you'll likely end running into issues and you'll
+> need to start your work from scratch
+
+> [!CAUTION]
+>
+> This guide is tested on fresh `Windows` installs and on `Windows` machines that already have a `Git` installation.
+> If you already have `git` installed (most likely via `git-for-windows` and don't want to be scratching your head) you can skip it.
+> If you plan to fully complete the guide, please remove any previous `Git` installation from your machine.
 
 In order to install `git` on Windows from here, there's now three different options available:
 
@@ -165,6 +222,7 @@ After you read the documentation, you can go back here, and start working in the
 2. Run: ```bash sed -i '/^\[mingw32\]/{ s|^|[git-for-windows]\nServer = https://wingit.blob.core.windows.net/x86-64\n\n|; }' /etc/pacman.conf```
 3. Ensure that everything went fine, by typing: ```cat /etc/pacman.conf``` and ensure that there's a new entry for `[git-for-windows]`
 4. To avoid the future signature related issues, run the following commands first
+
 ```bash 
   rm -r /etc/pacman.d/gnupg/
   pacman-key --init
@@ -380,10 +438,57 @@ I recommend you to create a new folder in your home directory and move them ther
 
 ## Completing the setup
 
+We're finally here (if you're on Windows)!
+
+Big news, everything from here is mostly automated! In your checkout bare repo there's a *shell* script, named `build.sh` that is ready to install all the
+tools required to have the setup working. There's a lot of things here, but the script is ready to accept command line arguments, so we can better choose what
+tools and suites we installed on our machine. So, instead of running the full setup, I'll be listing below the logical steps in order and invoking in different
+iterations every set of tools, so we can better know what is happening and better understanding our final configuration.
+
+> [!TIP]
+>
+> Take a moment to read the `build.sh` script and see what tools are available and how
+
+### Getting the terminals
+
+1. Alacritty
+2. Wezterm
+3. Windows Terminal (with the MSYS2 shells configuration) // TODO add the JSON config file to the dotfiles
+
+### Neovim as editor
+
+We will gather a fresh installation of `Neovim` via the `mingw64` package installation.
+For having all the configuration of the editor up-to-date
+// TODO choose both, from upstream of include add submodule
+1. upstream
+2. submodule
+
+```bash
+./build.sh -nv
+```
+
+### Changing the default shell to the `Z` shell
+
+`ZSH`, also called the ***Z shell***, is an extended version of the Bourne Shell (sh), with new features and support for plugins and themes. Since it's based on the same shell as Bash, ZSH has many of the same features, and a lot of new ones no present in `bash` shells.
+
+```bash
+./build.sh --zsh
+```
+
 ### Terminal tools
 
-Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`?
-// TODO complete
+Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`? And that they look modern, have better syntaxs and that they are
+***extremely performant***? Well, it's time to install them and have them in action.
+
+From your user's root directory, invoke the `build` script passing as argument:
+
+```bash
+./build.sh -tt
+```
+
+### [ADVANCED] The `llvm-suite` from the last commit on main from upstream
+
+// TODO
 
 ## Friendly reminder, starting from scratch your own `dotfiles` bare repo
 
@@ -400,3 +505,7 @@ echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshr
 >
 > My configuration assumes that the base shell for the configuration uses [**starship**](https://starship.rs/). Obviously, feel free to use
 > whatever shell suits you better.
+
+## Acknowledges
+
+// TODO

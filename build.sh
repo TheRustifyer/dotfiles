@@ -5,6 +5,11 @@ config() {
     git --git-dir=$HOME/.cfg/ --work-tree=$HOME "$@"
 }
 
+# Install Neovim
+install_editor() {
+    pacman -S mingw-w64-x86_64-neovim
+}
+
 # Install all the CMD utilities directly with Cargo
 terminal_tools() {
     # Here lives the ones available only on Linux
@@ -122,6 +127,7 @@ function update_zellij() {
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -z|--zsh) setup_zsh ;;
+        -nv|--neovim) install_editor ;;
         -g|--gh-cli-windows) gh_cli_windows ;;
         -l|--gh-cli-linux) gh_cli_linux ;;
         -ullvm|--update-llvm-suite) update_llvm_suite ;;

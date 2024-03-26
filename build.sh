@@ -7,7 +7,11 @@ config() {
 
 # Install Neovim
 install_editor() {
-    pacman -S mingw-w64-x86_64-neovim
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        pacman -S neovim
+    else
+        pacman -S mingw-w64-x86_64-neovim
+    fi
 }
 
 # Install all the CMD utilities directly with Cargo

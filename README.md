@@ -127,7 +127,7 @@ Obviously, type **[Y]** and hit `Enter`. This will update your `msys2` subsystem
 When ends, open the `mingw64` *msys2* shell and do the same. When it ends, run the following:
 
 ```bash
-pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+pacman -S --needed base-devel mingw-w64-x86_64-toolchain mingw-w64-clang-x86_64-llvm
 ```
 
 > Don't miss this by any chance, since it will be required later to fully complete our `Rust` installation targeting the `GNU` ABI.
@@ -174,12 +174,12 @@ amazing software with them. But for such thing we will need first to gather our 
 Open the `msys2 clang64` shell, and paste the following:
 
 ```bash
-pacman -S mingw-w64-clang-x86_64-{make,cmake,ninja,clang,libunwind,clang-tools-extra,gcc-compat} 
+pacman -S mingw-w64-clang-x86_64-{make,cmake,ninja,clang,libunwind,clang-tools-extra,gcc-compat,diffutils} 
 ```
 
 > [!NOTE]
 >
-> // TODO can we change all the `clang` separated tools for the `[MSYS2 llvm-suite package`](https://packages.msys2.org/package/mingw-w64-x86_64-llvm)
+> // TODO can we change all the `clang` separated tools for the [`MSYS2 llvm-suite package`](https://packages.msys2.org/package/mingw-w64-x86_64-llvm)
 > 
 > // TODO explain why what one of the few things that we change about the general recommendations of `MSYS2` official docs is to use a different
 > shell rather than the default one of the mingw one
@@ -218,24 +218,30 @@ After you read the documentation, you can go back here, and start working in the
 > There's only one minor difference, I'll skip the usage of the *32 bits* `mingw32` installation.
 > So, open the `msys2 mingw64` shell, and start to work in the points of the list below:
 
-1. Make a backup for just in case if anything goes wrong, by typing ```bash cp /etc/pacman.conf /etc/pacman-bu.conf```
-2. Run: ```bash sed -i '/^\[mingw32\]/{ s|^|[git-for-windows]\nServer = https://wingit.blob.core.windows.net/x86-64\n\n|; }' /etc/pacman.conf```
+1. Make a backup for just in case if anything goes wrong, by typing:
+```bash
+cp /etc/pacman.conf /etc/pacman-bu.conf
+```
+2. Run:
+```bash
+sed -i '/^\[mingw32\]/{ s|^|[git-for-windows]\nServer = https://wingit.blob.core.windows.net/x86-64\n\n|; }' /etc/pacman.conf
+```
 3. Ensure that everything went fine, by typing: ```cat /etc/pacman.conf``` and ensure that there's a new entry for `[git-for-windows]`
 4. To avoid the future signature related issues, run the following commands first
 
 ```bash 
-  rm -r /etc/pacman.d/gnupg/
-  pacman-key --init
-  pacman-key --populate msys2
+rm -r /etc/pacman.d/gnupg/
+pacman-key --init
+pacman-key --populate msys2
 ```
 
 5. Authorize the signing key with:
 
 ```bash
-  curl -L https://raw.githubusercontent.com/git-for-windows/build-extra/HEAD/git-for-windows-keyring/git-for-windows.gpg |
-  pacman-key --add - &&
-  pacman-key --lsign-key E8325679DFFF09668AD8D7B67115A57376871B1C &&
-  pacman-key --lsign-key 3B6D86A1BA7701CD0F23AED888138B9E1A9F3986
+curl -L https://raw.githubusercontent.com/git-for-windows/build-extra/HEAD/git-for-windows-keyring/git-for-windows.gpg |
+pacman-key --add - &&
+pacman-key --lsign-key E8325679DFFF09668AD8D7B67115A57376871B1C &&
+pacman-key --lsign-key 3B6D86A1BA7701CD0F23AED888138B9E1A9F3986
 ```
 
 6. Then synchronize with new repositories with ```bash pacman -Syyuu```. This will install a different `msys2` runtime, and you'll probably see a `downgrade` version message. Don't worry at all, just press `[Y]` and proceed with the installation. Then, you'll be asked to shutdown your `msys2` tools, press `[Y]`.
@@ -365,7 +371,7 @@ And even more, we even can go further and avoid to use the `GCC` toolchain, and 
 Open the `mingw64` terminal or any of the `MSYS2` terminals and run the following:
 
 ```bash
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
 ```
 
 A prompt will appear. Do this in order:

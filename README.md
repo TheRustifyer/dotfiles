@@ -378,9 +378,10 @@ A prompt will appear. Do this in order:
 
     - choose "Continue? (y/N)" by typing y and hitting the Enter key.
     - choose "2) Customize installation" using the keyboard.
-    - paste or type the option: x86_64-pc-windows-gnu .
-    - Press enter for the rest of the options.
-    - Finally type "1" as input in the console, then press Enter, to choose the option "1 to proceed" with the Current installation Options.
+    - paste or type the option: `x86_64-pc-windows-gnu`.
+    - press enter for the `stable` version (unless you want other compiler version).
+    - I will select `complete` in the next step. Press enter to get the default, which probably fits your needs.
+    - then press Enter, to choose the option "1 to proceed" with the Current installation options.
 
 >[!NOTE]
 >

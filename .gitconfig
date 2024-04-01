@@ -9,4 +9,10 @@
 [init]
 	defaultBranch = main
 [http]
-	postBuffer = 524288000
+    postBuffer = 524288000
+[merge]
+  tool = nvim
+[mergetool "nvim"]
+  cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+[mergetool]
+  prompt = false

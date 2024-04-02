@@ -3,6 +3,16 @@ export HOME="$HOME"
 
 # Starship!
 eval "$(starship init zsh)"
+function set_win_title() {
+    echo -ne "\033]0; $(basename "$PWD") \007"
+}
+starship_precmd_user_func="set_win_title"
+
+function blastoff() {
+    echo "🚀"
+}
+starship_precmd_user_func="blastoff"
+
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -31,10 +41,11 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Set personal aliases TODO: move them to their own mod
-alias me = '~'
+alias me='cd $HOME'
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vi=nvim
+alias lg=nvim
 
 alias .='cd .'
 alias ..='cd ..'

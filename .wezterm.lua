@@ -1,9 +1,17 @@
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
 local act = wezterm.action
+local mux = wezterm.mux
+
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
+
+-- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
+wezterm.on('gui-startup', function(cmd)
+    local tab, pane, window = mux.spawn_window(cmd or {})
+    window:gui_window():maximize()
+end)
 
 -- These are vars to put things in later (i dont use em all yet)
 local keys = {}
@@ -11,23 +19,28 @@ local mouse_bindings = {}
 local launch_menu = {} -- TODO: Pending to configure it
 config.launch_menu = launch_menu
 
--- local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
 local is_windows = os.getenv("WINDIR") ~= nil
 if is_windows then
-    config.default_prog = { os.getenv('USERPROFILE') .. '/AppData/Local/Programs/Git/usr/bin/zsh.exe' }
+    config.default_prog = { os.getenv('USERPROFILE') .. '/AppData/Local/Programs/Git/usr/bin/zsh.exe' } -- TODO replace it for the MSYS2 one
 else
     config.default_prog = { '/usr/bin/zsh' }
 end
 
 -- Color scheme, Wezterm has 100s of them you can see here:
 -- https://wezfurlong.org/wezterm/colorschemes/index.html
-config.color_scheme = 'Oceanic Next (Gogh)'
+-- config.color_scheme = 'Oceanic Next (Gogh)'
 config.color_schemes = {
-    ['Oceanic Next (Gogh)'] = {
+    -- ['Oceanic Next (Gogh)'] = {
+    ['thwump (terminal.sexy) '] = {
         background = 'black',
+        -- TODO cursor opts non working
+        cursor_bg = "white",
+        cursor_border = "#8b8198",
+        cursor_fg = "#8b8198",
     },
 }
-config.window_background_opacity = 0.8
+config.window_background_opacity = 0.82
+config.hide_tab_bar_if_only_one_tab = true
 
 -- Fonts
 config.font = wezterm.font('Hack Nerd Font Mono')
@@ -37,54 +50,101 @@ config.font_size = 11
 -- config.default_cursor_style = 'BlinkingBar'
 
 -- Keybidings and remaps
-config.disable_default_key_bindings = true
+-- config.disable_default_key_bindings = true
 
--- this adds the ability to use ctrl+v to paste the system clipboard
+local leader = 'LEADER'
+local cmd = 'CMD'
+local ctrl = 'CTRL'
+local shift = 'SHIFT'
+local meta = 'META' -- 'alt' on Windows
+
+local cmd_ctrl = cmd .. '|' .. ctrl
+local cmd_shift = cmd .. '|' .. shift
+local cmd_meta = cmd .. '|' .. meta
+local ctrl_shift = ctrl .. '|' .. shift
+local ctrl_meta = ctrl .. '|' .. meta
+local shift_meta = shift .. '|' .. meta
+
+config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
-    { key = 'l',     mods = 'CMD|SHIFT',  action = act.ActivateTabRelative(1) },
-    { key = 'h',     mods = 'CMD|SHIFT',  action = act.ActivateTabRelative(-1) },
-    { key = 'j',     mods = 'CMD',        action = act.ActivatePaneDirection 'Down', },
-    { key = 'k',     mods = 'CMD',        action = act.ActivatePaneDirection 'Up', },
-    { key = 'Enter', mods = 'CMD',        action = act.ActivateCopyMode },
-    { key = 'R',     mods = 'SHIFT|CTRL', action = act.ReloadConfiguration },
-    { key = '+',     mods = 'CTRL',       action = act.IncreaseFontSize },
-    { key = '-',     mods = 'CTRL',       action = act.DecreaseFontSize },
-    { key = '0',     mods = 'CTRL',       action = act.ResetFontSize },
-    { key = 'C',     mods = 'SHIFT|CTRL', action = act.CopyTo 'Clipboard' },
-    { key = 'N',     mods = 'SHIFT|CTRL', action = act.SpawnWindow },
+    -- splitting
     {
-        key = 'T',
-        mods = 'SHIFT|CMD',
-        action = act.SpawnTab 'CurrentPaneDomain',
+        key    = 'v',
+        mods   = leader,
+        action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }
     },
-    { key = 'U',          mods = 'SHIFT|CTRL', action = act.CharSelect { copy_on_select = true, copy_to = 'ClipboardAndPrimarySelection' } },
-    { key = 'V',          mods = 'CTRL|SHIFT', action = act.PasteFrom 'Clipboard' },
-    { key = 'PageUp',     mods = 'CTRL',       action = act.ActivateTabRelative(-1) },
-    { key = 'PageDown',   mods = 'CTRL',       action = act.ActivateTabRelative(1) },
-    { key = 'LeftArrow',  mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Left' },
-    { key = 'RightArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Right' },
-    { key = 'UpArrow',    mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Up' },
-    { key = 'DownArrow',  mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Down' },
-    { key = 'f',          mods = 'CMD',        action = act.SplitVertical { domain = 'CurrentPaneDomain' }, },
-    { key = 'd',          mods = 'CMD',        action = act.SplitHorizontal { domain = 'CurrentPaneDomain' }, },
-    { key = 'h',          mods = 'CMD',        action = act.ActivatePaneDirection 'Left', },
-    { key = 'l',          mods = 'CMD',        action = act.ActivatePaneDirection 'Right', },
-    { key = 't',          mods = 'CMD',        action = act.SpawnTab 'CurrentPaneDomain' },
-    { key = 'w',          mods = 'CMD',        action = act.CloseCurrentTab { confirm = false } },
-    { key = 'x',          mods = 'CMD',        action = act.CloseCurrentPane { confirm = false } },
-    { key = 'b',          mods = 'CMD|CTRL',   action = act.SendString '\x02', },
-    -- { key = 'p',          mods = 'LEADER',      action = act.PasteFrom, }, --TODO: wrong opt
     {
-        key = 'k',
-        mods = 'CTRL|ALT',
-        action = act.Multiple
-            {
-                act.ClearScrollback 'ScrollbackAndViewport',
-                act.SendKey { key = 'L', mods = 'CTRL' }
-            }
+        key    = 'f',
+        mods   = leader,
+        action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }
     },
-    { key = 'r', mods = 'CMD', action = act.ActivateKeyTable { name = 'resize_pane', one_shot = false, }, },
+    -- Maximize a pane over others
+    {
+        key = 'm',
+        mods = leader,
+        action = wezterm.action.TogglePaneZoomState
+    },
+    -- rotate panes
+    {
+        key = 'Space',
+        mods = leader,
+        action = wezterm.action.RotatePanes "Clockwise"
+    },
+    -- show the pane selection mode, but have it swap the active and selected panes
+    {
+        key = '0',
+        mods = leader,
+        action = wezterm.action.PaneSelect { mode = 'SwapWithActive', },
+    },
+    -- Enters the 'Wezterm' copy selecion mode
+    {
+        key = 'Enter',
+        mods = leader,
+        action = act.ActivateCopyMode
+    },
+
+    {
+        key = 'r',
+        mods = leader,
+        action = act.ReloadConfiguration
+    },
+
+    {
+        key = 'y',
+        mods = leader,
+        action = wezterm.action.ShowTabNavigator
+    },
+
+    -- Navigation. Don't use the leader, since leader it's an 'operator pending' mode binding, and makes difficult
+    -- to navigate more than once without doing to much keystrokes
+    { key = 'l', mods = cmd_shift,  action = act.ActivateTabRelative(1) },
+    { key = 'h', mods = cmd_shift,  action = act.ActivateTabRelative(-1) },
+
+    { key = 'h', mods = cmd_meta,   action = act.ActivatePaneDirection 'Left', },
+    { key = 'l', mods = cmd_meta,   action = act.ActivatePaneDirection 'Right', },
+    { key = 'k', mods = cmd_meta,   action = act.ActivatePaneDirection 'Up', },
+    { key = 'j', mods = cmd_meta,   action = act.ActivatePaneDirection 'Down', },
+
+    { key = 'h', mods = leader,     action = act.AdjustPaneSize { 'Left', 5 }, },
+    { key = 'l', mods = leader,     action = act.AdjustPaneSize { 'Right', 5 }, },
+    { key = 'k', mods = leader,     action = act.AdjustPaneSize { 'Up', 5 }, },
+    { key = 'j', mods = leader,     action = act.AdjustPaneSize { 'Down', 5 }, },
+
+
+    { key = 'n', mods = leader,     action = act.SpawnWindow },
+    { key = 't', mods = leader,     action = act.SpawnTab 'CurrentPaneDomain' },
+    { key = 'w', mods = leader,     action = act.CloseCurrentTab { confirm = false } },
+    { key = 'x', mods = leader,     action = act.CloseCurrentPane { confirm = false } },
+    { key = 'b', mods = leader,     action = act.SendString '\x02', },
+
+    { key = '+', mods = leader,     action = act.IncreaseFontSize },
+    { key = '-', mods = leader,     action = act.DecreaseFontSize },
+    { key = '¡', mods = leader,     action = act.ResetFontSize },
+
+    { key = 'C', mods = ctrl_shift, action = act.CopyTo 'Clipboard' },
+    { key = 'V', mods = ctrl_shift, action = act.PasteFrom 'Clipboard', },
 }
+
 -- There are mouse binding to mimc Windows Terminal and let you copy
 -- To copy just highlight something and right click. Simple
 mouse_bindings = {
@@ -161,5 +221,4 @@ config.set_environment_variables = {}
 -- ]]
 
 
--- and finally, return the configuration to wezterm
 return config

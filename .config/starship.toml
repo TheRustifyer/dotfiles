@@ -1,3 +1,6 @@
+# A continuation prompt that displays two filled in arrows
+continuation_prompt = '▶▶ '
+
 [aws]
 symbol = "  "
 

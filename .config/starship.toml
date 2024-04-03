@@ -1,6 +1,63 @@
 # A continuation prompt that displays two filled in arrows
 continuation_prompt = '▶▶ '
 
+right_format = """$os $time"""
+
+[battery]
+full_symbol = '🔋 '
+charging_symbol = '⚡️ '
+discharging_symbol = '💀 '
+
+[[battery.display]]
+threshold = 10
+style = 'bold red'
+
+[git_commit]
+commit_hash_length = 4
+tag_symbol = '🔖 '
+
+[git_metrics]
+added_style = 'bold blue'
+format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+disabled = false
+only_nonzero_diffs = true
+
+[git_status] # This module is extremely slow with WSL environments. Read the docs to use Windows Starship binary
+# if you plan to use it on WSL
+conflicted = '🏳'
+ahead = '🏎💨'
+behind = '😰'
+diverged = '😵'
+up_to_date = '✓'
+untracked = '🤷'
+stashed = '📦'
+modified = '📝'
+staged = '[++\($count\)](green)'
+renamed = '👅'
+deleted = '🗑'
+
+[username]
+style_user = 'white bold'
+style_root = 'black bold'
+format = '[$user]($style)'
+disabled = false
+show_always = false
+
+[localip]
+ssh_only = true
+format = '[@$localipv4](bold green) '
+disabled = false
+
+[os]
+format = "[($symbol)]($style)"
+style = "bold blue"
+disabled = false
+
+[time]
+disabled = false
+format = '🕙[\($time\)]($style) '
+time_format = '%T'
+
 [aws]
 symbol = "  "
 
@@ -60,6 +117,7 @@ ssh_symbol = " "
 
 [java]
 symbol = " "
+detect_files =[ "pom.xml", "build.gradle.kts", "build.sbt", ".java-version", "deps.edn", "project.clj", "build.boot", ".sdkmanrc", "application.yml" ]
 
 [julia]
 symbol = " "

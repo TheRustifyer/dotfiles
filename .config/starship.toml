@@ -1,7 +1,20 @@
+# Keep the newline after each prompt
+add_newline = true
+
 # A continuation prompt that displays two filled in arrows
 continuation_prompt = '▶▶ '
 
-right_format = """$os $time"""
+# What I like to see on the right of the prompt
+right_format = """$git_metrics $os $time"""
+
+# Show the regular bash prompt symbols
+[character]
+success_symbol = "[\\$](bold green)"
+error_symbol = "[\\$](bold red)"
+
+# Enable the Kubernetes module
+[kubernetes]
+disabled = false
 
 [battery]
 full_symbol = '🔋 '
@@ -9,7 +22,7 @@ charging_symbol = '⚡️ '
 discharging_symbol = '💀 '
 
 [[battery.display]]
-threshold = 10
+threshold = 30
 style = 'bold red'
 
 [git_commit]
@@ -24,6 +37,7 @@ only_nonzero_diffs = true
 
 [git_status] # This module is extremely slow with WSL environments. Read the docs to use Windows Starship binary
 # if you plan to use it on WSL
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style) "
 conflicted = '🏳'
 ahead = '🏎💨'
 behind = '😰'
@@ -48,10 +62,10 @@ ssh_only = true
 format = '[@$localipv4](bold green) '
 disabled = false
 
-[os]
-format = "[($symbol)]($style)"
-style = "bold blue"
-disabled = false
+[shlvl]
+disabled = true
+threshold = 1
+symbol = "↕️ "
 
 [time]
 disabled = false

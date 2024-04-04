@@ -7,11 +7,6 @@ continuation_prompt = '▶▶ '
 # What I like to see on the right of the prompt
 right_format = """$git_metrics $os $time"""
 
-# Show the regular bash prompt symbols
-[character]
-success_symbol = "[\\$](bold green)"
-error_symbol = "[\\$](bold red)"
-
 # Enable the Kubernetes module
 [kubernetes]
 disabled = false

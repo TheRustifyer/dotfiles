@@ -8,15 +8,50 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
-## The tools
+## The setup explained with its tools
 
-### Terminals
+`Alacritty` is the terminal emulator that I've been using for years, using it in combination with `tmux`, having an incredible and powerful
+terminal environment. But `tmux` doesn't works on `Windows`, neither native, nor via `MSYS2` (the unique way is with `WSL`). That's why I
+switch to `Zellij`. 
 
-#### Wezterm
+Both, `tmux` and `Zellij` are *terminal multiplexers*, which allows you to have fancy features like tabs, panes and sessions. `Zellij`
+isn't usable on *Windows* natively, but at the time of writing, there's this [`PR`](https://github.com/zellij-org/zellij/pull/2926) which is implementing
+the *Windows* native working. Fingers crossed that it will be merged soon.
 
-#### Alacritty + tmux
+### [Terminal emulators]
+
+The setup comes preparated for choose between `Wezterm` or `Alacritty` as your terminal emulators (or take both) .
+
+Both are `Rust` based tools, known for their high speed and stability. Choose between them is a matter or your personal preference, so if you don't
+know them, just go ahead, read their docs and pick your favourite one!
+
+In the meantime, I am personally using `Wezterm` on Windows, so I take the opportunity to learn about it, and `Alacritty + Zellij` on `Linux`.
+
+> [!NOTE]
+>
+> `Alacritty` and `Zellij` will be automatically download (if you want) with the setup script provided later. But if you plan to
+> use `Wezterm`, you'll need to manually download it from their webpage for the moment on *Windows*, since I yet not found a nice
+> solution to workaround its build from source due to some *Perl* build dependencies.
+
+#### [Alacritty](https://alacritty.org/) + [ZelliJ](https://zellij.dev/)
+
+#### [Wezterm](https://wezfurlong.org/wezterm)
+
+#### Alacritty + tmux (legacy)
+
+I also provide the legacy configuration I've used for years, with `Alacritty` and `tmux`, for nostalgic `Linux` users.
 
 ### Editor: Neovim
+
+`Neovim` is a command line editor and a project that seeks to aggressively refactor Vim in order to:
+
+  - Simplify maintenance and encourage contributions
+  - Split the work between multiple developers
+  - Enable advanced UIs without modifications to the core
+  - Maximize extensibility
+
+`Neovim` is incredible powerful and customizable. `Vim` motions (once you get use to them) will overpower the way you write (and even think) about
+your code workflow.
 
 ### Shell and Shell framework
 
@@ -64,32 +99,32 @@ that conforms this setup
 - `Git`
 - `Rust` and `Cargo`
 
->[!CAUTION]
+> [!CAUTION]
 >
 > Note for myself. Remember to create `Github` actions to check that the packages are installable without problem in
 > all the supported OS
 
 ## Linux machines (`pacman` based)
 
->[!WARNING]
+> [!WARNING]
 >
 > This part is not yet tested completly in a fresh installation for the moment 
 
->[!WARNING]
+> [!WARNING]
 >
 > This documentation assumes that `Linux` distros will be any kind of `Arch` variants, or that they use (or they have installed)
 > `Pacman` as package manager. If your distro doesn't have `pacman` you can download it.
 
 Since almost any `Linux` flavour comes with a `Git` installation
 
->[!CAUTION]
+> [!CAUTION]
 >
 > Note for myself. Remember to check in the bash script for the presence of `pacman` in the system.
 > If not present, just install it, so we can make more kind of distros compatibles with this *setup*
 
 ## Windows
 
->[!TIP]
+> [!TIP]
 >
 > If you plan to use this guide for install the *setup* only on `Linux`, just skip this [TODO, change skip this for a link]
 
@@ -109,7 +144,7 @@ For more details see ['What is MSYS2?'](https://www.msys2.org/docs/what-is-msys2
 So basically, the first step to get everything running in Windows is to download the installer. So click on the hyperlink, download it
 and then double click on your installer.
 
->[!NOTE]
+> [!NOTE]
 >
 > Installation extremely fast-forward process, the unique doubt could be the installation location. `MSYS2` is typically well placed directly
 > under `C:\`. You can install it in other place, but this guide assumes that you will be using `C:\msys64`, as recommended in their documentation.
@@ -213,7 +248,7 @@ First of all, follow the hyperlink on the header above. They will have the lates
 
 After you read the documentation, you can go back here, and start working in the installation.
 
->[!NOTE]
+> [!NOTE]
 >
 > There's only one minor difference, I'll skip the usage of the *32 bits* `mingw32` installation.
 > So, open the `msys2 mingw64` shell, and start to work in the points of the list below:
@@ -254,13 +289,13 @@ pacman-key --lsign-key 3B6D86A1BA7701CD0F23AED888138B9E1A9F3986
 pacman -S mingw-w64-x86_64-{git,git-doc-html,git-doc-man} mingw-w64-x86_64-git-credential-manager
 ```
 
->[!CAUTION]
+> [!CAUTION]
 >
 > I've modified the last step to remove the `git-extra` package, since it modifies the `MSYS2` instalation heavily, and doesn't bring any
 > advantages to my workflow nor enhace my tools. Read the extra steps carefully if you think that is worth for you, and just run the installation
 > command with `pacman`.
 
->[!TIP]
+> [!TIP]
 >
 > Also, I added there the `git-credential-manager` package, since it's a **must have** for any comfortable workflow. 
 
@@ -288,7 +323,7 @@ setx PATH "%PATH%;C:\msys64\clang64\bin"
 setx PATH "%PATH%;C:\msys64\mingw64\bin"
 ```
 
->[!NOTE]
+> [!NOTE]
 >
 > This is the magic step where everything makes sense. From now, any tool that you install via `MSYS2` (and should be any one available via *MSYS2* in this world)
 > would be directly available from any point in your *Windows* installation. That's what will make you to be amazed, since you can have any tool that you like
@@ -296,7 +331,7 @@ setx PATH "%PATH%;C:\msys64\mingw64\bin"
 
 ## Setting the `SSH` agent to authenticate over SSH
 
->[!NOTE]
+> [!NOTE]
 >
 > It is recommended to follow the `GitHub` documentation in order to use GitHub remote actions with authentication via `SSH`. If you plan to stick
 > with the legacy `HTTPS` way, you can skip this step.
@@ -383,7 +418,7 @@ A prompt will appear. Do this in order:
     - I will select `complete` in the next step. Press enter to get the default, which probably fits your needs.
     - then press Enter, to choose the option "1 to proceed" with the Current installation options.
 
->[!NOTE]
+> [!NOTE]
 >
 > Technically, there's packages for the different flavours of `MSYS2` to download `Rust`, like [this](https://packages.msys2.org/package/mingw-w64-x86_64-rust)
 > The problem is that misses one key component, [`rustup`](https://rust-lang.github.io/rustup), which allows us to quickly download and interchange between *toolchains*
@@ -406,7 +441,7 @@ We are here instructing `Cargo` to use the `llvm-suite` tools to compile our `Ru
 
 > ***And that's all. We can compile `Rust` code in `Windows` without requiring any of the `MSVC` Microsoft tools!***
 
->[!TIP]
+> [!TIP]
 >
 > When targeting the GNU ABI, no additional software is strictly required for basic use. However, many library crates will not be able to compile until the full `MSYS2`
 > with MinGW has been installed. That's why we installed the full `mingw-w64-x86_64-toolchain` previously.
@@ -426,7 +461,7 @@ I recommend you to create a new folder in your home directory and move them ther
 
 ### Cloning and installing:
 
->[!TIP]
+> [!TIP]
 >
 > Optional:
 > If you're on *Windows*, as the time of writing your system most likely come with `Windows Terminal` by deafult.
@@ -437,7 +472,7 @@ I recommend you to create a new folder in your home directory and move them ther
 2. `git clone --bare git@github.com:TheRustifyer/dotfiles.git "$HOME"/.cfg` (replace the URL for the *HTTPS* variant if you need)
 3. `git --git-dir="$HOME"/.cfg/ --work-tree="$HOME" checkout`
 
->[!NOTE]
+> [!NOTE]
 >
 > Just copy and paste the second point for checkout and directly "install" the configuration files.
 > Other tutorials configure again the alias for the bare repo and the gitignore, which will cause merge conflicts, and it's completely unnecesary.
@@ -508,7 +543,7 @@ config config --local status.showUntrackedFiles no
 echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshrc
 ```
 
->[!NOTE]
+> [!NOTE]
 >
 > My configuration assumes that the base shell for the configuration uses [**starship**](https://starship.rs/). Obviously, feel free to use
 > whatever shell suits you better.

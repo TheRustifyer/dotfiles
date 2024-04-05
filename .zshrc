@@ -45,7 +45,7 @@ alias me='cd $HOME'
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vi=nvim
-alias lg=nvim
+alias lg='lazygit'
 
 alias .='cd .'
 alias ..='cd ..'

@@ -13,6 +13,10 @@ wezterm.on('gui-startup', function(cmd)
     window:gui_window():maximize()
 end)
 
+wezterm.on('update-right-status', function(window, pane)
+    window:set_right_status(window:active_workspace())
+end)
+
 -- These are vars to put things in later (i dont use em all yet)
 local keys = {}
 local mouse_bindings = {}
@@ -43,14 +47,14 @@ config.window_background_opacity = 0.82
 config.hide_tab_bar_if_only_one_tab = true
 
 -- Fonts
-config.font = wezterm.font('Hack Nerd Font Mono')
+config.font = wezterm.font('JetBrains Mono')
 config.font_size = 11
 
 -- makes my cursor blink
 -- config.default_cursor_style = 'BlinkingBar'
 
 -- Keybidings and remaps
--- config.disable_default_key_bindings = true
+config.disable_default_key_bindings = true
 
 local leader = 'LEADER'
 local cmd = 'CMD'
@@ -67,6 +71,38 @@ local shift_meta = shift .. '|' .. meta
 
 config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
+    -- Workspaces
+
+    -- Show the launcher in fuzzy selection mode and have it list all workspaces
+    -- and allow activating one.
+    -- Switch to the default workspace
+    {
+        key = '1', mods = ctrl_meta, action = act.SwitchToWorkspace { name = 'default', },
+    },
+    -- Switch to a monitoring workspace, which will have `top` launched into it
+    {
+        key = 'm',
+        mods = ctrl_meta,
+        action = act.SwitchToWorkspace {
+            name = 'monitoring',
+            spawn = {
+                args = { 'btm' },
+            },
+        },
+    },
+    -- Create a new workspace with a random name and switch to it
+    { key = 'i', mods = cmd_meta, action = act.SwitchToWorkspace },
+    -- Show the launcher in fuzzy selection mode and have it list all workspaces
+    -- and allow activating one.
+    {
+        key = '0',
+        mods = ctrl_meta,
+        action = act.ShowLauncherArgs { flags = 'FUZZY|WORKSPACES', },
+    },
+    { key = 'n', mods = ctrl_meta, action = act.SwitchWorkspaceRelative(1) },
+    { key = 'p', mods = ctrl_meta, action = act.SwitchWorkspaceRelative(-1) },
+
+
     -- splitting
     {
         key    = 'v',
@@ -129,7 +165,6 @@ config.keys = {
     { key = 'l', mods = leader,     action = act.AdjustPaneSize { 'Right', 5 }, },
     { key = 'k', mods = leader,     action = act.AdjustPaneSize { 'Up', 5 }, },
     { key = 'j', mods = leader,     action = act.AdjustPaneSize { 'Down', 5 }, },
-
 
     { key = 'n', mods = leader,     action = act.SpawnWindow },
     { key = 't', mods = leader,     action = act.SpawnTab 'CurrentPaneDomain' },

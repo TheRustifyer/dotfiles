@@ -2,9 +2,15 @@
     active = true
     url = https://github.com/llvm/llvm-project.git
     path = code/third_party/llvm-project
-[submodule "alacritty"]
-	path = code/third_party/alacritty
+[submodule "code/tools/alacritty"]
+	path = code/tools/alacritty
 	url = https://github.com/alacritty/alacritty
-[submodule "zellij"]
-	path = code/third_party/zellij
+[submodule "code/tools/zellij"]
+	path = code/tools/zellij
 	url = https://github.com/zellij-org/zellij
+[submodule "code/tools/neovim"]
+	path = code/tools/neovim
+	url = https://github.com/neovim/neovim
+[submodule "code/third-party/zellij"]
+	path = code/third-party/zellij
+	url = https://github.com/iXialumy/zellij/

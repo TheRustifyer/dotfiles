@@ -315,12 +315,7 @@ all my tools on path available. This is an easy one step. You can add the `/bin`
 approach, or just open a `cmd` shell with **Administrator** privileges, and type the following:
 
 ```cmd
-setx PATH "%PATH%;C:\msys64\usr\bin"
-setx PATH "%PATH%;C:\msys64\usr\local\bin"
-setx PATH "%PATH%;C:\msys64\bin"
-setx PATH "%PATH%;C:\msys64\opt\bin"
-setx PATH "%PATH%;C:\msys64\clang64\bin"
-setx PATH "%PATH%;C:\msys64\mingw64\bin"
+setx PATH "%PATH%;C:\msys64\mingw64\bin;C:\msys64\clang64\bin;C:\msys64\usr\bin;C:\msys64\usr\local\bin;C:\msys64\opt\bin;"
 ```
 
 > [!NOTE]

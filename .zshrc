@@ -13,6 +13,10 @@ function blastoff() {
 }
 starship_precmd_user_func="blastoff"
 
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
 HIST_STAMPS="dd.mm.yyyy"
 
 # User configuration
@@ -33,9 +37,13 @@ plugins=(
     zsh-syntax-highlighting
 )
 
+source $ZSH/oh-my-zsh.sh
+
+
 # Set personal aliases TODO: move them to their own mod
 alias me='cd $HOME'
 alias zshconf="nvim ~/.zshrc"
+alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vi=nvim
 alias lg='lazygit'
 
@@ -64,6 +72,8 @@ else
     alias rmnvim='rm -rf ~/AppData/Local/nvim && rm -rf ~/AppData/Local/nvim-data'
 fi
 
+alias zellijconf='nvim ~/.config/zellij/config.kdl'
+
 # Git aliases
 alias gs='git status -sb'
 alias gco='git checkout'
@@ -89,8 +99,7 @@ alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
 # Using `bat` as a better `cat`
 alias cat='bat'
 
-# Adding Clang and LLVM Project to the PATH
-# TODO: deprecated. Change the path
+# Adding Clang and LLVM Project to the PATH TODO: deprecated. Change the path
 # with the git submodule that comes with the dotfiles
 export PATH="$HOME/tools/llvm-project/build/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/tools/llvm-project/build/lib:$LD_LIBRARY_PATH"

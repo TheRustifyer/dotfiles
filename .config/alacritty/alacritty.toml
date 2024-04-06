@@ -1,3 +1,13 @@
+[shell]
+# program = "/usr/bin/tmux"
+program = "zellij"
+
+[window]
+decorations = "full"
+opacity = 0.72
+# startup_mode = "Fullscreen"
+startup_mode = "Maximized"
+
 [colors.bright]
 black = "#3d3a3a"
 blue = "#8fa7b9"
@@ -41,11 +51,3 @@ style = "Regular"
 [font.offset]
 x = 0
 y = 0
-
-[shell]
-program = "/usr/bin/tmux"
-
-[window]
-decorations = "full"
-opacity = 0.72
-startup_mode = "Windowed"

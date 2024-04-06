@@ -1,0 +1,16 @@
+layout {
+    cwd "/home/pyzyryab/.config/nvim"
+    tab name="Neovim configuration" focus=true hide_floating_panes=true {
+        pane split_direction="vertical" {
+            pane command="nvim" focus=true size="65%"
+
+            pane {
+               pane command="lazygit" size="55%"
+               pane command="btm" size="45%"
+            }
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+}

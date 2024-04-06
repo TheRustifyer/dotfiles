@@ -1,0 +1,2 @@
+default_shell "zsh"
+theme "catppuccin-mocha"

@@ -1,0 +1,26 @@
+layout {
+    cwd "/home/pyzyryab"
+    tab name="User's Root" focus=true hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane focus=true
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="Dotfiles (Git Bare Repo)" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane command="lazygit" {
+            args "--git-dir=/home/pyzyryab/.cfg/" "--work-tree=/home/pyzyryab"
+        }
+    }
+    tab name="System Monitor" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane command="btm"
+    }
+}

@@ -42,7 +42,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Set personal aliases TODO: move them to their own mod
 alias me='cd $HOME'
-alias zshconfig="nvim ~/.zshrc"
+alias zshconf="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vi=nvim
 alias lg='lazygit'
@@ -63,12 +63,16 @@ alias appdata='cd ~/AppData'
 
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias nvimconf='cd ~/.config/nvim && nvim'
     alias nvimdir='cd ~/.config/nvim'
     alias rmnvim="find ~/.cache ~/.local -type d -name '*nvim*' -exec rm -rf {} +"
 else
+    alias nvimconf='cd ~/AppData/Local/nvim && nvim'
     alias nvimdir='cd ~/AppData/Local/nvim'
     alias rmnvim='rm -rf ~/AppData/Local/nvim && rm -rf ~/AppData/Local/nvim-data'
 fi
+
+alias zellijconf='nvim ~/.config/zellij/config.kdl'
 
 # Git aliases
 alias gs='git status -sb'
@@ -85,7 +89,6 @@ alias gpop='git stash pop'
 alias ga='git add'
 alias gb='git branch'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gm='git merge'
 alias gm='git merge'
 alias gmnff='git merge --no-ff'
 

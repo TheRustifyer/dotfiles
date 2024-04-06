@@ -18,7 +18,10 @@ Both, `tmux` and `Zellij` are *terminal multiplexers*, which allows you to have 
 isn't usable on *Windows* natively, but at the time of writing, there's this [`PR`](https://github.com/zellij-org/zellij/pull/2926) which is implementing
 the *Windows* native working. Fingers crossed that it will be merged soon.
 
-### [Terminal emulators]
+But in the mean time, I forked the fork that is opening the `Windows` implementation *PR* and added some cleanup and custom niceties. So, you'll be able
+to use `Zellij` on *Windows*
+
+## Terminal emulators
 
 The setup comes preparated for choose between `Wezterm` or `Alacritty` as your terminal emulators (or take both) .
 
@@ -33,11 +36,11 @@ In the meantime, I am personally using `Wezterm` on Windows, so I take the oppor
 > use `Wezterm`, you'll need to manually download it from their webpage for the moment on *Windows*, since I yet not found a nice
 > solution to workaround its build from source due to some *Perl* build dependencies.
 
-#### [Alacritty](https://alacritty.org/) + [ZelliJ](https://zellij.dev/)
+### [Alacritty](https://alacritty.org/) + [ZelliJ](https://zellij.dev/)
 
-#### [Wezterm](https://wezfurlong.org/wezterm)
+### [Wezterm](https://wezfurlong.org/wezterm)
 
-#### Alacritty + tmux (legacy)
+### Alacritty + tmux (legacy)
 
 I also provide the legacy configuration I've used for years, with `Alacritty` and `tmux`, for nostalgic `Linux` users.
 
@@ -315,12 +318,7 @@ all my tools on path available. This is an easy one step. You can add the `/bin`
 approach, or just open a `cmd` shell with **Administrator** privileges, and type the following:
 
 ```cmd
-setx PATH "%PATH%;C:\msys64\usr\bin"
-setx PATH "%PATH%;C:\msys64\usr\local\bin"
-setx PATH "%PATH%;C:\msys64\bin"
-setx PATH "%PATH%;C:\msys64\opt\bin"
-setx PATH "%PATH%;C:\msys64\clang64\bin"
-setx PATH "%PATH%;C:\msys64\mingw64\bin"
+setx PATH "%PATH%;C:\msys64\mingw64\bin;C:\msys64\clang64\bin;C:\msys64\usr\bin;C:\msys64\usr\local\bin;C:\msys64\opt\bin;"
 ```
 
 > [!NOTE]
@@ -493,11 +491,40 @@ iterations every set of tools, so we can better know what is happening and bette
 
 ### Getting the terminals
 
-1. Alacritty
-2. Wezterm
-3. Windows Terminal (with the MSYS2 shells configuration) // TODO add the JSON config file to the dotfiles
+Now is time to complete our setup. And time to choose our core tool, the terminal. You can choose between the alternatives above (or take them all if you like)!
 
-### Neovim as editor
+#### Alacritty + Zellij (optional)
+
+1. Download it directly with `Cargo` (the recommened approach):
+
+```bash
+./build.sh -ia
+./build.sh -iz
+```
+2. Build it from source with the git submodule included in the setup
+
+```bash
+./build.sh -ba
+./build.sh -bz
+```
+
+> [!CAUTION]
+>
+> If you're using `Zellij` on `Windows`, you'll need to invoke it with the `-bzw` flag, not with `-bz`
+
+#### Wezterm
+
+Just go to their [downloads page](https://wezfurlong.org/wezterm/installation.html) and choose the installer you need based on your *operating system*
+
+#### Windows Terminal (with the MSYS2 shells configuration) // TODO add the JSON config file to the dotfiles
+
+`Windows Terminal` comes installed by default on any up to date `Windows` installation at the time of writing. If isn't your case, just
+go to the *Windows store* and download it from there.
+
+I've included in the *dotfiles* a custom configuration that fits better my need, and also added to the dropdown buttom where you can choose the shell
+you want to open all the `MSYS2` ones.
+
+### The editor: Neovim
 
 We will gather a fresh installation of `Neovim` via the `mingw64` package installation.
 For having all the configuration of the editor up-to-date
@@ -514,7 +541,7 @@ For having all the configuration of the editor up-to-date
 `ZSH`, also called the ***Z shell***, is an extended version of the Bourne Shell (sh), with new features and support for plugins and themes. Since it's based on the same shell as Bash, ZSH has many of the same features, and a lot of new ones no present in `bash` shells.
 
 ```bash
-./build.sh --zsh
+./build.sh -zsh
 ```
 
 ### Terminal tools

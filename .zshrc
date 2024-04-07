@@ -25,7 +25,7 @@ export EDITOR='nvim'
 
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-fpath=(./zsh/zsh-completions/src $fpath)
+# fpath=(./zsh/zsh-completions/src $fpath)
 
 plugins=(git)
 

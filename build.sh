@@ -32,28 +32,9 @@ setup_zsh() {
     exec zsh
 }
 
-gh_cli_windows() {
-    echo "Setting up GitHub CLI for Windows..."
-    config clone https://github.com/cli/cli.git gh-cli
-    cd gh-cli || exit
-    go run script\build.go
-}
+##### Code #####
 
-gh_cli_linux() {
-    echo "Setting up GitHub CLI for Linux..."
-    config clone https://github.com/cli/cli.git gh-cli
-    cd gh-cli || exit
-    bin/gh version
-}
-
-gh_cli() {
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-	gh_cli_linux
-    else
-	gh_cli_windows
-    fi
-}
-
+# The LLVM suite, for having Clang and all it's associated dev tools build from the latest changes
 update_llvm_suite() {
     echo "Updating the LLVM project suite..."
     config submodule update --init --remote code/third_party/llvm-project
@@ -66,6 +47,17 @@ build_llvm_suite() {
     cmake -G Ninja -S runtimes -B build -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS='clang;lld;clang-tools-extra;lldb' -DLLVM_USE_LINKER=lld -DLLVM_PARALLEL_COMPILE_JOBS=8 -DLLVM_PARALLEL_LINK_JOBS=8 -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"
     ninja -C build
 }
+
+install_uasm() {
+    echo "Building the UASM project..."
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo pacman -S uasm
+    else
+        pacman -S mingw-w64-x86_64-uasm
+    fi
+}
+
+##### Terminal emulators and multiplexers  #####
 
 # Alacritty
 function install_alacritty() {
@@ -109,6 +101,8 @@ function build_wezterm() {
     cargo build --release
     cd ~
 }
+
+##### CLI tools and utilities #####
 
 # Install all the CMD utilities directly with Cargo
 terminal_tools() {
@@ -164,28 +158,52 @@ terminal_tools() {
     cargo install tokei
 }
 
+gh_cli_windows() {
+    echo "Setting up GitHub CLI for Windows..."
+    config clone https://github.com/cli/cli.git gh-cli
+    cd gh-cli || exit
+    go run script\build.go
+}
+
+gh_cli_linux() {
+    echo "Setting up GitHub CLI for Linux..."
+    config clone https://github.com/cli/cli.git gh-cli
+    cd gh-cli || exit
+    bin/gh version
+}
+
+gh_cli() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        gh_cli_linux
+    else
+        gh_cli_windows
+    fi
+}
+
+
 # Check the arguments to determine which component to build
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -zsh|--setup_zsh) setup_zsh ;;
-	-bnv|--build-neovim) build_neovim ;;
+        -bnv|--build-neovim) build_neovim ;;
         -inv|--install-neovim) install_editor ;;
 
-	-g|--gh-cli) gh_cli ;;
+        -g|--gh-cli) gh_cli ;;
 
-	-ullvm|--update-llvm-suite) update_llvm_suite ;;
+        -ullvm|--update-llvm-suite) update_llvm_suite ;;
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
+        -uasm|--install-uasm) install_uasm ;;
 
-	-ia|--install_alacritty) install_alacritty ;;
-	-ba|--build_alacritty) build_alacritty ;;
+        -ia|--install_alacritty) install_alacritty ;;
+        -ba|--build_alacritty) build_alacritty ;;
 
-	-iz|--iz_zellij) install_zellij ;;
+        -iz|--iz_zellij) install_zellij ;;
         -bz|--build_zellij) build_zellij ;;
-	-bzw|--build_zellij_win) build_zellij_win ;;
+        -bzw|--build_zellij_win) build_zellij_win ;;
 
-	-bw|--build_wezterm) build_wezterm ;;
+        -bw|--build_wezterm) build_wezterm ;;
 
-	-tt|--terminal-tools) terminal_tools ;;
+        -tt|--terminal-tools) terminal_tools ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift

@@ -13,10 +13,6 @@ function blastoff() {
 }
 starship_precmd_user_func="blastoff"
 
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
 HIST_STAMPS="dd.mm.yyyy"
 
 # User configuration
@@ -29,23 +25,17 @@ export EDITOR='nvim'
 
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# fpath=(./zsh-completions/src $fpath)
+fpath=(./zsh/zsh-completions/src $fpath)
 
-plugins=(
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
+plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
-
-
-# Set personal aliases TODO: move them to their own mod
+# Set personal aliases
+# TODO: move them to their own mod
 alias me='cd $HOME'
 alias zshconf="nvim ~/.zshrc"
-alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vi=nvim
 alias lg='lazygit'
+alias lgd='lazygit --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 alias .='cd .'
 alias ..='cd ..'
@@ -61,6 +51,8 @@ alias rmdir='rm -rf'
 alias wincode='cd ~/code'
 alias appdata='cd ~/AppData'
 
+# Using `bat` as a better `cat`
+alias cat='bat'
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias nvimconf='cd ~/.config/nvim && nvim'
@@ -95,11 +87,8 @@ alias gmnff='git merge --no-ff'
 # For work with my bare git repo for the dotfiles
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME/'
 
-
-# Using `bat` as a better `cat`
-alias cat='bat'
-
-# Adding Clang and LLVM Project to the PATH TODO: deprecated. Change the path
+# Adding Clang and LLVM Project to the PATH
+# TODO: deprecated. Change the path
 # with the git submodule that comes with the dotfiles
 export PATH="$HOME/tools/llvm-project/build/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/tools/llvm-project/build/lib:$LD_LIBRARY_PATH"
@@ -109,5 +98,7 @@ if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     export PATH="$HOME/gh-cli/bin:$PATH"
 fi
 
-# source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-completions/zsh-completions.plugin.zsh
+# source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh

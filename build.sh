@@ -26,10 +26,9 @@ install_editor() {
 setup_zsh() {
     echo "Setting up Zsh..."
     pacman -S zsh
-    ## config submodule update --init --remote code/third_party/oh-my-zsh
-    git clone https://github.com/zsh-users/zsh-completions.git
-    # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    # git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
     exec zsh
 }
 
@@ -75,8 +74,8 @@ function install_alacritty() {
 
 function build_alacritty() {
     config submodule update --init --remote --recursive code/tools/wezterm
-    cd code/tools/alacritty     
-    cargo build --release                                       
+    cd code/tools/alacritty
+    cargo build --release
     cd ~
 }
 
@@ -132,7 +131,7 @@ terminal_tools() {
     # Replacements for the `ls` command
     echo "Installing a better ls via eza..."
     cargo install eza
-    
+
     # zoxide is a smarter `cd` replacement
     echo "Installing zoxide, a smarted cd command..."
     cargo install zoxide --locked
@@ -171,21 +170,21 @@ while [[ "$#" -gt 0 ]]; do
         -zsh|--setup_zsh) setup_zsh ;;
 	-bnv|--build-neovim) build_neovim ;;
         -inv|--install-neovim) install_editor ;;
-        
+
 	-g|--gh-cli) gh_cli ;;
-        
+
 	-ullvm|--update-llvm-suite) update_llvm_suite ;;
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
-	
+
 	-ia|--install_alacritty) install_alacritty ;;
 	-ba|--build_alacritty) build_alacritty ;;
-	
+
 	-iz|--iz_zellij) install_zellij ;;
         -bz|--build_zellij) build_zellij ;;
 	-bzw|--build_zellij_win) build_zellij_win ;;
-	
+
 	-bw|--build_wezterm) build_wezterm ;;
-        
+
 	-tt|--terminal-tools) terminal_tools ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac

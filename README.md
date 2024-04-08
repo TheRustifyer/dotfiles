@@ -478,9 +478,7 @@ I recommend you to create a new folder in your home directory and move them ther
 
 ## Completing the setup
 
-We're finally here (if you're on Windows)!
-
-Big news, everything from here is mostly automated! In your checkout bare repo there's a *shell* script, named `build.sh` that is ready to install all the
+In your checked-out bare repo there's a *shell* script, named `build.sh` that is ready to install all the
 tools required to have the setup working. There's a lot of things here, but the script is ready to accept command line arguments, so we can better choose what
 tools and suites we installed on our machine. So, instead of running the full setup, I'll be listing below the logical steps in order and invoking in different
 iterations every set of tools, so we can better know what is happening and better understanding our final configuration.
@@ -488,6 +486,30 @@ iterations every set of tools, so we can better know what is happening and bette
 > [!TIP]
 >
 > Take a moment to read the `build.sh` script and see what tools are available and how
+
+### Getting the font
+
+My default font is the [`JetBrains Mono`](https://www.jetbrains.com/lp/mono/), that you can download for the hyperlink. Is the configured one for `Alacritty`, and comes
+bundled by default on `Wezterm` (so you won't need to donwload it if you stick only with Wezterm). You'll need it with `Alacritty` to avoid console warnings.
+
+### Terminal tools
+
+Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`? And that they look modern, have better syntax and that they are
+***extremely performant***? Well, it's time to install them and have them in action.
+
+From your user's root directory, invoke the `build` script passing as argument:
+
+```bash
+./build.sh -tt
+```
+
+### Changing the default shell to the `Z` shell
+
+`ZSH`, also called the ***Z shell***, is an extended version of the Bourne Shell (sh), with new features and support for plugins and themes. Since it's based on the same shell as Bash, ZSH has many of the same features, and a lot of new ones no present in `bash` shells.
+
+```bash
+./build.sh -zsh
+```
 
 ### Getting the terminals
 
@@ -534,25 +556,6 @@ For having all the configuration of the editor up-to-date
 
 ```bash
 ./build.sh -nv
-```
-
-### Changing the default shell to the `Z` shell
-
-`ZSH`, also called the ***Z shell***, is an extended version of the Bourne Shell (sh), with new features and support for plugins and themes. Since it's based on the same shell as Bash, ZSH has many of the same features, and a lot of new ones no present in `bash` shells.
-
-```bash
-./build.sh -zsh
-```
-
-### Terminal tools
-
-Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`? And that they look modern, have better syntaxs and that they are
-***extremely performant***? Well, it's time to install them and have them in action.
-
-From your user's root directory, invoke the `build` script passing as argument:
-
-```bash
-./build.sh -tt
 ```
 
 ### [ADVANCED] The `llvm-suite` from the last commit on main from upstream

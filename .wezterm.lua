@@ -116,7 +116,7 @@ config.keys = {
     },
     -- Maximize a pane over others
     {
-        key = 'z',
+        key = 'f',
         mods = shift_meta,
         action = wezterm.action.TogglePaneZoomState
     },

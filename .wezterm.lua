@@ -17,18 +17,25 @@ wezterm.on('update-right-status', function(window, pane)
     window:set_right_status(window:active_workspace())
 end)
 
--- These are vars to put things in later (i dont use em all yet)
-local keys = {}
-local mouse_bindings = {}
-local launch_menu = {} -- TODO: Pending to configure it
-config.launch_menu = launch_menu
+local launch_menu = {}
+if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+    local default_prog = { 'cmd.exe ', '/k', 'C:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64 -use-full-path -shell zsh' }
 
-local is_windows = os.getenv("WINDIR") ~= nil
-if is_windows then
-    config.default_prog = { os.getenv('USERPROFILE') .. '/AppData/Local/Programs/Git/usr/bin/zsh.exe' } -- TODO replace it for the MSYS2 one
+	table.insert(launch_menu, {
+		label = 'MSYS MINGW64',
+		args = default_prog,
+	})
+    table.insert(launch_menu, {
+        label = 'PowerShell',
+        args = { 'pwsh.exe', '-nol' },
+    })
+
+    config.default_prog = default_prog
 else
     config.default_prog = { '/usr/bin/zsh' }
 end
+
+config.launch_menu = launch_menu
 
 -- Color scheme, Wezterm has 100s of them you can see here:
 -- https://wezfurlong.org/wezterm/colorschemes/index.html
@@ -38,9 +45,9 @@ config.color_schemes = {
     ['thwump (terminal.sexy) '] = {
         background = 'black',
         -- TODO cursor opts non working
-        cursor_bg = "white",
-        cursor_border = "#8b8198",
-        cursor_fg = "#8b8198",
+        cursor_bg = 'white',
+        cursor_border = '#8b8198',
+        cursor_fg = '#8b8198',
     },
 }
 config.window_background_opacity = 0.82
@@ -124,7 +131,7 @@ config.keys = {
     {
         key = 'Space',
         mods = leader,
-        action = wezterm.action.RotatePanes "Clockwise"
+        action = wezterm.action.RotatePanes 'Clockwise'
     },
     -- show the pane selection mode, but have it swap the active and selected panes
     {
@@ -182,22 +189,22 @@ config.keys = {
 
 -- There are mouse binding to mimc Windows Terminal and let you copy
 -- To copy just highlight something and right click. Simple
-mouse_bindings = {
+local mouse_bindings = {
     {
         event = { Down = { streak = 3, button = 'Left' } },
         action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
         mods = 'NONE',
     },
     {
-        event = { Down = { streak = 1, button = "Right" } },
-        mods = "NONE",
+        event = { Down = { streak = 1, button = 'Right' } },
+        mods = 'NONE',
         action = wezterm.action_callback(function(window, pane)
-            local has_selection = window:get_selection_text_for_pane(pane) ~= ""
+            local has_selection = window:get_selection_text_for_pane(pane) ~= ''
             if has_selection then
-                window:perform_action(act.CopyTo("ClipboardAndPrimarySelection"), pane)
+                window:perform_action(act.CopyTo('ClipboardAndPrimarySelection'), pane)
                 window:perform_action(act.ClearSelection, pane)
             else
-                window:perform_action(act({ PasteFrom = "Clipboard" }), pane)
+                window:perform_action(act({ PasteFrom = 'Clipboard' }), pane)
             end
         end),
     },
@@ -217,7 +224,7 @@ config.foreground_text_hsb = {
     {
         source = { File = { path = 'C:/Users/someuserboi/Pictures/Backgrounds/theone.gif', speed = 0.2 } },
         opacity = 1,
-        width = "100%",
+        width = '100%',
         hsb = { brightness = 0.5 },
     }
 } ]]

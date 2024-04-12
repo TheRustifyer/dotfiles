@@ -48,7 +48,7 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- Fonts
 config.font = wezterm.font('JetBrains Mono')
-config.font_size = 11
+config.font_size = 10.8
 
 -- makes my cursor blink
 -- config.default_cursor_style = 'BlinkingBar'
@@ -116,8 +116,8 @@ config.keys = {
     },
     -- Maximize a pane over others
     {
-        key = 'm',
-        mods = leader,
+        key = 'z',
+        mods = shift_meta,
         action = wezterm.action.TogglePaneZoomState
     },
     -- rotate panes
@@ -153,13 +153,13 @@ config.keys = {
 
     -- Navigation. Don't use the leader, since leader it's an 'operator pending' mode binding, and makes difficult
     -- to navigate more than once without doing to much keystrokes
-    { key = 'l', mods = cmd_shift,  action = act.ActivateTabRelative(1) },
-    { key = 'h', mods = cmd_shift,  action = act.ActivateTabRelative(-1) },
+    { key = 'l', mods = shift_meta,  action = act.ActivateTabRelative(1) },
+    { key = 'h', mods = shift_meta,  action = act.ActivateTabRelative(-1) },
 
-    { key = 'h', mods = cmd_meta,   action = act.ActivatePaneDirection 'Left', },
-    { key = 'l', mods = cmd_meta,   action = act.ActivatePaneDirection 'Right', },
-    { key = 'k', mods = cmd_meta,   action = act.ActivatePaneDirection 'Up', },
-    { key = 'j', mods = cmd_meta,   action = act.ActivatePaneDirection 'Down', },
+    { key = 'h', mods = ctrl_meta,   action = act.ActivatePaneDirection 'Left', },
+    { key = 'l', mods = ctrl_meta,   action = act.ActivatePaneDirection 'Right', },
+    { key = 'k', mods = ctrl_meta,   action = act.ActivatePaneDirection 'Up', },
+    { key = 'j', mods = ctrl_meta,   action = act.ActivatePaneDirection 'Down', },
 
     { key = 'h', mods = leader,     action = act.AdjustPaneSize { 'Left', 5 }, },
     { key = 'l', mods = leader,     action = act.AdjustPaneSize { 'Right', 5 }, },

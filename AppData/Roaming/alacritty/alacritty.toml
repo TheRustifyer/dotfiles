@@ -3,44 +3,39 @@ import = [
 ]
 
 [env]
-# HOME = "C:/Users/'Alex Vergara'" # Would be nice for setting up MSYS2 user's home as the same that W2 uses
-# HOME = "/home/'Alex Vergara'" # Would be nice for setting up MSYS2 user's home as the same that W2 uses
 LC_CTYPE = "en_US.UTF-8"
-# HOME="/c/Users/'Alex Vergara'"
 TERM = "xterm-256color"
 
 [shell]
 ## In case of having `Git for Windows`
 # program = 'C:/Program Files/Git/bin/bash.exe'
-# args = ["--login"]
-
-## In case the installation of `Git` is directly via the `Git` mingw64 package
 program = 'C:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64 -use-full-path -shell zsh'
-# args = ["-defterm", "-here", "-no-start", "-mingw64", "-use-full-path", "-shell", "zsh"]
-# working_directory = '"$HOME"/code'
 
 [window]
-opacity = 0.8
+opacity = 0.84
 # decorations = "None"
 
 [bell]
 duration = 10
 
 ### Font(s)
-
 [font]
 size = 11
 
 [font.normal]
-family = "Hack Nerd Font"
+family = "FiraCode Nerd Font Mono"
 style = "Regular"
+
+[font.bold]
+family = "FiraCode Nerd Font Mono"
+style = "Bold"
 
 [font.glyph_offset]
 x = 0
 y = 0
 
 [font.offset]
-x = 0
+x = -1
 y = 0
 
 # Keyboard bindings
@@ -54,6 +49,6 @@ bindings = [
     { key = "N", mods = "Alt", action = "ToggleNormalSelection" },
 
     { key = "L", mods = "Control|Shift", chars = "l" },
-    { key = "R", mods = "Control|Shift", chars = "h" },
+    { key = "H", mods = "Control|Shift", chars = "h" },
 ]
 

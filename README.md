@@ -21,6 +21,8 @@ the *Windows* native working. Fingers crossed that it will be merged soon.
 But in the mean time, I forked the fork that is opening the `Windows` implementation *PR* and added some cleanup and custom niceties. So, you'll be able
 to use `Zellij` on *Windows*
 
+// TODO do we need more content here?
+
 ## Terminal emulators
 
 The setup comes preparated for choose between `Wezterm` or `Alacritty` as your terminal emulators (or take both) .
@@ -260,10 +262,12 @@ After you read the documentation, you can go back here, and start working in the
 ```bash
 cp /etc/pacman.conf /etc/pacman-bu.conf
 ```
+
 2. Run:
 ```bash
 sed -i '/^\[mingw32\]/{ s|^|[git-for-windows]\nServer = https://wingit.blob.core.windows.net/x86-64\n\n|; }' /etc/pacman.conf
 ```
+
 3. Ensure that everything went fine, by typing: ```cat /etc/pacman.conf``` and ensure that there's a new entry for `[git-for-windows]`
 4. To avoid the future signature related issues, run the following commands first
 
@@ -462,9 +466,9 @@ I recommend you to create a new folder in your home directory and move them ther
 > [!TIP]
 >
 > Optional:
-> If you're on *Windows*, as the time of writing your system most likely come with `Windows Terminal` by deafult.
+> If you're on *Windows*, as the time of writing your system most likely come with `Windows Terminal` by default.
 > So pick a `cmd` shell and run `C:\msys64\usr\bin\env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit c:\msys64\usr\bin\bash -i -l`
-> and you'll have a login bash shell powered with the `mingw64` *git for Windows* but from **MSYS2** installation
+> and you'll have a login bash shell powered with the `mingw64` *git for Windows* but from the **MSYS2** installation
 
 1. [Windows only] Ensure that you did everything properly before and run ```bash pwd``` and check if your opened shell points to your native *Windows* home directory
 2. `git clone --bare git@github.com:TheRustifyer/dotfiles.git "$HOME"/.cfg` (replace the URL for the *HTTPS* variant if you need)
@@ -489,12 +493,14 @@ iterations every set of tools, so we can better know what is happening and bette
 
 ### Getting the font
 
-My default font is the [`JetBrains Mono`](https://www.jetbrains.com/lp/mono/), that you can download for the hyperlink. Is the configured one for `Alacritty`, and comes
-bundled by default on `Wezterm` (so you won't need to donwload it if you stick only with Wezterm). You'll need it with `Alacritty` to avoid console warnings.
+My default font is the [`JetBrains Mono`](https://www.jetbrains.com/lp/mono/), that you can download for the hyperlink but if you plan to use `Wezterm`, it already comes
+bundled by default on `Wezterm`.
+
+For `Alacritty` I have configured [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads), so you'll need it to make it work properly.
 
 ### Terminal tools
 
-Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`? And that they look modern, have better syntax and that they are
+Remember when I told you about the `Unix` like tools that could have been rewrite in `Rust`? And that they look modern, have better cmd syntax and that they are
 ***extremely performant***? Well, it's time to install them and have them in action.
 
 From your user's root directory, invoke the `build` script passing as argument:
@@ -510,6 +516,10 @@ From your user's root directory, invoke the `build` script passing as argument:
 ```bash
 ./build.sh -zsh
 ```
+
+> [!NOTE]
+>
+> My shell configuration is using [**starship**](https://starship.rs/) as the shell prompt. Take a look at their docs, they're great!
 
 ### Getting the terminals
 
@@ -548,21 +558,46 @@ you want to open all the `MSYS2` ones.
 
 ### The editor: Neovim
 
-We will gather a fresh installation of `Neovim` via the `mingw64` package installation.
-For having all the configuration of the editor up-to-date
-// TODO choose both, from upstream of include add submodule
-1. upstream
+We will gather a fresh installation of `Neovim`. For such purpose, you have two ways, as usual until this point:
+1. With the `mingw64` package installation.
+
+```bash
+./build.sh -ian
+```
+
 2. submodule
 
 ```bash
-./build.sh -nv
+./build.sh -bnv
 ```
 
-### [ADVANCED] The `llvm-suite` from the last commit on main from upstream
+> [!TIP]
+>
+> Remember that the advantage of building the tools via the submodules is that you'll have the latest changes implemented in the project, but it could be a less stable
+> tool, if they have an active development workflow.
 
-// TODO
+## Conclusion
 
-## Friendly reminder, starting from scratch your own `dotfiles` bare repo
+If everything went correctly, you'll have now an incredible, flexible, powerful and modern setup environment. I put a lot of effort on configuring this setup, specially for those who
+uses different OS frequently.
+
+Even if you don't install this *dotfiles* configuration, you'll find a lot of valuable information, and probably some inspiration for do your own! So I'll be happy if I contribute to make your
+developer life easier!
+
+## ADVANCED and mostly optional
+
+### The `llvm-suite` from the last commit on main from upstream
+
+In the `third-party` folder you'll encounter the `llvm-suite` submodule, which is pointing to the `main` branch of the project. I do love `llvm`. I've been using their technologies
+in the `C++` world for quite a while, and they just made my life easier. Also, they were the inspiration for create [`Zork++`](), among other things.
+
+If you're an active `C++` developer, and you're following the latest implementations of the standard, or involved in quite modern projects, this will definitly help you.
+For example, `clangd` the `LSP` server for `C++` and other languages provided with `llvm`, have a lot of incredible updates and fixes from the release of the `v19.x.x`, which will
+allow you having better days using any code editor for a `C++` modules based project.
+
+## Extra INFO
+
+### Starting from scratch your *own* `dotfiles` bare repo
 
 If you haven't been tracking your configurations in a Git repository before, and you want to do it on your own from scratch, or copying the parts of this guide that you're interested, you can start using this technique easily with these lines:
 
@@ -572,11 +607,6 @@ alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 config config --local status.showUntrackedFiles no
 echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshrc
 ```
-
-> [!NOTE]
->
-> My configuration assumes that the base shell for the configuration uses [**starship**](https://starship.rs/). Obviously, feel free to use
-> whatever shell suits you better.
 
 ## Acknowledges
 

@@ -11,16 +11,11 @@ export LANG=en_US.UTF-8
 # Preferred editor
 export EDITOR='nvim'
 
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# fpath=(./zsh/zsh-completions/src $fpath)
-
 plugins=(git)
 
 # Set personal aliases
 # TODO: move them to their own mod
 alias me='cd $HOME'
-alias zshconf="nvim ~/.zshrc"
 alias vi=nvim
 alias lg='lazygit'
 alias lgd='lazygit --git-dir=$HOME/.cfg/ --work-tree=$HOME'
@@ -29,15 +24,32 @@ alias .='cd .'
 alias ..='cd ..'
 alias bashcls='echo "" > ~/.bash_history'
 alias cls='clear'
-alias ls='ls -F --color=auto --show-control-chars'
-alias ll='ls -l'
-alias ll.='ls -la'
-alias lls='ls -la --sort=size'
-alias llt='ls -la --sort=time'
+
+alias ls='lsd -F'
+alias lsl='lsd -F -l'
+alias lsa='lsd -F -la'
+alias lss='lsd -F -la -S'
+alias lst='lsd -F -la -t'
+alias lsg='lsd -F -la -G'
+
 alias rmdir='rm -rf'
+
+alias zshconf="nvim ~/.zshrc"
+alias zellijconf='nvim ~/.config/zellij/config.kdl'
+alias wezconf='nvim ~/.wezterm.lua'
+
+## Custom tools
+#
 
 # Using `bat` as a better `cat`
 alias cat='bat'
+
+# Overpowering the access to edit my projects, thanks to the `Zellij` layouts
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias wzork='alacritty -e zellij --layout zork'
+else
+    alias wzork='alacritty -e zellij --layout zork_win'
+fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias nvimconf='cd ~/.config/nvim && nvim'
@@ -55,9 +67,6 @@ else
     alias alaconf='nvim ~/AppData/Roaming/alacritty/alacritty.toml'
 fi
 
-alias zellijconf='nvim ~/.config/zellij/config.kdl'
-alias wezconf='nvim ~/.wezterm.lua'
-
 # Git aliases
 alias gs='git status -sb'
 alias gco='git checkout'
@@ -69,7 +78,7 @@ alias gpo='git push origin'
 alias gpll='git pull'
 alias gcl='git clone'
 alias gst='git stash'
-alias gpop='git stash pop'
+alias gsp='git stash pop'
 alias ga='git add'
 alias gb='git branch'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
@@ -79,10 +88,8 @@ alias gmnff='git merge --no-ff'
 # For work with my bare git repo for the dotfiles
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-# Adding Clang and LLVM Project to the PATH
-# TODO: deprecated. Change the path with the git submodule that comes with the dotfiles
-export PATH="$HOME/tools/llvm-project/build/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/tools/llvm-project/build/lib:$LD_LIBRARY_PATH"
+export PATH="$HOME/third-party/llvm-project/build/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/third-party/llvm-project/build/lib:$LD_LIBRARY_PATH"
 
 # Having GitHub CLI avaliable on path on Windows
 if [[ "$OSTYPE" != "linux-gnu"* ]]; then
@@ -101,6 +108,8 @@ function blastoff() {
 starship_precmd_user_func="blastoff"
 
 eval "$(starship init zsh)"
+
+# ZSH plugins
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-completions/zsh-completions.plugin.zsh

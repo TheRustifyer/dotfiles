@@ -123,9 +123,8 @@ terminal_tools() {
     echo "Installing bat, a better cat ;) ..."
     cargo install --locked bat
     # Replacements for the `ls` command
-    echo "Installing a better ls via eza..."
-    cargo install eza
-
+    echo "Installing a better ls via LSD..."
+    cargo install lsd
     # zoxide is a smarter `cd` replacement
     echo "Installing zoxide, a smarted cd command..."
     cargo install zoxide --locked

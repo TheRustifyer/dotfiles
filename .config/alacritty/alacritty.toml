@@ -1,6 +1,7 @@
 [shell]
 # program = "/usr/bin/tmux"
 program = "zellij"
+# args = [ "--session", "default" ]
 
 [window]
 decorations = "full"

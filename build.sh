@@ -5,6 +5,36 @@ config() {
     git --git-dir=$HOME/.cfg/ --work-tree=$HOME "$@"
 }
 
+##### Languages #####
+# Rust
+install_rust() {
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
+}
+
+# Go
+install_go() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        pacman -S go
+    else
+        pacman -S mingw-w64-x86_64-go
+}
+
+# Java
+install_java() {
+
+}
+
+# Dart
+install_dart() {
+
+}
+
+# Python
+install_python() {
+
+}
+
+##### Languages #####
 # Build Neovim
 build_neovim() {
     config submodule update --init --remote code/tools/neovim
@@ -23,6 +53,8 @@ install_editor() {
     fi
 }
 
+
+##### Editor #####
 setup_zsh() {
     echo "Setting up Zsh..."
     pacman -S zsh
@@ -104,6 +136,11 @@ function build_wezterm() {
 
 ##### CLI tools and utilities #####
 
+# Lazygit
+install_lazygit() {
+    go install github.com/jesseduffield/lazygit@latest
+}
+
 # Install all the CMD utilities directly with Cargo
 terminal_tools() {
     # Here lives the ones available only on Linux
@@ -183,16 +220,26 @@ gh_cli() {
 # Check the arguments to determine which component to build
 while [[ "$#" -gt 0 ]]; do
     case $1 in
+        # Languages
+        -rust|--install_rust) install_rust ;;
+        -go|--install_go) install_go ;;
+        -java|--install_java) install_java ;;
+        -dart|--install_dart) install_dart ;;
+        -py|--install_python) install_python ;;
+
+        # TODO Game engines (GODOT pls)
+
+        # Frameworks // TODO sure is worth the effort?
+        -flutter|--install_flutter) install_flutter ;;
+
+        # Shells
         -zsh|--setup_zsh) setup_zsh ;;
+
+        # Editor
         -bnv|--build-neovim) build_neovim ;;
         -inv|--install-neovim) install_editor ;;
 
-        -g|--gh-cli) gh_cli ;;
-
-        -ullvm|--update-llvm-suite) update_llvm_suite ;;
-        -bllvm|--build-llvm-suite) build_llvm_suite ;;
-        -uasm|--install-uasm) install_uasm ;;
-
+        # Terminal emulators
         -ia|--install_alacritty) install_alacritty ;;
         -ba|--build_alacritty) build_alacritty ;;
 
@@ -203,6 +250,13 @@ while [[ "$#" -gt 0 ]]; do
         -bw|--build_wezterm) build_wezterm ;;
 
         -tt|--terminal-tools) terminal_tools ;;
+        -lg|--install-lazygit) install_lazygit ;;
+        -g|--gh-cli) gh_cli ;;
+
+        -ullvm|--update-llvm-suite) update_llvm_suite ;;
+        -bllvm|--build-llvm-suite) build_llvm_suite ;;
+        -uasm|--install-uasm) install_uasm ;;
+
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
     shift

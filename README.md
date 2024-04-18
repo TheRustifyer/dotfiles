@@ -286,9 +286,9 @@ pacman-key --lsign-key E8325679DFFF09668AD8D7B67115A57376871B1C &&
 pacman-key --lsign-key 3B6D86A1BA7701CD0F23AED888138B9E1A9F3986
 ```
 
-6. Then synchronize with new repositories with ```bash pacman -Syyuu```. This will install a different `msys2` runtime, and you'll probably see a `downgrade` version message. Don't worry at all, just press `[Y]` and proceed with the installation. Then, you'll be asked to shutdown your `msys2` tools, press `[Y]`.
+6. Then synchronize with new repositories with ```pacman -Syyuu```. This will install a different `msys2` runtime, and you'll probably see a `downgrade` version message. Don't worry at all, just press `[Y]` and proceed with the installation. Then, you'll be asked to shutdown your `msys2` tools, press `[Y]`.
 
-7. Open again the `mingw64` environment shell, and ```bash pacman -Suu``` to syncronize the remaining tools.
+7. Open again the `mingw64` environment shell, and ```pacman -Suu``` to syncronize the remaining tools.
 
 8. And finally install the packages containing Git, its documentation and some extra things:
 

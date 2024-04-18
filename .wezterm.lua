@@ -37,20 +37,29 @@ end
 
 config.launch_menu = launch_menu
 
+
+-- This is used to make my foreground (text, etc) brighter than my background
+config.foreground_text_hsb = {
+    hue = 0.8,
+    saturation = 0.9,
+    brightness = 1.5,
+}
+
 -- Color scheme, Wezterm has 100s of them you can see here:
 -- https://wezfurlong.org/wezterm/colorschemes/index.html
 -- config.color_scheme = 'Oceanic Next (Gogh)'
 config.color_schemes = {
-    -- ['Oceanic Next (Gogh)'] = {
-    ['thwump (terminal.sexy) '] = {
-        -- background = 'black',
+    ['Oceanic Next (Gogh)'] = {
+    -- ['thwump (terminal.sexy) '] = {
+        background = 'black',
         -- TODO cursor opts non working
         cursor_bg = 'white',
         cursor_border = '#8b8198',
         cursor_fg = '#8b8198',
     },
 }
-
+config.color_scheme = 'thwump (terminal.sexy) '
+-- config.color_scheme = '3024 Night (Gogh)'
 config.window_frame = {
     -- The font used in the tab bar.
     -- Roboto Bold is the default; this font is bundled
@@ -295,13 +304,6 @@ local mouse_bindings = {
 
 config.mouse_bindings = mouse_bindings
 
--- This is used to make my foreground (text, etc) brighter than my background
-config.foreground_text_hsb = {
-    -- hue = 0.8,
-    -- saturation = 0.9,
-    brightness = 1.5,
-}
-
 -- This is used to set an image as my background
 --[[ config.background = {
     {
@@ -320,17 +322,15 @@ config.foreground_text_hsb = {
 ]]
 config.inactive_pane_hsb = {
     saturation = 0.8,
-    brightness = 0.7
+    brightness = 0.75
 }
 
 config.window_background_image_hsb = {
     -- Darken the background image by reducing it to 1/3rd
     brightness = 0.3,
-
     -- You can adjust the hue by scaling its value.
     -- a multiplier of 1.0 leaves the value unchanged.
     hue = 1.0,
-
     -- You can adjust the saturation also.
     saturation = 1.0,
 }

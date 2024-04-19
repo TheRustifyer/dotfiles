@@ -1,18 +1,18 @@
 [user]
-	name = Alex Vergara
-	email = alex.vergara.dev@gmail.com
-	password = $in_$key
+    name = Alex Vergara
+    email = alex.vergara.dev@gmail.com
+    password = $in_$key
 [credentials]
-	helper = store
+    helper = store
 [core]
-	autocrlf = input
+    autocrlf = input
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [http]
     postBuffer = 524288000
 [merge]
-  tool = nvim
+    tool = nvim
 [mergetool "nvim"]
-  cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+    cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [mergetool]
-  prompt = false
+    prompt = false

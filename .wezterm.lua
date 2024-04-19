@@ -39,46 +39,32 @@ config.launch_menu = launch_menu
 
 
 -- This is used to make my foreground (text, etc) brighter than my background
-config.foreground_text_hsb = {
-    hue = 0.8,
-    saturation = 0.9,
-    brightness = 1.5,
-}
+-- config.foreground_text_hsb = {
+    -- hue = 1.8,
+    -- saturation = 1.1,
+    -- brightness = 1.5,
+-- }
 
 -- Color scheme, Wezterm has 100s of them you can see here:
 -- https://wezfurlong.org/wezterm/colorschemes/index.html
 -- config.color_scheme = 'Oceanic Next (Gogh)'
 config.color_schemes = {
-    ['Oceanic Next (Gogh)'] = {
-    -- ['thwump (terminal.sexy) '] = {
-        background = 'black',
+    -- ['Oceanic Next (Gogh)'] = {
+        ['thwump (terminal.sexy) '] = {
+        -- background = 'black',
         -- TODO cursor opts non working
         cursor_bg = 'white',
         cursor_border = '#8b8198',
         cursor_fg = '#8b8198',
     },
 }
-config.color_scheme = 'thwump (terminal.sexy) '
+-- config.color_scheme = 'thwump (terminal.sexy) '
 -- config.color_scheme = '3024 Night (Gogh)'
 config.window_frame = {
-    -- The font used in the tab bar.
-    -- Roboto Bold is the default; this font is bundled
-    -- with wezterm.
-    -- Whatever font is selected here, it will have the
-    -- main font setting appended to it to pick up any
-    -- fallback fonts you may have used there.
     font = wezterm.font { family = 'Roboto', weight = 'Bold' },
-
     -- The size of the font in the tab bar.
-    -- Default to 10.0 on Windows but 12.0 on other systems
     font_size = 10.0,
-
-    -- The overall background color of the tab bar when
-    -- the window is focused
     active_titlebar_bg = '#333333',
-
-    -- The overall background color of the tab bar when
-    -- the window is not focused
     inactive_titlebar_bg = '#333333',
 }
 
@@ -90,13 +76,14 @@ config.colors = {
 }
 
 -- config.window_background_gradient = {
---     -- Can be "Vertical" or "Horizontal".  Specifies the direction
---     -- in which the color gradient varies.  The default is "Horizontal",
---     -- with the gradient going from left-to-right.
---     -- Linear and Radial gradients are also supported; see the other
---     -- examples below
---     orientation = 'Vertical',
---
+--     -- orientation = 'Vertical',
+--     orientation = {
+--         Radial = {
+--             cx = 0.75,
+--             cy = 0.75,
+--             radius = 2.25,
+--         },
+--     },
 --     -- Specifies the set of colors that are interpolated in the gradient.
 --     -- Accepts CSS style color specs, from named colors, through rgb
 --     -- strings and more
@@ -106,43 +93,18 @@ config.colors = {
 --         '#24243e',
 --     }, -- Cold
 --     colors = { '#EEBD89', '#D13ABD' }, -- Calid ]]
---
---     -- Instead of specifying `colors`, you can use one of a number of
---     -- predefined, preset gradients.
 --     -- A list of presets is shown in a section below.
 --     -- https://wezfurlong.org/wezterm/config/lua/config/window_background_gradient.html?h=preset#presets
 --     preset = "Viridis",
---
---     -- Specifies the interpolation style to be used.
---     -- "Linear", "Basis" and "CatmullRom" as supported.
---     -- The default is "Linear".
+--     -- preset = "Magma",
 --     interpolation = 'Linear',
---
---     -- How the colors are blended in the gradient.
---     -- "Rgb", "LinearRgb", "Hsv" and "Oklab" are supported.
---     -- The default is "Rgb".
 --     blend = 'Rgb',
---
---     -- To avoid vertical color banding for horizontal gradients, the
---     -- gradient position is randomly shifted by up to the `noise` value
---     -- for each pixel.
---     -- Smaller values, or 0, will make bands more prominent.
---     -- The default value is 64 which gives decent looking results
---     -- on a retina macbook pro display.
---     -- noise = 64,
---
---     -- By default, the gradient smoothly transitions between the colors.
---     -- You can adjust the sharpness by specifying the segment_size and
---     -- segment_smoothness parameters.
---     -- segment_size configures how many segments are present.
---     -- segment_smoothness is how hard the edge is; 0.0 is a hard edge,
---     -- 1.0 is a soft edge.
---
+--     noise = 14,
 --     -- segment_size = 11,
 --     -- segment_smoothness = 0.0,
 -- }
 
-config.window_background_opacity = 0.88
+config.window_background_opacity = 0.82
 config.hide_tab_bar_if_only_one_tab = true
 
 -- Fonts

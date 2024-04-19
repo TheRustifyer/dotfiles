@@ -17,22 +17,23 @@ install_go() {
         pacman -S go
     else
         pacman -S mingw-w64-x86_64-go
+    fi
 }
 
-# Java
-install_java() {
-
-}
-
-# Dart
-install_dart() {
-
-}
-
-# Python
-install_python() {
-
-}
+# # Java
+# install_java() {
+#
+# }
+#
+# # Dart
+# install_dart() {
+#
+# }
+#
+# # Python
+# install_python() {
+#
+# }
 
 ##### Languages #####
 # Build Neovim

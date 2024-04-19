@@ -2,7 +2,7 @@
 continuation_prompt = '▶▶ '
 
 # Use custom format
-format = '''[┌─>](bold green) $os$all'''
+format = '''[┌─>](bold green) $os $all'''
 # [│](bold green)$os $username at $directory$git_branch$git_commit$all
 
 # What I like to see on the right of the prompt
@@ -40,6 +40,7 @@ only_nonzero_diffs = true
 
 [git_status] # This module is extremely slow with WSL environments. Read the docs to use Windows Starship binary
 # if you plan to use it on WSL
+disabled = true
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style) "
 conflicted = '🏳'
 ahead = '🏎💨'
@@ -54,7 +55,7 @@ renamed = '👅'
 deleted = '🗑'
 
 [username]
-style_user = 'bright-green dimmed'
+style_user = 'green'
 style_root = 'red bold'
 format = '[$user]($style) at '
 disabled = false

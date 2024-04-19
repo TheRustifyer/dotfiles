@@ -39,18 +39,18 @@ config.launch_menu = launch_menu
 
 
 -- This is used to make my foreground (text, etc) brighter than my background
--- config.foreground_text_hsb = {
-    -- hue = 1.8,
-    -- saturation = 1.1,
-    -- brightness = 1.5,
--- }
+config.foreground_text_hsb = {
+    hue = 1.0,
+    saturation = 1.0,
+    brightness = 1.0,
+}
 
 -- Color scheme, Wezterm has 100s of them you can see here:
 -- https://wezfurlong.org/wezterm/colorschemes/index.html
 -- config.color_scheme = 'Oceanic Next (Gogh)'
 config.color_schemes = {
     -- ['Oceanic Next (Gogh)'] = {
-        ['thwump (terminal.sexy) '] = {
+    ['thwump (terminal.sexy) '] = {
         -- background = 'black',
         -- TODO cursor opts non working
         cursor_bg = 'white',

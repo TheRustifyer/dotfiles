@@ -2,7 +2,7 @@
 continuation_prompt = '▶▶ '
 
 # Use custom format
-format = '''[┌─>](bold green) $os $all'''
+format = '''[┌─>](bold green) $os$all'''
 # [│](bold green)$os $username at $directory$git_branch$git_commit$all
 
 # What I like to see on the right of the prompt

@@ -8,6 +8,10 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
+![image](https://github.com/TheRustifyer/dotfiles/assets/68871459/a4cad9b6-4aa3-405b-8bcd-55087a7a51e6)
+
+> Two terms of `Alacritty` on the left, and one of `Wezterm` on the right natively multiplexed
+
 ## The setup explained with its tools
 
 `Alacritty` is the terminal emulator that I've been using for years, using it in combination with `tmux`, having an incredible and powerful
@@ -41,6 +45,11 @@ In the meantime, I am personally using `Wezterm` on Windows, so I take the oppor
 ### [Alacritty](https://alacritty.org/) + [ZelliJ](https://zellij.dev/)
 
 ### [Wezterm](https://wezfurlong.org/wezterm)
+
+![image](https://github.com/TheRustifyer/dotfiles/assets/68871459/161e4c97-10e2-4e98-aa0b-5972db0c8c16)
+
+> A multiplexed instance of `Wezterm` on *Windows*, using `bat` on the left pane to visualize the `zsh` config file
+> and `lazygit` managing the dotfiles of the bare repo on the right.
 
 ### Alacritty + tmux (legacy)
 

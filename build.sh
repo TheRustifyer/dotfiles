@@ -20,6 +20,7 @@ install_go() {
     fi
 }
 
+
 ##### Languages #####
 # Build Neovim
 build_neovim() {

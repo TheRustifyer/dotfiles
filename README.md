@@ -8,20 +8,9 @@ this repository in any machine.
 
 Also, I can share and have up-to-date all my configuration along my typically used machines.
 
-## The setup explained with its tools
+![image](https://github.com/TheRustifyer/dotfiles/assets/68871459/a4cad9b6-4aa3-405b-8bcd-55087a7a51e6)
 
-`Alacritty` is the terminal emulator that I've been using for years, using it in combination with `tmux`, having an incredible and powerful
-terminal environment. But `tmux` doesn't works on `Windows`, neither native, nor via `MSYS2` (the unique way is with `WSL`). That's why I
-switch to `Zellij`. 
-
-Both, `tmux` and `Zellij` are *terminal multiplexers*, which allows you to have fancy features like tabs, panes and sessions. `Zellij`
-isn't usable on *Windows* natively, but at the time of writing, there's this [`PR`](https://github.com/zellij-org/zellij/pull/2926) which is implementing
-the *Windows* native working. Fingers crossed that it will be merged soon.
-
-But in the mean time, I forked the fork that is opening the `Windows` implementation *PR* and added some cleanup and custom niceties. So, you'll be able
-to use `Zellij` on *Windows*
-
-// TODO do we need more content here?
+> Two terms of `Alacritty` on the left, and one of `Wezterm` on the right natively multiplexed on *Windows*
 
 ## Terminal emulators
 
@@ -40,7 +29,27 @@ In the meantime, I am personally using `Wezterm` on Windows, so I take the oppor
 
 ### [Alacritty](https://alacritty.org/) + [ZelliJ](https://zellij.dev/)
 
+![image](https://github.com/TheRustifyer/dotfiles/assets/68871459/090d0d53-d50a-4de4-8dd6-c3b9dded6cc3)
+
+> The terminal emulator `Alacritty` running a session of the terminal multiplexer `ZelliJ` on a `Manjaro` distro
+
+`Alacritty` is the terminal emulator that I've been using for years, using it in combination with `tmux`, having an incredible and powerful
+terminal environment. But `tmux` doesn't works on `Windows`, neither native, nor via `MSYS2` (the unique way is with `WSL`). That's why I
+switch to `Zellij`. 
+
+Both, `tmux` and `Zellij` are *terminal multiplexers*, which allows you to have fancy features like tabs, panes and sessions. `Zellij`
+isn't usable on *Windows* natively, but at the time of writing, there's this [`PR`](https://github.com/zellij-org/zellij/pull/2926) which is implementing
+the *Windows* native working. Fingers crossed that it will be merged soon.
+
+But in the mean time, I forked the fork that is opening the `Windows` implementation *PR* and added some cleanup and custom niceties. So, you'll be able
+to use `Zellij` on *Windows*
+
 ### [Wezterm](https://wezfurlong.org/wezterm)
+
+![image](https://github.com/TheRustifyer/dotfiles/assets/68871459/161e4c97-10e2-4e98-aa0b-5972db0c8c16)
+
+> A multiplexed instance of `Wezterm` on *Windows*, using `bat` on the left pane to visualize the `zsh` config file
+> and `lazygit` managing the dotfiles of the bare repo on the right.
 
 ### Alacritty + tmux (legacy)
 
@@ -92,17 +101,13 @@ By having the **config** alias set, now I can invoke *Git* from any place, and i
 with my configuration bare repository. So I can be in any place an directly add anything that I want to be track by
 my configuration repository.
 
-## The setup
-
-// TODO explain it here, with all the tools used, and paste some nice screenshots
-
 ## Prerequisites:
 
 These are the mandatory general prerequisites in order to succesfully install the dotfiles and all the tools described above
 that conforms this setup
 
 - `Git`
-- `Rust` and `Cargo`
+- `Rust` with `Cargo` and `Golang`
 
 > [!CAUTION]
 >
@@ -110,10 +115,6 @@ that conforms this setup
 > all the supported OS
 
 ## Linux machines (`pacman` based)
-
-> [!WARNING]
->
-> This part is not yet tested completly in a fresh installation for the moment 
 
 > [!WARNING]
 >
@@ -127,11 +128,11 @@ Since almost any `Linux` flavour comes with a `Git` installation
 > Note for myself. Remember to check in the bash script for the presence of `pacman` in the system.
 > If not present, just install it, so we can make more kind of distros compatibles with this *setup*
 
-## Windows
-
 > [!TIP]
 >
-> If you plan to use this guide for install the *setup* only on `Linux`, just skip this [TODO, change skip this for a link]
+> If you plan to use this guide for install the *setup* only on `Linux`, just go to the `Installation` section
+
+## Windows
 
 Well, this setup is not exactly easy to replicate in a `Windows` machine. The fact is that requires a lot of configurations and tools that aren't
 available in `Windows` by default, nor are easy to understand how to emulate it/natively compile them, since all the tools are `Unix` based.
@@ -467,7 +468,7 @@ I recommend you to create a new folder in your home directory and move them ther
 >
 > Optional:
 > If you're on *Windows*, as the time of writing your system most likely come with `Windows Terminal` by default.
-> So pick a `cmd` shell and run `C:\msys64\usr\bin\env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit c:\msys64\usr\bin\bash -i -l`
+> So pick a `cmd` shell and run `C:\msys64\usr\bin\env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit C:\msys64\usr\bin\bash -i -l`
 > and you'll have a login bash shell powered with the `mingw64` *git for Windows* but from the **MSYS2** installation
 
 1. [Windows only] Ensure that you did everything properly before and run ```bash pwd``` and check if your opened shell points to your native *Windows* home directory
@@ -607,7 +608,3 @@ alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 config config --local status.showUntrackedFiles no
 echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshrc
 ```
-
-## Acknowledges
-
-// TODO

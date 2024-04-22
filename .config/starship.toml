@@ -1,14 +1,21 @@
-# Keep the newline after each prompt
-add_newline = true
-
 # A continuation prompt that displays two filled in arrows
 continuation_prompt = '▶▶ '
 
+# Use custom format
+format = '''[┌─>](bold green) $os $all'''
+# [│](bold green)$os $username at $directory$git_branch$git_commit$all
+
 # What I like to see on the right of the prompt
-right_format = """$git_metrics $os $time"""
+# format = """$os $username at $directory$git_branch$git_commit$all"""
+
+# Keep the newline after each prompt
+add_newline = true
 
 # Enable the Kubernetes module
 [kubernetes]
+disabled = false
+
+[os]
 disabled = false
 
 [battery]
@@ -17,21 +24,23 @@ charging_symbol = '⚡️ '
 discharging_symbol = '💀 '
 
 [[battery.display]]
-threshold = 30
+threshold = 50
 style = 'bold red'
 
 [git_commit]
 commit_hash_length = 4
 tag_symbol = '🔖 '
+only_detached = true
 
 [git_metrics]
 added_style = 'bold blue'
 format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
-disabled = false
+disabled = true
 only_nonzero_diffs = true
 
 [git_status] # This module is extremely slow with WSL environments. Read the docs to use Windows Starship binary
 # if you plan to use it on WSL
+disabled = true
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218)($ahead_behind$stashed)]($style) "
 conflicted = '🏳'
 ahead = '🏎💨'
@@ -46,11 +55,11 @@ renamed = '👅'
 deleted = '🗑'
 
 [username]
-style_user = 'white bold'
-style_root = 'black bold'
-format = '[$user]($style)'
+style_user = 'green'
+style_root = 'red bold'
+format = '[$user]($style) at '
 disabled = false
-show_always = false
+show_always = true
 
 [localip]
 ssh_only = true
@@ -63,8 +72,8 @@ threshold = 1
 symbol = "↕️ "
 
 [time]
-disabled = false
-format = '🕙[\($time\)]($style) '
+disabled = true
+format = '🕙[$time]($style) '
 time_format = '%T'
 
 [aws]
@@ -102,6 +111,7 @@ symbol = " "
 
 [fossil_branch]
 symbol = " "
+style = 'bright-purple bold'
 
 [git_branch]
 symbol = " "

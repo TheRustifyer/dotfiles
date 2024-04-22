@@ -20,20 +20,6 @@ install_go() {
     fi
 }
 
-# # Java
-# install_java() {
-#
-# }
-#
-# # Dart
-# install_dart() {
-#
-# }
-#
-# # Python
-# install_python() {
-#
-# }
 
 ##### Languages #####
 # Build Neovim

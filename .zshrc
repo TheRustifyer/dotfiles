@@ -11,7 +11,12 @@ export LANG=en_US.UTF-8
 # Preferred editor
 export EDITOR='nvim'
 
+zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
+
+fpath=(~/.zsh $fpath)
+
 autoload -Uz compinit && compinit
+
 plugins=(git)
 
 # Set personal aliases

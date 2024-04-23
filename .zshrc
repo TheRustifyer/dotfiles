@@ -11,6 +11,7 @@ export LANG=en_US.UTF-8
 # Preferred editor
 export EDITOR='nvim'
 
+autoload -Uz compinit && compinit
 plugins=(git)
 
 # Set personal aliases

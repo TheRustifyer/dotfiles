@@ -14,3 +14,6 @@
 [submodule "code/third-party/zellij"]
 	path = code/third-party/zellij
 	url = https://github.com/The-Rustifyer/zellij/
+[submodule "code/tools/dasm-assembler"]
+	path = code/tools/dasm-assembler
+	url = https://github.com/dasm-assembler/dasm

@@ -43,7 +43,6 @@ alias zellijconf='nvim ~/.config/zellij/config.kdl'
 alias wezconf='nvim ~/.wezterm.lua'
 
 ## Custom tools
-#
 
 # Using `bat` as a better `cat`
 alias cat='bat'
@@ -94,8 +93,12 @@ alias gmnff='git merge --no-ff'
 # For work with my bare git repo for the dotfiles
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-export PATH="$HOME/third-party/llvm-project/build/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/third-party/llvm-project/build/lib:$LD_LIBRARY_PATH"
+# The LLVM project, full suite
+export PATH="$HOME/code/third-party/llvm-project/build/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/code/third-party/llvm-project/build/lib:$LD_LIBRARY_PATH"
+
+# DASM assembler for the Atari 2600
+export PATH="$HOME/code/tools/dasm-assembler/bin:$PATH"
 
 # Having GitHub CLI avaliable on path on Windows
 if [[ "$OSTYPE" != "linux-gnu"* ]]; then

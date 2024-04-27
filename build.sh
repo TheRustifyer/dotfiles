@@ -67,6 +67,16 @@ build_llvm_suite() {
     ninja -C build
 }
 
+# Assemblers and assembly tools
+
+# DASM (Mostly used to build games for the Atari 2600)
+build_dasm() {
+    config submodule update --init --remove code/tools/dasm-assembler
+    cd code/tools/dasm-assembler
+    make
+}
+
+# The universal assembler (mostly used for me to assemble MASM Microsoft into universal ELF)
 install_uasm() {
     echo "Building the UASM project..."
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then

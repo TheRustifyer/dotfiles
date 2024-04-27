@@ -21,12 +21,10 @@ plugins=(git)
 
 # Set personal aliases
 # TODO: move them to their own mod
-alias me='cd $HOME'
 alias vi=nvim
 alias lg='lazygit'
 alias lgd='lazygit --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-alias .='cd .'
 alias ..='cd ..'
 alias bashcls='echo "" > ~/.bash_history'
 alias cls='clear'

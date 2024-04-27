@@ -590,11 +590,25 @@ developer life easier!
 ### The `llvm-suite` from the last commit on main from upstream
 
 In the `third-party` folder you'll encounter the `llvm-suite` submodule, which is pointing to the `main` branch of the project. I do love `llvm`. I've been using their technologies
-in the `C++` world for quite a while, and they just made my life easier. Also, they were the inspiration for create [`Zork++`](), among other things.
+in the `C++` world for quite a while, and they just made my life easier. Also, they were the inspiration for create [`Zork++`](https://github.com/ZeroDayCode/Zork), among other things.
 
 If you're an active `C++` developer, and you're following the latest implementations of the standard, or involved in quite modern projects, this will definitly help you.
 For example, `clangd` the `LSP` server for `C++` and other languages provided with `llvm`, have a lot of incredible updates and fixes from the release of the `v19.x.x`, which will
 allow you having better days using any code editor for a `C++` modules based project.
+
+### The UASM assembler: Cross-Platform Assembly for x86-64
+
+UASM (Universal Assembler) is a versatile assembler that allows you to write assembly code for x86-64 architectures regardless of your operating system. This eliminates the need to rely on platform-specific tools like Visual Studio on Windows or dealing with incompatibility issues between Windows PE files and Linux environments.
+
+Key benefits of using UASM:
+
+- Cross-platform compatibility: Write assembly code once and assemble it on both Windows and Linux using the same toolchain
+- MASM syntax support: UASM supports MASM (Microsoft Macro Assembler) syntax, making it familiar for those comfortable with Windows assembly development
+- Flexibility: UASM offers the ability to target different object file formats depending on your needs, including Windows PE and Linux ELF.
+
+```bash
+./build.sh -uasm
+```
 
 ## Extra INFO
 
@@ -608,3 +622,8 @@ alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 config config --local status.showUntrackedFiles no
 echo "alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'" >> $HOME/.zshrc
 ```
+
+## More screenshots
+
+Here you have a collection of screenshots that I like to share, so from time to time I end uploading some new content
+for people knowing in advance if they would like to steal some of the configurations (or all of them!)

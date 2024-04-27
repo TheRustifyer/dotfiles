@@ -253,6 +253,7 @@ while [[ "$#" -gt 0 ]]; do
         -ullvm|--update-llvm-suite) update_llvm_suite ;;
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
         -uasm|--install-uasm) install_uasm ;;
+        -dasm|--build-dasm) build_dasm ;;
 
         *) echo "Unknown option: $1"; exit 1 ;;
     esac

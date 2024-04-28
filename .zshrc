@@ -93,23 +93,36 @@ alias gmnff='git merge --no-ff'
 # For work with my bare git repo for the dotfiles
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-# The LLVM project, full suite
-export PATH="$HOME/code/third-party/llvm-project/build/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/code/third-party/llvm-project/build/lib:$LD_LIBRARY_PATH"
+# Cargo bin PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+# Golang bin PATH
+export PATH="$HOME/go/bin:$PATH"
+
+# Windows specifics
+if [[ "$OSTYPE" != "linux-gnu"* ]]; then
+    # Having GitHub CLI avaliable on path on Windows
+    export PATH="$HOME/gh-cli/bin:$PATH"
+    # The MSYS2 binary paths for the desired environments
+    export PATH="/c/msys64/mingw64/bin:/c/msys64/clang64/bin:/c/msys64/usr/bin:/c/msys64/usr/local/bin:/c/msys64/opt/bin:$PATH"
+fi
+
+# The LLVM project, full suite. Defined after the msys2 to appear before on $PATH if the manual build is present on the system
+LLVM_PROJECT_DIR="$HOME/code/third-party/llvm-project"
+BUILD_DIR="$LLVM_PROJECT_DIR/build"
+if [ -d "$BUILD_DIR" ]; then
+  # Add build directory to PATH and LD_LIBRARY_PATH
+  export PATH="$BUILD_DIR/bin:$PATH"
+  export LD_LIBRARY_PATH="$BUILD_DIR/lib:$LD_LIBRARY_PATH"
+fi
 
 # DASM assembler for the Atari 2600
 export PATH="$HOME/code/tools/dasm-assembler/bin:$PATH"
 
-# Having GitHub CLI avaliable on path on Windows
-if [[ "$OSTYPE" != "linux-gnu"* ]]; then
-    export PATH="$HOME/gh-cli/bin:$PATH"
-fi
-
 # Starship!
-function set_win_title() {
-    echo -ne "\033]0; $(basename "$PWD") \007"
-}
-starship_precmd_user_func="set_win_title"
+# function set_win_title() {
+#     echo -ne "\033]0; $(basename "$PWD") \007"
+# }
+# starship_precmd_user_func="set_win_title"
 
 function blastoff() {
     echo "🚀"

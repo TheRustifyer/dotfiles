@@ -1,7 +1,3 @@
-[submodule "llvm-project"]
-	active = true
-    	url = https://github.com/llvm/llvm-project.git
-    	path = code/third_party/llvm-project
 [submodule "code/tools/neovim"]
 	path = code/tools/neovim
 	url = https://github.com/neovim/neovim
@@ -17,3 +13,6 @@
 [submodule "code/tools/dasm-assembler"]
 	path = code/tools/dasm-assembler
 	url = https://github.com/dasm-assembler/dasm
+[submodule "llvm-project"]
+	path = code/third-party/llvm-project
+	url = https://github.com/llvm/llvm-project.git

@@ -54,16 +54,13 @@ setup_zsh() {
 ##### Code #####
 
 # The LLVM suite, for having Clang and all it's associated dev tools build from the latest changes
-update_llvm_suite() {
-    echo "Updating the LLVM project suite..."
-    config submodule update --init --remote code/third_party/llvm-project
-}
-
 build_llvm_suite() {
+    echo "Updating the LLVM project suite..."
+    config submodule update --init --remote code/third-party/llvm-project
     echo "Building LLVM suite..."
-    cd ~/code/third_party/llvm-project || exit
+    cd ~/code/third-party/llvm-project || exit
     mkdir -p build
-    cmake -G Ninja -S runtimes -B build -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS='clang;lld;clang-tools-extra;lldb' -DLLVM_USE_LINKER=lld -DLLVM_PARALLEL_COMPILE_JOBS=8 -DLLVM_PARALLEL_LINK_JOBS=8 -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"
+    cmake -G Ninja -S runtimes -B build -DCMAKE_BUILD_TYPE=Release -DLLVM_PARALLEL_COMPILE_JOBS=8 -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"
     ninja -C build
 }
 
@@ -250,7 +247,6 @@ while [[ "$#" -gt 0 ]]; do
         -lg|--install-lazygit) install_lazygit ;;
         -g|--gh-cli) gh_cli ;;
 
-        -ullvm|--update-llvm-suite) update_llvm_suite ;;
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
         -uasm|--install-uasm) install_uasm ;;
         -dasm|--build-dasm) build_dasm ;;

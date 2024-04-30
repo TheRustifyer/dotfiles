@@ -348,7 +348,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 2. When you're prompted to "Enter a file in which to save the key", you can press Enter to accept the default file location. Please note that if you created SSH keys previously, ssh-keygen may ask you to rewrite another key, in which case we recommend creating a custom-named SSH key. To do so, type the default file location and replace id_ALGORITHM with your custom key name.
 3. Open a new Powershell instance to ensure that the *ssh-agent* is active and running. If isn't the case, it will be spawned
 ```powershell
-Get-Service -Name ssh-agent | Set-Service -StartupType Manual
+Get-Service -Name ssh-agent | Set-Service -StartupType Automatic
 Start-Service ssh-agent
 ```
 4. Now come back to the previous `cmd` shell, and add the previous generated *ssh-key* to the *ssh agent*

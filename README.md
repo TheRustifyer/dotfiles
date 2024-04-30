@@ -353,7 +353,7 @@ Start-Service ssh-agent
 ```
 4. Now come back to the previous `cmd` shell, and add the previous generated *ssh-key* to the *ssh agent*
 ```cmd
-ssh-add "%USERPROFILE%"/.ssh/id_ed25519
+ssh-add "$HOME"/.ssh/id_ed25519
 ```
 5. If everything went correct, you'll see a message like this one:
 ```cmd
@@ -362,6 +362,8 @@ Enter passphrase for C:\Users\"YourWindowsUser"/.ssh/id_ed25519:
 Identity added: C:\Users\"YourWindowsUser"/.ssh/id_ed25519 (alex.vergara.dev@gmail.com)
 ```
 > Remember to use the same identifier that you used to generate the *ssh key*
+
+> If you used a `bash` based shell instead of `cmd`, remember to change `%USERPROFILE%` for `$HOME`, to correctly expand the value of the user's root directory
 
 6. Copy the public ***SSH*** key to the clipboard
 

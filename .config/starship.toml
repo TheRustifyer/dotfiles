@@ -136,7 +136,7 @@ ssh_symbol = " "
 
 [java]
 symbol = " "
-detect_files =[ "pom.xml", "build.gradle.kts", "build.sbt", ".java-version", "deps.edn", "project.clj", "build.boot", ".sdkmanrc" ]
+detect_files =[ "pom.xml", ".nvim-java-marker", "build.gradle.kts", "build.sbt", ".java-version", "deps.edn", "project.clj", "build.boot", ".sdkmanrc" ]
 
 [julia]
 symbol = " "

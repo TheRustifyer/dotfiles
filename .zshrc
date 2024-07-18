@@ -2,6 +2,9 @@
 export HOME="$HOME"
 
 HIST_STAMPS="dd.mm.yyyy"
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=10000
 
 # User configuration
 export TERM=xterm-256color
@@ -18,6 +21,10 @@ fpath=(~/.zsh $fpath)
 autoload -Uz compinit && compinit
 
 plugins=(git)
+
+# Enabling the VI mode on ZSH by default, instead of the 'Emacs' one
+bindkey -v
+bindkey '^R' history-incremental-search-backward # Having the Ctrl+R keybinding for having a bash-like reverse search
 
 # Set personal aliases
 # TODO: move them to their own mod
@@ -37,6 +44,8 @@ alias lst='lsd -F -la -t'
 alias lsg='lsd -F -la -G'
 
 alias rmdir='rm -rf'
+
+alias ez='exec zsh'
 
 alias zshconf="nvim ~/.zshrc"
 alias zellijconf='nvim ~/.config/zellij/config.kdl'

@@ -60,7 +60,7 @@ build_llvm_suite() {
     echo "Building LLVM suite..."
     cd ~/code/third-party/llvm-project || exit
     mkdir -p build
-    cmake -G Ninja -S runtimes -B build -DCMAKE_BUILD_TYPE=Release -DLLVM_PARALLEL_COMPILE_JOBS=8 -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"
+    cmake -G Ninja -S runtimes -B build -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"
     ninja -C build
 }
 

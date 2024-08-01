@@ -9,10 +9,12 @@ NC='\033[0m' # No Color
 
 # Define glyphs/icons
 CHECKMARK="✔️"
+WARN="⚠️ "
 CROSS="❌"
 INFO="ℹ️"
 INSTALL="⬇️"
 SKIP="⏩"
+PKG="📦" 
 
 # Function to load environment
 load_env() {
@@ -27,7 +29,7 @@ config() {
     git --git-dir=$HOME/.cfg/ --work-tree=$HOME "$@"
 }
 
-##### Languages #####
+##### Languages and Frameworks #####
 
 # Rust
 install_rust() {
@@ -54,6 +56,42 @@ install_go() {
        install_arch_pkgs "go" 
     else
         pacman -S mingw-w64-x86_64-go
+    fi
+}
+
+# Flutter
+install_flutter() {
+    local download_folder="$HOME/Downloads"
+    local pattern="^flutter_linux_"
+    local flutter_files=$(fd -e tar.xz "$PATTERN")
+
+    if ! command -v flutter &> /dev/null; then
+
+        if [ -z "$flutter_files" ]; then
+            echo -e "${WARN}${YELLOW}Warning: No Flutter .tar.xz files found in $download_folder.${NC}"
+            echo "Remember to download the Flutter SDK from https://docs.flutter.dev/get-started/install/<OS>/<Target>"
+            return
+        fi
+
+        echo -e "${CHECKMARK}${GREEN}Found the following Flutter .tar.xz files in $download_folder:${NC}"
+        echo "$flutter_files" | while read -r file; do
+            echo -e "📦 ${CYAN}$file${NC}"
+        done
+
+        # Extract the first matched file
+        local first_file=$(echo "$flutter_files" | head -n 1)
+        tar -xf "$first_file" -C "$HOME/code/tools/"
+
+        echo -e "${CHECKMARK}${GREEN}Flutter installed successfully. Version: $(flutter --version)${NC}"
+        
+        echo -e "ℹ️ ${CYAN}Disabling Flutter integrated analytics to protect our privacy.${NC}"
+        flutter --disable-analytics
+        flutter config --no-analytics
+
+        echo -e "🔧 ${CYAN}Running Flutter Doctor to check the installation health.${NC}"
+        flutter doctor
+    else
+        echo -e "${CHECKMARK}${GREEN}Flutter is already installed. Version: $(flutter --version)${NC}"
     fi
 }
 
@@ -192,13 +230,13 @@ terminal_tools() {
 
 gh_cli() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    	echo "Setting up GitHub CLI for Linux..."
+	install_arch_pkgs "github-cli"
+    else
         echo "Setting up GitHub CLI for Windows..."
     	git clone https://github.com/cli/cli.git gh-cli
     	cd gh-cli || exit
     	go run script\build.go
-    else
-    	echo "Setting up GitHub CLI for Linux..."
-	sudo pacman -Sy github-cli
     fi
 }
 
@@ -277,8 +315,12 @@ setup_manjaro() {
     install_alacritty
     install_zellij
 
+    # Compilers technologies
+    install_arch_pkgs "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config"
+    # build_llvm_suite
+
     # Install system packages
-    install_arch_pkgs "xclip" "base-devel" "gcc" "github-cli"
+    install_arch_pkgs "xclip" "github-cli" "zip" "unzip" "xz"
 
     # Install frameworks
     install_flutter

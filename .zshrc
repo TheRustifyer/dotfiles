@@ -97,6 +97,7 @@ alias du-dust='du'
 alias ripgrep='rg'
 alias fd-find='fd'
 alias bottom='btm'
+alias rm-improved='rip'
 
 # Git aliases
 alias gs='git status -sb'
@@ -143,6 +144,9 @@ fi
 
 # DASM assembler for the Atari 2600
 export PATH="$HOME/code/tools/dasm-assembler/bin:$PATH"
+
+# Flutter as installed on my regular code/tools PATH as a third-party dependency
+export PATH="$HOME/code/tools/flutter/bin:$PATH"
 
 # Starship!
 # function set_win_title() {

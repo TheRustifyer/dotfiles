@@ -14,7 +14,7 @@ CROSS="❌"
 INFO="ℹ️"
 INSTALL="⬇️"
 SKIP="⏩"
-PKG="📦" 
+PKG="📦"
 
 # Function to load environment
 load_env() {
@@ -34,7 +34,7 @@ config() {
 # Rust
 install_rust() {
     echo -e "||===================== Checking and/or installing RUST =======================>"
-    
+
     if command -v rustc &> /dev/null; then
         echo -e "${CHECKMARK}${GREEN} Rust is already installed. Skipping Rust installation.${NC}"
         echo -e "${INFO}${CYAN} Installed Rust version: $(rustc --version)${NC}"
@@ -57,9 +57,9 @@ install_rust() {
 # Go
 install_go() {
     echo -e "||===================== Checking and/or installing GOLANG =======================>"
-    
+
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-       install_packages "pacman" "go" 
+       install_packages "pacman" "go"
     else
         pacman -S mingw-w64-x86_64-go
     fi
@@ -70,7 +70,7 @@ install_go() {
 # Flutter
 install_flutter() {
     echo -e "||===================== Checking and/or installing FLUTTER =======================>"
-    
+
     local download_folder="$HOME/Downloads"
     local pattern="^flutter_linux_"
     local flutter_files=$(fd -e tar.xz "$PATTERN")
@@ -93,7 +93,7 @@ install_flutter() {
         tar -xf "$first_file" -C "$HOME/code/tools/"
 
         echo -e "${CHECKMARK}${GREEN}Flutter installed successfully. Version: $(flutter --version)${NC}"
-        
+
         echo -e "ℹ️ ${CYAN}Disabling Flutter integrated analytics to protect our privacy.${NC}"
         flutter --disable-analytics
         flutter config --no-analytics
@@ -121,7 +121,7 @@ build_neovim() {
 # Install Neovim
 install_editor() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-       install_packages pacman neovim 
+       install_packages pacman neovim
     else
         pacman -S mingw-w64-x86_64-neovim
     fi
@@ -131,7 +131,7 @@ install_editor() {
 ##### Shell #####
 setup_zsh() {
     echo "Setting up Zsh..."
-    install_packages "pacman" "zsh" 
+    install_packages "pacman" "zsh"
     git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
@@ -273,7 +273,7 @@ install_packages() {
         echo -e "||===================== ${package} =======================>"
 
         echo -e "${INSTALL}${YELLOW} Installing ${package} using ${install_method}...${NC}"
-            
+
         case "$install_method" in
             cargo)
                 if ! command -v $package &> /dev/null; then
@@ -320,7 +320,7 @@ handle_daemon() {
     local service_name="$1"
 
     echo -e "||===================== Handling daemon: ${service_name} =======================>"
-   
+
     if [ -z "$service_name" ]; then
         echo -e "${CROSS}${RED} No service name provided. Please provide a service name as an argument.${NC}"
         return 1
@@ -351,6 +351,48 @@ handle_daemon() {
     echo "<============================================||"
 }
 
+try_create_dir() {
+    local directory_path="$1"
+
+    if [ ! -d "$directory_path" ]; then
+        echo -e "Directory $directory_path does not exist. Creating..."
+        mkdir -p "$directory_path"
+        echo "Directory created."
+    else
+        echo "Directory $directory_path already exists."
+    fi
+}
+
+download_personal_projects() {
+    echo -e "${INFO}${CYAN} Checking for 'git clone' my personal projects... ${NC}"
+
+    local base_url=""
+
+    local zdc_dir="~/code/zero_day_code"
+    try_create_dir "${zdc_dir}"
+
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+       base_url="git@github.com:"
+    else
+       base_url="https://github.com/"
+    fi
+
+    local zdc_projects="${base_url}ZeroDayCode"
+    local personal_projects="${base_url}TheRustifyer"
+
+    ### The Zero Day Code ones
+    git clone -v ${zdc_projects}/Canyon-SQL ${zdc_dir}/canyon-sql
+    git clone -v ${zdc_projects}/Zork ${zdc_dir}/zork
+    git clone -v ${zdc_projects}/Zero ${zdc_dir}/zero
+    git clone -v ${zdc_projects}/Rumble-AI ${zdc_dir}/rumble-ai
+    git clone -v ${zdc_projects}/Arcane ${zdc_dir}/arcane
+
+    ### The personal ones
+    git clone -v ${personal_projects}/PokemonGallaecia ~/code/pokemon-gallaecia
+    git clone -v ${personal_projects}/Assembly-Atari-2600 ~/code/assembly-atari
+    git clone -v ${personal_projects}/Rumble-LoL-Plugin ~/code/rumble-lol-plugin
+}
+
 # This configures my typical apps and packages, among other configurations in a Manjaro distro
 setup_manjaro() {
     echo -e "${INFO}${CYAN} Running a Manjaro setup in shell: $SHELL${NC}"
@@ -369,7 +411,7 @@ setup_manjaro() {
 
     # Install the terminal tools
     terminal_tools
-    
+
     # Install the Alacritty && Zellij terminal multiplexing combo
     install_packages cargo "alacritty" "zellij"
 
@@ -401,6 +443,8 @@ setup_manjaro() {
     # Install the other code editors
     install_packages snap "code" "rustrover" "clion" "--classic"
 
+    # Download my most used repositories
+    download_personal_projects
     echo -e "${CHECKMARK}${GREEN} Setup finished!${NC}"
 }
 
@@ -447,8 +491,9 @@ while [[ "$#" -gt 0 ]]; do
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
         -uasm|--install-uasm) install_uasm ;;
         -dasm|--build-dasm) build_dasm ;;
-        
-	-sm|--setup-manjaro) setup_manjaro ;;
+
+        -dwp|--download-projects) download_personal_projects ;;
+        -sm|--setup-manjaro) setup_manjaro ;;
 
         *) echo "Unknown option: $1"; exit 1 ;;
     esac

@@ -33,6 +33,8 @@ config() {
 
 # Rust
 install_rust() {
+    echo -e "||===================== Checking and/or installing RUST =======================>"
+    
     if command -v rustc &> /dev/null; then
         echo -e "${CHECKMARK}${GREEN} Rust is already installed. Skipping Rust installation.${NC}"
         echo -e "${INFO}${CYAN} Installed Rust version: $(rustc --version)${NC}"
@@ -48,19 +50,27 @@ install_rust() {
             echo -e "${CROSS}${RED} Error: Rust installation failed or Rust not found in PATH.${NC}"
         fi
     fi
+
+    echo "<============================================||"
 }
 
 # Go
 install_go() {
+    echo -e "||===================== Checking and/or installing GOLANG =======================>"
+    
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-       install_arch_pkgs "go" 
+       install_packages "pacman" "go" 
     else
         pacman -S mingw-w64-x86_64-go
     fi
+
+    echo "<============================================||"
 }
 
 # Flutter
 install_flutter() {
+    echo -e "||===================== Checking and/or installing FLUTTER =======================>"
+    
     local download_folder="$HOME/Downloads"
     local pattern="^flutter_linux_"
     local flutter_files=$(fd -e tar.xz "$PATTERN")
@@ -93,6 +103,8 @@ install_flutter() {
     else
         echo -e "${CHECKMARK}${GREEN}Flutter is already installed. Version: $(flutter --version)${NC}"
     fi
+
+    echo "<============================================||"
 }
 
 
@@ -109,7 +121,7 @@ build_neovim() {
 # Install Neovim
 install_editor() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-       install_arch_pkgs "neovim" 
+       install_packages pacman neovim 
     else
         pacman -S mingw-w64-x86_64-neovim
     fi
@@ -119,7 +131,7 @@ install_editor() {
 ##### Shell #####
 setup_zsh() {
     echo "Setting up Zsh..."
-    install_arch_pkgs "zsh" 
+    install_packages "pacman" "zsh" 
     git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
@@ -152,7 +164,7 @@ build_dasm() {
 install_uasm() {
     echo "Building the UASM project..."
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        sudo pacman -S uasm
+        install_packages pacman uasm
     else
         pacman -S mingw-w64-x86_64-uasm
     fi
@@ -221,10 +233,10 @@ install_lazygit() {
 terminal_tools() {
     # Here lives the ones available only on Linux
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-	install_cargo_pkgs "rm-improved" "xcp"
+	install_packages "cargo" "rm-improved" "xcp"
     fi
 
-    install_cargo_pkgs "starship" "bat" "lsd" "zoxide" "du-dust" "ripgrep" "fd-find" "sd" "procs" "bottom" "topgrade" "broot" "tokei"
+    install_packages "cargo" "starship" "bat" "lsd" "zoxide" "du-dust" "ripgrep" "fd-find" "sd" "procs" "bottom" "topgrade" "broot" "tokei"
     install_lazygit
 }
 
@@ -240,56 +252,103 @@ gh_cli() {
     fi
 }
 
+# Unified package installation function
+install_packages() {
+    local install_method="$1"
+    shift  # Remove the first argument (install_method) to process the remaining package names
 
-# Utility function to install all the packages via Cargo passed as arguments, handling the case when they
-# are already present on the system
-install_cargo_pkgs() {
-    for package in "$@"; do
-	echo -e "||===================== ${package} =======================>"
-        
-	if ! command -v $package &> /dev/null; then
-            echo -e "${INSTALL}${YELLOW} Installing ${package}...${NC}"
-            cargo install $package
+    local additional_args=()
+    local packages=()
+
+    # Separate packages and additional arguments
+    for arg in "$@"; do
+        if [[ "$install_method" = "snap" && "$arg" == --* ]]; then
+            additional_args+=("$arg")
         else
-            echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
+            packages+=("$arg")
+        fi
+    done
+
+    for package in "${packages[@]}"; do
+        echo -e "||===================== ${package} =======================>"
+
+        echo -e "${INSTALL}${YELLOW} Installing ${package} using ${install_method}...${NC}"
+            
+        case "$install_method" in
+            cargo)
+                if ! command -v $package &> /dev/null; then
+                    cargo install "${additional_args[@]}" "$package"
+                else
+                    echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
+                fi ;;
+            pacman)
+                if ! pacman -Qi "$package" &> /dev/null; then
+                    sudo pacman -Sy "$package"
+                else
+                    echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
+                fi ;;
+            snap)
+                if ! snap list | grep -q "^$package\s"; then
+                    sudo snap install "$package" "${additional_args[@]}"
+                else
+                    echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
+                fi ;;
+            *)
+                echo -e "${ERROR}${RED} Unsupported installation method: ${install_method}${NC}"
+                return 1 ;;
+            esac
+
+        # Check for the version of the installed package
+        if [[ "$package" == "discord" || "$package" == "whatsapp-for-linux" || "$package" == "steam" ]]; then
+            echo -e "${INFO} Skipping version check for ${package} as it launches the application."
+        else
+            # Check for the version of the installed package
+            version=$("$package" --version 2>/dev/null || "$package" -v 2>/dev/null || "$package" version 2>/dev/null)
+            if [ -n "$version" ]; then
+                echo -e "${INFO} ${package} version: $version"
+            else
+                echo -e "${INFO} ${package} version: Unable to determine version"
+            fi
         fi
 
-        version=$($package --version 2>/dev/null || $package -v 2>/dev/null)
-        if [ -n "$version" ]; then
-             echo -e "${INFO} ${package} version: $version"
-        else
-             echo -e "${INFO} ${package} version: Unable to determine version"
-        fi
-
-
-	echo -e "<============================================||"
+        echo "<============================================||"
     done
 }
 
-############# Manjaro Distro Setup #############
+# Takes care of enabling and/or initialize background processes and services
+handle_daemon() {
+    local service_name="$1"
 
-# Utility function to install all the packages via Pacman passed as arguments, handling the case when they
-# are already present on the system
-install_arch_pkgs() {
-    for package in "$@"; do
-	echo -e "||===================== ${package} =======================>"
+    echo -e "||===================== Handling daemon: ${service_name} =======================>"
+   
+    if [ -z "$service_name" ]; then
+        echo -e "${CROSS}${RED} No service name provided. Please provide a service name as an argument.${NC}"
+        return 1
+    fi
 
-        if ! pacman -Qi $package &> /dev/null; then
-            echo -e "${INSTALL}${YELLOW} Installing ${package}...${NC}"
-            sudo pacman -Sy $package
+    # Check if the service is already active (running)
+    if systemctl is-active --quiet "$service_name"; then
+        echo -e "${CHECKMARK}${GREEN} $service_name is already running.${NC}"
+    else
+        # Check if the service is enabled
+        if systemctl is-enabled --quiet "$service_name"; then
+            echo -e "${WARN}${YELLOW} $service_name is enabled but not running. Starting it now...${NC}"
+            sudo systemctl start "$service_name"
         else
-            echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
+            echo -e "${WARN}${YELLOW} $service_name is not enabled. Enabling and starting it now...${NC}"
+            sudo systemctl enable --now "$service_name"
         fi
 
-        version=$($package --version 2>/dev/null || $package -v 2>/dev/null || $package version 2>/dev/null)
-        if [ -n "$version" ]; then
-             echo -e "${INFO} ${package} version: $version"
+        # Confirm the service status
+        if systemctl is-active --quiet "$service_name"; then
+            echo -e "${CHECKMARK}${GREEN} $service_name is now running.${NC}"
         else
-             echo -e "${INFO} ${package} version: Unable to determine version"
+            echo -e "${CROSS}${RED} Failed to start $service_name.${NC}"
         fi
+    fi
 
-	echo -e "<============================================||"
-    done
+
+    echo "<============================================||"
 }
 
 # This configures my typical apps and packages, among other configurations in a Manjaro distro
@@ -312,18 +371,30 @@ setup_manjaro() {
     terminal_tools
     
     # Install the Alacritty && Zellij terminal multiplexing combo
-    install_alacritty
-    install_zellij
+    install_packages cargo "alacritty" "zellij"
 
     # Compilers technologies
-    install_arch_pkgs "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config"
+    install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config"
     # build_llvm_suite
 
     # Install system packages
-    install_arch_pkgs "xclip" "github-cli" "zip" "unzip" "xz"
+    install_packages pacman "xclip" "snapd" "github-cli" "zip" "unzip" "xz"
+
+    # Specifics
+    sudo ln -s /var/lib/snapd/snap /snap # Enabling legacy snaps
+   
+    # Enabling and/or starting the needed services on demand
+    handle_daemon "snapd.socket"
+
+    # Install apps and programs for confort/entertainment/communication
+    install_packages pacman "discord" "ksnip"
+    install_packages snap "steam" "whatsapp-for-linux"
 
     # Install frameworks
     install_flutter
+
+    # Install the other code editors
+    install_packages snap "code" "rustrover" "clion" "--classic"
 
     echo -e "${CHECKMARK}${GREEN} Setup finished!${NC}"
 }

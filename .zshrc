@@ -125,6 +125,11 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # Golang bin PATH
 export PATH="$HOME/go/bin:$PATH"
 
+# Linux specifics
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # This adds the packages downloaded via SNAP accessible via command line
+    export PATH="/var/lib/snapd/snap/bin:$PATH"
+fi
 # Windows specifics
 if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     # Having GitHub CLI avaliable on path on Windows

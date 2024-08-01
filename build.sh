@@ -378,11 +378,16 @@ setup_manjaro() {
     # build_llvm_suite
 
     # Install system packages
-    install_packages pacman "xclip" "snapd" "github-cli" "zip" "unzip" "xz"
+    install_packages pacman "xclip" "github-cli" "zip" "unzip" "xz"
 
-    # Specifics
-    sudo ln -s /var/lib/snapd/snap /snap # Enabling legacy snaps
-   
+    # Snap
+    install_packages pacman "snapd"
+    if [ -L "/snap" ]; then
+        echo -e "${INFO}${CYAN} Snap symbolic link already created${NC}"
+    else
+        sudo ln -s /var/lib/snapd/snap /snap # Enabling legacy snaps
+    fi
+
     # Enabling and/or starting the needed services on demand
     handle_daemon "snapd.socket"
 

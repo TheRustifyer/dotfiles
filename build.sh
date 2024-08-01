@@ -356,7 +356,7 @@ try_create_dir() {
 
     if [ ! -d "$directory_path" ]; then
         echo -e "Directory $directory_path does not exist. Creating..."
-        mkdir -p "$directory_path"
+        mkdir "$directory_path"
         echo "Directory created."
     else
         echo "Directory $directory_path already exists."
@@ -367,9 +367,7 @@ download_personal_projects() {
     echo -e "${INFO}${CYAN} Checking for 'git clone' my personal projects... ${NC}"
 
     local base_url=""
-
-    local zdc_dir="~/code/zero_day_code"
-    try_create_dir "${zdc_dir}"
+    try_create_dir "~/code/zero_day_code"
 
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
        base_url="git@github.com:"
@@ -381,11 +379,11 @@ download_personal_projects() {
     local personal_projects="${base_url}TheRustifyer"
 
     ### The Zero Day Code ones
-    git clone -v ${zdc_projects}/Canyon-SQL ${zdc_dir}/canyon-sql
-    git clone -v ${zdc_projects}/Zork ${zdc_dir}/zork
-    git clone -v ${zdc_projects}/Zero ${zdc_dir}/zero
-    git clone -v ${zdc_projects}/Rumble-AI ${zdc_dir}/rumble-ai
-    git clone -v ${zdc_projects}/Arcane ${zdc_dir}/arcane
+    git clone -v ${zdc_projects}/Canyon-SQL ~/code/zero_day_code/canyon-sql
+    git clone -v ${zdc_projects}/Zork ~/code/zero_day_code/zork
+    git clone -v ${zdc_projects}/Zero ~/code/zero_day_code/zero
+    git clone -v ${zdc_projects}/Rumble-AI ~/code/zero_day_code/rumble-ai
+    git clone -v ${zdc_projects}/Arcane ~/code/zero_day_code/arcane
 
     ### The personal ones
     git clone -v ${personal_projects}/PokemonGallaecia ~/code/pokemon-gallaecia

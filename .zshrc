@@ -81,6 +81,9 @@ else
     alias alaconf='nvim ~/AppData/Roaming/alacritty/alacritty.toml'
 fi
 
+# Alias for the gh-cli command, to be named as the Pacman package
+alias github-cli='gh'
+
 # Git aliases
 alias gs='git status -sb'
 alias gco='git checkout'

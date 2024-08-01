@@ -1,4 +1,26 @@
-#!/bin/bash
+#!/bin/zsh
+
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Define glyphs/icons
+CHECKMARK="✔️"
+CROSS="❌"
+INFO="ℹ️"
+INSTALL="⬇️"
+SKIP="⏩"
+
+# Function to load environment
+load_env() {
+    if [ -f ~/.zshrc ]; then
+        echo -e "${INFO}${CYAN} Sourcing ~/.zshrc${NC}"
+        source ~/.zshrc
+    fi
+}
 
 # Define the 'config' alias within the script
 config() {
@@ -6,22 +28,37 @@ config() {
 }
 
 ##### Languages #####
+
 # Rust
 install_rust() {
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --no-modify-path
+    if command -v rustc &> /dev/null; then
+        echo -e "${CHECKMARK}${GREEN} Rust is already installed. Skipping Rust installation.${NC}"
+        echo -e "${INFO}${CYAN} Installed Rust version: $(rustc --version)${NC}"
+    else
+        echo -e "${INSTALL}${YELLOW} Rust not found. Installing Rust...${NC}"
+        curl https://sh.rustup.rs -sSf | sh
+        source $HOME/.cargo/env  # Load Rust environment
+
+        # Check again after installation
+        if command -v rustc &> /dev/null; then
+            echo -e "${CHECKMARK}${GREEN} Rust installed successfully. Version: $(rustc --version)${NC}"
+        else
+            echo -e "${CROSS}${RED} Error: Rust installation failed or Rust not found in PATH.${NC}"
+        fi
+    fi
 }
 
 # Go
 install_go() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        pacman -S go
+       install_arch_pkgs "go" 
     else
         pacman -S mingw-w64-x86_64-go
     fi
 }
 
 
-##### Languages #####
+##### Editor #####
 # Build Neovim
 build_neovim() {
     config submodule update --init --remote code/tools/neovim
@@ -34,17 +71,17 @@ build_neovim() {
 # Install Neovim
 install_editor() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        pacman -S neovim
+       install_arch_pkgs "neovim" 
     else
         pacman -S mingw-w64-x86_64-neovim
     fi
 }
 
 
-##### Editor #####
+##### Shell #####
 setup_zsh() {
     echo "Setting up Zsh..."
-    pacman -S zsh
+    install_arch_pkgs "zsh" 
     git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
@@ -132,84 +169,125 @@ function build_wezterm() {
 
 # Lazygit
 install_lazygit() {
-    go install github.com/jesseduffield/lazygit@latest
+    if ! command -v lazygit &> /dev/null; then
+        echo -e "${INSTALL}${YELLOW} Installing Lazygit...${NC}"
+        go install github.com/jesseduffield/lazygit@latest
+    else
+        echo -e "${CYAN}${INFO} Lazygit is already installed.${NC}"
+    fi
+
+    lazygit --version
 }
 
 # Install all the CMD utilities directly with Cargo
 terminal_tools() {
     # Here lives the ones available only on Linux
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        # Improved `rm` command
-        echo "Installing a better rm command. rm-improved..."
-        cargo install rm-improved
-        # xcp is a partial clone of the `cp` command
-        echo "Installing a better cp command..."
-        cargo install xcp
+	install_cargo_pkgs "rm-improved" "xcp"
     fi
 
-    # Terminal prompt
-    echo "Installing Starship..."
-    cargo install starship --locked
-    # A better `cat`
-    echo "Installing bat, a better cat ;) ..."
-    cargo install --locked bat
-    # Replacements for the `ls` command
-    echo "Installing a better ls via LSD..."
-    cargo install lsd
-    # zoxide is a smarter `cd` replacement
-    echo "Installing zoxide, a smarted cd command..."
-    cargo install zoxide --locked
-    # A much better `du` command
-    echo "Installing a better du command..."
-    cargo install du-dust
-    # ripgrep, the real search-tool (`grep` replacement)
-    echo "Installing a real improved, modern looking and really powerful text search tool..."
-    cargo install ripgrep
-    # Simpler alternative to find (more intuitive, better defaults)
-    echo "Finally having a real good cmd utility to search for things in your hard drives..."
-    cargo install fd-find
-    # Modern and (much) more user friendly `sed` and `awk`
-    echo "Installing a better sed and/or awk utility..."
-    cargo install sd
-    # `ps` replacement
-    echo "Installing a ps replacement..."
-    cargo install procs
-    # `top` replacement, completly cross-platform
-    echo "Installing a top/htop replacement, known as bottom..."
-    cargo install bottom --locked
-    # Have your system up-to-date, completly cross-platform
-    echo "Installing a system-updater..."
-    cargo install topgrade --locked
-    # a `tree` alternative
-    echo "Installing a tree like utility..."
-    cargo install broot --locked
-    # nice utility to count lines and stats of code
-    echo "Installing a counter of lines and stats for source code..."
-    cargo install tokei
-}
-
-gh_cli_windows() {
-    echo "Setting up GitHub CLI for Windows..."
-    config clone https://github.com/cli/cli.git gh-cli
-    cd gh-cli || exit
-    go run script\build.go
-}
-
-gh_cli_linux() {
-    echo "Setting up GitHub CLI for Linux..."
-    config clone https://github.com/cli/cli.git gh-cli
-    cd gh-cli || exit
-    bin/gh version
+    install_cargo_pkgs "starship" "bat" "lsd" "zoxide" "du-dust" "ripgrep" "fd-find" "sd" "procs" "bottom" "topgrade" "broot" "tokei"
+    install_lazygit
 }
 
 gh_cli() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        gh_cli_linux
+        echo "Setting up GitHub CLI for Windows..."
+    	git clone https://github.com/cli/cli.git gh-cli
+    	cd gh-cli || exit
+    	go run script\build.go
     else
-        gh_cli_windows
+    	echo "Setting up GitHub CLI for Linux..."
+	sudo pacman -Sy github-cli
     fi
 }
 
+
+# Utility function to install all the packages via Cargo passed as arguments, handling the case when they
+# are already present on the system
+install_cargo_pkgs() {
+    for package in "$@"; do
+        if ! command -v $package &> /dev/null; then
+            echo -e "${INSTALL}${YELLOW} Installing ${package}...${NC}"
+            cargo install $package
+        else
+            echo -e "${CYAN}${INFO} ${package} is already installed.${NC}"
+        fi
+
+        version=$($package --version 2>/dev/null || $package -v 2>/dev/null)
+        if [ -n "$version" ]; then
+             echo -e "ℹ️  ${package} version: $version"
+        else
+             echo -e "ℹ️  ${package} version: Unable to determine version"
+        fi
+    done
+}
+
+############# Manjaro Distro Setup #############
+
+# Utility function to install all the packages via Pacman passed as arguments, handling the case when they
+# are already present on the system
+install_arch_pkgs() {
+    for package in "$@"; do
+        if ! pacman -Qi $package &> /dev/null; then
+            echo -e "${INSTALL}${YELLOW} Installing ${package}...${NC}"
+            sudo pacman -Sy $package
+        else
+            echo -e "${CYAN}${INFO} ${package} is already installed.${NC}"
+        fi
+
+        version=$($package --version 2>/dev/null || $package -v 2>/dev/null)
+        if [ -n "$version" ]; then
+             echo -e "ℹ️  ${package} version: $version"
+        else
+             echo -e "ℹ️  ${package} version: Unable to determine version"
+        fi
+    done
+}
+
+# Function to install system packages
+install_system_packages() {
+
+    install_arch_pkgs "xclip" "base-devel" "gcc" "github-cli"
+
+    # if ! command -v
+}
+
+# This configures my typical apps and packages, among other configurations in a Manjaro distro
+setup_manjaro() {
+    echo -e "${INFO}${CYAN} Running a Manjaro setup in shell: $SHELL${NC}"
+
+    # Load environment
+    load_env
+
+    # Install Rust
+    install_rust
+
+    # Install Golang
+    install_go
+
+    # Install Neovim as the primary text editor
+    install_editor
+
+    # Install the terminal tools
+    terminal_tools
+    
+    # Install the Alacritty && Zellij terminal multiplexing combo
+    install_alacritty
+    install_zellij
+
+    # Install system packages
+    install_system_packages
+
+    # Install frameworks
+    install_flutter
+
+    echo -e "${CHECKMARK}${GREEN} Setup finished!${NC}"
+}
+
+
+# Load my real OS environment
+load_env
 
 # Check the arguments to determine which component to build
 while [[ "$#" -gt 0 ]]; do
@@ -250,6 +328,8 @@ while [[ "$#" -gt 0 ]]; do
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
         -uasm|--install-uasm) install_uasm ;;
         -dasm|--build-dasm) build_dasm ;;
+        
+	-sm|--setup-manjaro) setup_manjaro ;;
 
         *) echo "Unknown option: $1"; exit 1 ;;
     esac

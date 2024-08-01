@@ -1,6 +1,6 @@
 
 layout {
-    cwd "/home/pyzyryab/.config/nvim"
+    cwd "/home/the-rustifyer/.config/nvim"
     tab name="Nvim cfg - (Src)" focus=true hide_floating_panes=true {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"

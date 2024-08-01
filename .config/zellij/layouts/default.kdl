@@ -14,7 +14,7 @@ layout {
             plugin location="zellij:tab-bar"
         }
         pane command="lazygit" {
-            args "--git-dir=/home/pyzyryab/.cfg/" "--work-tree=/home/pyzyryab"
+            args "--git-dir=/home/the-rustifyer/.cfg/" "--work-tree=/home/the-rustifyer"
         }
     }
     tab name="System Monitor" hide_floating_panes=true {

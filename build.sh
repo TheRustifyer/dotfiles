@@ -207,19 +207,24 @@ gh_cli() {
 # are already present on the system
 install_cargo_pkgs() {
     for package in "$@"; do
-        if ! command -v $package &> /dev/null; then
+	echo -e "||===================== ${package} =======================>"
+        
+	if ! command -v $package &> /dev/null; then
             echo -e "${INSTALL}${YELLOW} Installing ${package}...${NC}"
             cargo install $package
         else
-            echo -e "${CYAN}${INFO} ${package} is already installed.${NC}"
+            echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
         fi
 
         version=$($package --version 2>/dev/null || $package -v 2>/dev/null)
         if [ -n "$version" ]; then
-             echo -e "ℹ️  ${package} version: $version"
+             echo -e "${INFO} ${package} version: $version"
         else
-             echo -e "ℹ️  ${package} version: Unable to determine version"
+             echo -e "${INFO} ${package} version: Unable to determine version"
         fi
+
+
+	echo -e "<============================================||"
     done
 }
 
@@ -229,28 +234,24 @@ install_cargo_pkgs() {
 # are already present on the system
 install_arch_pkgs() {
     for package in "$@"; do
+	echo -e "||===================== ${package} =======================>"
+
         if ! pacman -Qi $package &> /dev/null; then
             echo -e "${INSTALL}${YELLOW} Installing ${package}...${NC}"
             sudo pacman -Sy $package
         else
-            echo -e "${CYAN}${INFO} ${package} is already installed.${NC}"
+            echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
         fi
 
-        version=$($package --version 2>/dev/null || $package -v 2>/dev/null)
+        version=$($package --version 2>/dev/null || $package -v 2>/dev/null || $package version 2>/dev/null)
         if [ -n "$version" ]; then
-             echo -e "ℹ️  ${package} version: $version"
+             echo -e "${INFO} ${package} version: $version"
         else
-             echo -e "ℹ️  ${package} version: Unable to determine version"
+             echo -e "${INFO} ${package} version: Unable to determine version"
         fi
+
+	echo -e "<============================================||"
     done
-}
-
-# Function to install system packages
-install_system_packages() {
-
-    install_arch_pkgs "xclip" "base-devel" "gcc" "github-cli"
-
-    # if ! command -v
 }
 
 # This configures my typical apps and packages, among other configurations in a Manjaro distro
@@ -277,7 +278,7 @@ setup_manjaro() {
     install_zellij
 
     # Install system packages
-    install_system_packages
+    install_arch_pkgs "xclip" "base-devel" "gcc" "github-cli"
 
     # Install frameworks
     install_flutter

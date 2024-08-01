@@ -1,5 +1,5 @@
 layout {
-    cwd "/home/pyzyryab/.config/nvim"
+    cwd "/home/the-rustifyer/.config/nvim"
     tab name="Neovim configuration" focus=true hide_floating_panes=true {
         pane split_direction="vertical" {
             pane command="nvim" focus=true size="65%"

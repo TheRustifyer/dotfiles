@@ -56,6 +56,15 @@ alias wezconf='nvim ~/.wezterm.lua'
 # Using `bat` as a better `cat`
 alias cat='bat'
 
+# Using `bat` as a better `cat`
+alias du='dust'
+
+# Using `fd-find` as a MUCH better `find`
+alias find='fd'
+
+# Using `ripgrep` as a better `grep`
+# alias grep='rg' ## I am not quite ready yet :)
+
 # Overpowering the access to edit my projects, thanks to the `Zellij` layouts
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias wzork='alacritty -e zellij --layout zork'
@@ -81,8 +90,13 @@ else
     alias alaconf='nvim ~/AppData/Roaming/alacritty/alacritty.toml'
 fi
 
-# Alias for the gh-cli command, to be named as the Pacman package
+# Alias for some commands to be named as the Pacman package
 alias github-cli='gh'
+alias neovim='nvim'
+alias du-dust='du'
+alias ripgrep='rg'
+alias fd-find='fd'
+alias bottom='btm'
 
 # Git aliases
 alias gs='git status -sb'

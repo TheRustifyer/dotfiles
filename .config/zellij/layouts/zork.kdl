@@ -1,5 +1,5 @@
 layout {
-    cwd "/home/pyzyryab/code/zero_day_code/Zork/"
+    cwd "/home/the-rustifyer/code/zero_day_code/Zork/"
     tab name="Zork's Root" focus=true hide_floating_panes=true {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"

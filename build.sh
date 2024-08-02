@@ -426,11 +426,11 @@ setup_manjaro() {
     # Install system packages
     install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz"
 
-    # Compilers technologies
-    install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config"
+    # Development technologies
+    install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config" "strace"
 
     # More toolchains (via AUR)
-    install_packages yay "llvm16" # Required to test Zork++ before the LLVM guys broke the -fimplicit-module-maps for standard C++ modules
+    install_packages yay "llvm16" # Required to test Zork++ before the LLVM guys broke the -fimplicit-module-maps for standard C++ modules from LLVM >= 17.0.X
 
     # Snap
     install_packages pacman "snapd"

@@ -293,6 +293,12 @@ install_packages() {
                 else
                     echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
                 fi ;;
+            yay)
+                if ! yay -Qi "$package" &> /dev/null; then
+                    yay -Sy "$package"
+                else
+                    echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
+                fi ;;
             *)
                 echo -e "${ERROR}${RED} Unsupported installation method: ${install_method}${NC}"
                 return 1 ;;
@@ -363,6 +369,8 @@ try_create_dir() {
     fi
 }
 
+
+################# GitHub personal and Zero Day Code projects #################
 download_personal_projects() {
     echo -e "${INFO}${CYAN} Checking for 'git clone' my personal projects... ${NC}"
 
@@ -391,6 +399,8 @@ download_personal_projects() {
     git clone -v ${personal_projects}/Rumble-LoL-Plugin ~/code/rumble-lol-plugin
 }
 
+
+################# Full setup for concrete Operating Systems #################
 # This configures my typical apps and packages, among other configurations in a Manjaro distro
 setup_manjaro() {
     echo -e "${INFO}${CYAN} Running a Manjaro setup in shell: $SHELL${NC}"
@@ -413,12 +423,14 @@ setup_manjaro() {
     # Install the Alacritty && Zellij terminal multiplexing combo
     install_packages cargo "alacritty" "zellij"
 
-    # Compilers technologies
-    install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config"
-    # build_llvm_suite
-
     # Install system packages
     install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz"
+
+    # Compilers technologies
+    install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config"
+
+    # More toolchains (via AUR)
+    install_packages yay "llvm16" # Required to test Zork++ before the LLVM guys broke the -fimplicit-module-maps for standard C++ modules
 
     # Snap
     install_packages pacman "snapd"
@@ -446,6 +458,8 @@ setup_manjaro() {
     echo -e "${CHECKMARK}${GREEN} Setup finished!${NC}"
 }
 
+
+#################### MAIN PROCESS ####################
 
 # Load my real OS environment
 load_env

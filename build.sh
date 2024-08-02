@@ -418,7 +418,7 @@ setup_manjaro() {
     # build_llvm_suite
 
     # Install system packages
-    install_packages pacman "xclip" "github-cli" "zip" "unzip" "xz"
+    install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz"
 
     # Snap
     install_packages pacman "snapd"

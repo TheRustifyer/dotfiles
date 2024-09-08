@@ -287,6 +287,12 @@ install_packages() {
                 else
                     echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
                 fi ;;
+            flatpak)
+                if ! flatpak list | grep -q "^$package\s"; then
+                    sudo flatpak install -y "${additional_args[@]}" "$package"
+                else
+                    echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
+                fi ;;
             snap)
                 if ! snap list | grep -q "^$package\s"; then
                     sudo snap install "$package" "${additional_args[@]}"
@@ -430,7 +436,7 @@ setup_manjaro() {
     install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config" "strace" "fmedia"
 
     # More toolchains (via AUR)
-    install_packages yay "llvm16" # Required to test Zork++ before the LLVM guys broke the -fimplicit-module-maps for standard C++ modules from LLVM >= 17.0.X
+    install_packages yay "llvm16"
 
     # Snap
     install_packages pacman "snapd"
@@ -446,6 +452,9 @@ setup_manjaro() {
     # Install apps and programs for confort/entertainment/communication
     install_packages pacman "discord" "ksnip"
     install_packages snap "steam" "whatsapp-for-linux"
+
+    # Game Dev utils
+    install_packages flatpak "flathub io.github.achetagames.epic_asset_manager"
 
     # Install frameworks
     install_flutter

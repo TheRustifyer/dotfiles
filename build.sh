@@ -430,7 +430,7 @@ setup_manjaro() {
     install_packages cargo "alacritty" "zellij"
 
     # Install system packages
-    install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz"
+    install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz" "pipewire" "pipewire-pulse" "pipewire-alsa" "pipewire-jack"
 
     # Development technologies
     install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config" "strace" "fmedia"

@@ -414,6 +414,9 @@ setup_manjaro() {
     # Load environment
     load_env
 
+    # Ensure that ZSH is the default shell in the system
+    chsh -s $(which zsh)
+
     # Install Rust
     install_rust
 
@@ -450,7 +453,7 @@ setup_manjaro() {
     handle_daemon "snapd.socket"
 
     # Install apps and programs for confort/entertainment/communication
-    install_packages pacman "discord" "ksnip"
+    install_packages pacman "discord" "ksnip" "lutris" "winetricks"
     install_packages snap "steam" "whatsapp-for-linux"
 
     # Game Dev utils

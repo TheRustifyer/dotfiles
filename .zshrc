@@ -65,13 +65,13 @@ alias find='fd'
 # Using `ripgrep` as a better `grep`
 # alias grep='rg' ## I am not quite ready yet :)
 
-# Overpowering the access to edit my projects, thanks to the `Zellij` layouts
+# Overpowering the access to edit my projects, "thanks" to the `Zellij` layouts
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    alias wzork='alacritty -e zellij --layout zork'
-    alias wzero='alacritty -e zellij --layout zero'
+    alias wzork='alacritty -e zellij --layout zork &'
+    alias wzero='alacritty -e zellij --layout zero &'
 else
-    alias wzork='alacritty -e zellij --layout zork_win'
-    alias wzero='alacritty -e zellij --layout zero_win'
+    alias wzork='alacritty -e zellij --layout zork_win &'
+    alias wzero='alacritty -e zellij --layout zero_win &'
 fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then

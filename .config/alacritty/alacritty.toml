@@ -43,7 +43,7 @@ LC_CTYPE = "en_US.UTF-8"
 TERM = "xterm-256color"
 
 [font]
-size = 7.0
+size = 10.5
 
 [font.normal]
 family = "monospace"

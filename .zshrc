@@ -14,9 +14,13 @@ export LANG=en_US.UTF-8
 # Preferred editor
 export EDITOR='nvim'
 
+# ASDF
+. "$HOME/.asdf/asdf.sh"
+
 zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
 
 fpath=(~/.zsh $fpath)
+fpath=(${ASDF_DIR}/completions $fpath)
 
 autoload -Uz compinit && compinit
 

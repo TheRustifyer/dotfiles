@@ -252,6 +252,10 @@ gh_cli() {
     fi
 }
 
+install_asdf() {
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+}
+
 # Unified package installation function
 install_packages() {
     local install_method="$1"
@@ -508,9 +512,11 @@ while [[ "$#" -gt 0 ]]; do
 
         -bw|--build_wezterm) build_wezterm ;;
 
+        # Terminal tools
         -tt|--terminal-tools) terminal_tools ;;
         -lg|--install-lazygit) install_lazygit ;;
         -g|--gh-cli) gh_cli ;;
+        -iasdf|--install-asdf) install_asdf ;;
 
         -bllvm|--build-llvm-suite) build_llvm_suite ;;
         -uasm|--install-uasm) install_uasm ;;

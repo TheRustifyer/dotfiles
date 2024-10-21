@@ -157,6 +157,15 @@ export PATH="$HOME/code/tools/dasm-assembler/bin:$PATH"
 # Flutter as installed on my regular code/tools PATH as a third-party dependency
 export PATH="$HOME/code/tools/flutter/bin:$PATH"
 
+# Job related cfg
+HOSTNAME=$(hostname)
+
+if [[ "$HOSTNAME" == PC_ECO* ]]; then
+    if [ -f ~/.job_cfg ]; then
+        source ~/.job_cfg
+    fi
+fi
+
 # Starship!
 # function set_win_title() {
 #     echo -ne "\033]0; $(basename "$PWD") \007"

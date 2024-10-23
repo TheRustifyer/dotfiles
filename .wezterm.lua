@@ -6,8 +6,27 @@ local mux = wezterm.mux
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
+-- The declared hostname of the current machine
+local hostname = wezterm.hostname()
+-- The user's home directory
+local user_root = wezterm.home_dir
+-- The lua modules with the helpers for the configuration
+local wezterm_cfg = user_root .. '/.wezterm'
+
+-- Loading the helpers
+local status, helpers = pcall(dofile, wezterm_cfg .. "/helpers.lua")
+if not status then
+    wezterm.log_error("Unable to load the helpers: " .. helpers)
+end
+
+-- The projects that will be shown on the 'projects selector'
+local projects = helpers.load_projects(hostname, user_root)
+
 -- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
 wezterm.on('gui-startup', function(cmd)
+    -- allow `wezterm start -- something` to affect what we spawn in our initial window
+    local args = cmd and cmd.args or {}
+    -- TODO: pass the args to launch the workspace
     local tab, pane, window = mux.spawn_window(cmd or {})
     window:gui_window():maximize()
 end)
@@ -16,118 +35,45 @@ wezterm.on('update-right-status', function(window, pane)
     window:set_right_status(window:active_workspace())
 end)
 
-local launch_menu = {}
-if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
-    local msys2_clang64 = { 'cmd.exe ', '/k',
-        'C:/msys64/msys2_shell.cmd -defterm -here -no-start -clang64 -use-full-path -shell zsh' }
-    local msys2_mingw64 = { 'cmd.exe ', '/k',
-        'C:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64 -use-full-path -shell zsh' }
-    local msys2 = { 'cmd.exe ', '/k',
-        'C:/msys64/msys2_shell.cmd -defterm -here -no-start -msys -use-full-path -shell zsh' }
-
-    table.insert(launch_menu, {
-        label = 'MSYS2 CLANG64',
-        args = msys2_clang64,
-    })
-    table.insert(launch_menu, {
-        label = 'MSYS2 MINGW64',
-        args = msys2_mingw64,
-    })
-    table.insert(launch_menu, {
-        label = 'msys2',
-        args = msys2,
-    })
-    table.insert(launch_menu, {
-        label = 'PowerShell',
-        args = { 'C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell', '-nol' },
-    })
-
-    config.default_prog = msys2_mingw64
-else
-    config.default_prog = { '/usr/bin/zsh' }
+-- Launch Menu
+local status, launch_menu = pcall(dofile, wezterm_cfg .. "/launch_menu.lua")
+if not status then
+    wezterm.log_error("Unable to load the launch menu: " .. launch_menu)
 end
 
-config.launch_menu = launch_menu
+config.window_close_confirmation = 'NeverPrompt'
 
+config.launch_menu = launch_menu.menu
+config.default_prog = launch_menu.default_prog
 
--- This is used to make my foreground (text, etc) brighter than my background
-config.foreground_text_hsb = {
-    hue = 1.0,
-    saturation = 1.0,
-    brightness = 1.0,
-}
+-- Appeareance
+local status, appeareance = pcall(dofile, wezterm_cfg .. "/appeareance.lua")
+if not status then
+    wezterm.log_error("Unable to load the appeareance: " .. appeareance)
+end
 
--- Color scheme, Wezterm has 100s of them you can see here:
--- https://wezfurlong.org/wezterm/colorschemes/index.html
--- config.color_scheme = 'Oceanic Next (Gogh)'
-config.color_schemes = {
-    -- ['Oceanic Next (Gogh)'] = {
-    ['thwump (terminal.sexy) '] = {
-        -- background = 'black',
-        -- TODO cursor opts non working
-        cursor_bg = 'white',
-        cursor_border = '#8b8198',
-        cursor_fg = '#8b8198',
-    },
-}
--- config.color_scheme = 'thwump (terminal.sexy) '
--- config.color_scheme = '3024 Night (Gogh)'
-config.window_frame = {
-    font = wezterm.font { family = 'Roboto', weight = 'Bold' },
-    -- The size of the font in the tab bar.
-    font_size = 10.0,
-    active_titlebar_bg = '#333333',
-    inactive_titlebar_bg = '#333333',
-}
+config.foreground_text_hsb = appeareance.foreground_text_hsb
+config.color_schemes = appeareance.color_schemes
+config.window_frame = appeareance.window_frame
+config.colors = appeareance.colors
 
-config.colors = {
-    tab_bar = {
-        -- The color of the inactive tab bar edge/divider
-        inactive_tab_edge = '#575757',
-    },
-}
+config.window_background_opacity = appeareance.window_background_opacity
+config.hide_tab_bar_if_only_one_tab = appeareance.hide_tab_bar_if_only_one_tab
 
--- config.window_background_gradient = {
---     -- orientation = 'Vertical',
---     orientation = {
---         Radial = {
---             cx = 0.75,
---             cy = 0.75,
---             radius = 2.25,
---         },
---     },
---     -- Specifies the set of colors that are interpolated in the gradient.
---     -- Accepts CSS style color specs, from named colors, through rgb
---     -- strings and more
---     --[[ colors = {
---         '#0f0c29',
---         '#302b63',
---         '#24243e',
---     }, -- Cold
---     colors = { '#EEBD89', '#D13ABD' }, -- Calid ]]
---     -- A list of presets is shown in a section below.
---     -- https://wezfurlong.org/wezterm/config/lua/config/window_background_gradient.html?h=preset#presets
---     preset = "Viridis",
---     -- preset = "Magma",
---     interpolation = 'Linear',
---     blend = 'Rgb',
---     noise = 14,
---     -- segment_size = 11,
---     -- segment_smoothness = 0.0,
--- }
-
-config.window_background_opacity = 0.82
-config.hide_tab_bar_if_only_one_tab = true
+config.inactive_pane_hsb = appeareance.inactive_pane_hsb
+config.window_background_image_hsb = appeareance.window_background_image_hsb
 
 -- Fonts
-config.font = wezterm.font('JetBrains Mono')
-config.font_size = 10.8
-
--- makes my cursor blink
--- config.default_cursor_style = 'BlinkingBar'
+config.font = appeareance.font
+config.font_size = appeareance.font_size
 
 -- Keybidings and remaps
 config.disable_default_key_bindings = true
+
+local status, powerline = pcall(dofile, wezterm_cfg .. "/powerline.lua")
+if not status then
+    wezterm.log_error("Unable to load the powerline")
+end
 
 local leader = 'LEADER'
 local cmd = 'CMD'
@@ -145,6 +91,20 @@ local shift_meta = shift .. '|' .. meta
 config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
     -- Workspaces
+    {
+        key = 'p',
+        mods = 'LEADER',
+        -- Present in to our project picker
+        action = wezterm.action_callback(function(win, pane)
+            local _, project_picker = pcall(dofile, wezterm_cfg .. "/projects_selector.lua")
+
+            -- Create the InputSelector action
+            local selector_action = project_picker.selector(projects, helpers.switch_workspace)
+
+            -- Perform the action on the window
+            win:perform_action(selector_action, pane)
+        end)
+    },
 
     -- Show the launcher in fuzzy selection mode and have it list all workspaces
     -- and allow activating one.
@@ -277,37 +237,6 @@ local mouse_bindings = {
 }
 
 config.mouse_bindings = mouse_bindings
-
--- This is used to set an image as my background
---[[ config.background = {
-    {
-        source = { File = { path = 'C:/Users/someuserboi/Pictures/Backgrounds/theone.gif', speed = 0.2 } },
-        opacity = 1,
-        width = '100%',
-        hsb = { brightness = 0.5 },
-    }
-} ]]
-
-
---[[ config.active_pane_hsb = {
-    saturation = 0.8,
-    brightness = 0.7
-}
-]]
-config.inactive_pane_hsb = {
-    saturation = 0.8,
-    brightness = 0.75
-}
-
-config.window_background_image_hsb = {
-    -- Darken the background image by reducing it to 1/3rd
-    brightness = 0.3,
-    -- You can adjust the hue by scaling its value.
-    -- a multiplier of 1.0 leaves the value unchanged.
-    hue = 1.0,
-    -- You can adjust the saturation also.
-    saturation = 1.0,
-}
 
 config.enable_scroll_bar = true
 config.use_dead_keys = false

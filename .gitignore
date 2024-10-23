@@ -1,2 +1,2 @@
 .cfg
-.job_cfg
+./.wezterm/.wezterm/job_cfg.lua

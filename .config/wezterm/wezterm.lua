@@ -55,7 +55,7 @@ require 'powerline'
 
 -- Keybidings and remaps
 local keymaps = require 'keymaps'
-keymaps.apply_to_config(config, wezterm_cfg, projects, helpers.switch_workspace)
+keymaps.apply_to_config(config, projects, helpers.switch_workspace)
 
 -- Mouse cfg
 local mouse = require 'mouse'

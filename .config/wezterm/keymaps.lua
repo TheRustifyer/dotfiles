@@ -16,7 +16,7 @@ local shift_meta = shift .. '|' .. meta
 
 local module = {}
 
-local function load_keymaps(wezterm_cfg, projects, switch_workspace_callback)
+local function load_keymaps(projects, switch_workspace_callback)
     return {
         -- Workspaces
         {
@@ -24,8 +24,7 @@ local function load_keymaps(wezterm_cfg, projects, switch_workspace_callback)
             mods = 'LEADER',
             -- Present in to our project picker
             action = wezterm.action_callback(function(win, pane)
-                local _, project_picker = pcall(dofile, wezterm_cfg .. "/projects_selector.lua")
-
+                local project_picker = require 'projects_selector'
                 -- Create the InputSelector action
                 local selector_action = project_picker.selector(projects, switch_workspace_callback)
 
@@ -143,10 +142,10 @@ local function load_keymaps(wezterm_cfg, projects, switch_workspace_callback)
 end
 
 
-function module.apply_to_config(config, wezterm_cfg, projects, switch_workspace_callback)
+function module.apply_to_config(config, projects, switch_workspace_callback)
     config.disable_default_key_bindings = true
     config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
-    config.keys = load_keymaps(wezterm_cfg, projects, switch_workspace_callback)
+    config.keys = load_keymaps(projects, switch_workspace_callback)
 end
 
 return module

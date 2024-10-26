@@ -13,17 +13,20 @@ export TERM=xterm-256color
 export LANG=en_US.UTF-8
 # Preferred editor
 export EDITOR='nvim'
+# ZSH root
+fpath=(~/.zsh $fpath)
 
 # ASDF
-. "$HOME/.asdf/asdf.sh"
+if [ -d "$HOME/.asdf" ]; then
+  . "$HOME/.asdf/asdf.sh"
+  fpath=("${HOME}/.asdf/completions" $fpath)
+fi
 
+# The 'git' autocompletion script
 zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
-
-fpath=(~/.zsh $fpath)
-fpath=(${ASDF_DIR}/completions $fpath)
-
 autoload -Uz compinit && compinit
 
+# zsh built-in plugins
 plugins=(git)
 
 # Enabling the VI mode on ZSH by default, instead of the 'Emacs' one

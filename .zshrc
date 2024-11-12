@@ -129,8 +129,9 @@ alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # Cargo bin PATH
 export PATH="$HOME/.cargo/bin:$PATH"
-# Golang bin PATH
-export PATH="$HOME/go/bin:$PATH"
+# # Golang bin PATH
+# export PATH="$HOME/go/bin:$PATH"
+# export GOROOT="$HOME/go/bin"
 
 # Linux specifics
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -141,8 +142,12 @@ fi
 if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     # Having GitHub CLI avaliable on path on Windows
     export PATH="$HOME/gh-cli/bin:$PATH"
+    # Making the git-for-windows binaries available to the msys2 envs
+    export PATH="$HOME/AppData/Local/Programs/Git/cmd:$PATH"
     # The MSYS2 binary paths for the desired environments
     export PATH="/c/msys64/mingw64/bin:/c/msys64/clang64/bin:/c/msys64/usr/bin:/c/msys64/usr/local/bin:/c/msys64/opt/bin:$PATH"
+
+    #export GOROOT="/c/msys64/mingw64"
 fi
 
 # The LLVM project, full suite. Defined after the msys2 to appear before on $PATH if the manual build is present on the system

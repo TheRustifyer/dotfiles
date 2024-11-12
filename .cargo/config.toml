@@ -1,3 +1,0 @@
-[target.x86_64-pc-windows-gnu]
-linker = "C:\\msys64\\mingw64\\bin\\clang++.exe"
-ar = "C:\\msys64\\mingw64\\bin\\llvm-ar.exe"

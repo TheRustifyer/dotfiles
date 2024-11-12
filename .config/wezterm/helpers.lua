@@ -70,23 +70,17 @@ end
 --- Recursively finds projects within a base directory.
 -- @param base_dir The base directory to search for projects.
 -- @param projects A table that will be populated with found projects.
-local function find_projects_recursively(base_dir, projects)
-    -- Check if the base directory exists
-    if not is_dir(base_dir) then
-        return
-    end
-
+local function find_projects(base_dir, projects)
     -- Iterate over each item in the base directory
     for _, dir in ipairs(wezterm.glob(base_dir .. '/*')) do
+        print('Checking dir: ' ..  dir)
         if is_dir(dir) then
             -- Check for project markers in the current directory
             if has_project_marker(dir) then
+                print('Added proj: ' .. dir)
                 local proj_name = dir:match("([^/]+)$") -- Extract the project name
                 local project = { name = proj_name, cfg = default_layout, dir = dir, label = '' }
                 table.insert(projects, project)
-            else
-                -- If not a project, recursively search in this directory
-                find_projects_recursively(dir, projects)
             end
         end
     end
@@ -108,12 +102,15 @@ local function find_and_load_projects(hostname, user_root)
     local projects = {}
 
     -- The base directory for projects
-    local projects_dir = user_root .. '/code'
+    local projects_base_dir = user_root .. '/code'
+    local own_projects = projects_base_dir .. '/own'
+    local zdc_projects = projects_base_dir .. '/zero_day_code'
 
-    -- Start the recursive search for projects
-    find_projects_recursively(projects_dir, projects)
-    -- Sort the projects lexicographically by directory
-    sort_projects(projects)
+    -- Start the search for projects
+    -- find_projects(projects_base_dir, projects)
+    print('Added the projects on code')
+    find_projects(own_projects, projects)
+    find_projects(zdc_projects, projects)
 
     -- Check if it's my job environment and load more projects configuration
     if hostname:match("^PC_ECO") then
@@ -122,6 +119,9 @@ local function find_and_load_projects(hostname, user_root)
             table.insert(projects, project)
         end
     end
+
+    -- Sort the projects lexicographically by directory
+    sort_projects(projects)
 
     -- Create a list of project names for the dropdown table
     for _, project in pairs(projects) do

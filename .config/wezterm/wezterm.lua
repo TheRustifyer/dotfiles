@@ -1,4 +1,5 @@
 -- Pull in the wezterm API
+print('Entering the configuration file')
 local wezterm = require 'wezterm'
 local mux = wezterm.mux
 
@@ -14,13 +15,26 @@ local wezterm_cfg = user_root .. '/.wezterm'
 
 -- Loading the helpers
 local helpers = require 'helpers'
-
+print('Before load projects')
 -- The projects that will be shown on the 'projects selector'
 local projects = helpers.load_projects(hostname, user_root)
+
+local wsl_domains = wezterm.default_wsl_domains()
+
+for idx, dom in ipairs(wsl_domains) do
+  if dom.name == 'WSL:Ubuntu-24.04' then
+    dom.default_prog = { 'zsh' }
+  end
+end
+
+config.wsl_domains = wsl_domains
+
+print('After load projects')
 
 -- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
 -- my cfg contains custom configuration for launch the workspaces via -- workspaces and NOT --workspaces (wezterm built in one)
 wezterm.on('gui-startup', function(cmd)
+    print("gui-startup invoked")
     -- allow `wezterm start -- something` to affect what we spawn in our initial window
 
     local _, pane, window = mux.spawn_window({})
@@ -38,8 +52,10 @@ wezterm.on('gui-startup', function(cmd)
             end
         end
     end
+    print('gui-startup cmd finished')
 
     gui_window:maximize()
+    print('gui-startup finished')
 end)
 
 -- Launch Menu

@@ -1,11 +1,15 @@
 [user]
     name = Alex Vergara
     email = alex.vergara.dev@gmail.com
-    password = $in_$key
+[include]
+    path = .gitconfig.personal
+[includeIf "gitdir:$HOME/code/ecomt/"]
+    path = .gitconfig.corporate
 [credentials]
     helper = store
 [core]
     autocrlf = input
+    editor = nvim -u NONE
 [init]
     defaultBranch = main
 [http]
@@ -16,9 +20,9 @@
     cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [mergetool]
     prompt = false
-[gpg]
-	program = C:/msys64/usr/bin/gpg
 [status]
 	showUntrackedFiles = no
 [push]
 	autoSetupRemote = true
+[commit]
+	gpgsign = true

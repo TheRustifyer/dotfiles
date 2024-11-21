@@ -46,27 +46,6 @@ local function has_project_marker(dir)
     return is_git_project(dir) or #wezterm.glob(dir .. README_FILE) > 0
 end
 
--- local function add_project(projects, project)
-local function add_project(dir, base_dir, domain, recursion_depth, projects)
-    local proj_name = helpers.get_project_name_from_path(dir) -- Extract the project name
-    local sproj_dir = domain ~= CURRENT_PANE_DOMAIN and helpers.strip_wsl_prefix(dir) or dir
-    local is_git = is_git_project(dir)
-    print("Sanitized proj dir name: " .. sproj_dir .. " from base: " .. base_dir)
-
-    -- Add directories at level 2 or directories with project markers
-    if has_project_marker(dir) or recursion_depth == 2 then
-        print("Adding project: " .. dir .. " at recursion level: " .. recursion_depth)
-        local project = {
-            name = proj_name,
-            cfg = default_layout,
-            dir = sproj_dir,
-            domain = domain,
-            git = is_git
-        }
-        table.insert(projects, project)
-    end
-end
-
 --- Recursively finds projects within a base directory.
 -- @param base_dir The base directory to search for projects.
 -- @param projects A table that will be populated with found projects.
@@ -79,17 +58,14 @@ local function find_projects(base_dir, projects, domain, depth)
     -- Retrieve all directories/files in the base directory
     local glob_dirs = wezterm.glob(helpers.sanitize_str_null_term(base_dir) .. '/*') or {}
 
-    print('Checking: ' .. base_dir)
     for _, dir in ipairs(glob_dirs) do
         local dir_recursion_level = recursion_depth + 1
         local proj_name = helpers.get_project_name_from_path(dir) -- Extract the project name
         local sproj_dir = rdomain ~= CURRENT_PANE_DOMAIN and helpers.strip_wsl_prefix(dir) or dir
         local is_git = is_git_project(dir)
-        print("Sanitized proj dir name: " .. sproj_dir .. " from base: " .. base_dir)
 
         -- Add directories at level 2 or directories with project markers
         if has_project_marker(dir) or dir_recursion_level == 2 then
-            print("Adding project: " .. dir .. " at recursion level: " .. recursion_depth)
             local project = {
                 name = proj_name,
                 cfg = default_layout,
@@ -102,46 +78,10 @@ local function find_projects(base_dir, projects, domain, depth)
 
         -- Recurse into subdirectories if below level 2
         if dir_recursion_level < 2 or (string.find(dir, job_code_projects_path, 4, true) and dir_recursion_level < 3) then
-            wezterm.log_info('Started recursive search for subfolder: ' .. dir .. '. from base: ' .. base_dir .. ' at depth: ' .. recursion_depth)
             find_projects(dir, projects, domain, dir_recursion_level) -- Pass incremented depth
         end
     end
 end
-
---[[ --- Recursively finds projects within a base directory.
--- @param base_dir The base directory to search for projects.
--- @param projects A table that will be populated with found projects.
--- @param domain A table 'Domain' object which contains the target domain for looking for the projects
--- @param depth A counter of the actual number of recursive calls made for the directory parent hierarchy found dirs
-local function find_projects(base_dir, projects, domain, depth)
-    local recursion_depth = depth or 0 -- Default depth to 0 if not provided
-    local rdomain = domain or CURRENT_PANE_DOMAIN
-
-    -- Retrieve all directories/files in the base directory
-    local glob_dirs = wezterm.glob(helpers.sanitize_str_null_term(base_dir) .. '/*') or {}
-
-    print('Checking: ' .. base_dir .. ' at depth: ' .. recursion_depth)
-    if #glob_dirs == 0 and recursion_depth == 2 then
-        add_project(base_dir, base_dir, rdomain, recursion_depth, projects)
-        wezterm.log_info('Direct addition of: ' .. base_dir)
-        return nil
-    else
-        wezterm.log_info('Projects on: ' .. base_dir)
-        wezterm.log_info(glob_dirs)
-    end
-
-    for _, dir in ipairs(glob_dirs) do
-        add_project(dir, base_dir, rdomain, recursion_depth + 1, projects)
-        -- Recurse into subdirectories if below level 2
-        if recursion_depth <= 1 then
-            wezterm.log_info('Started recursive search for subfolder: ' .. dir .. '. Depth: ' .. recursion_depth + 1)
-            find_projects(dir, projects, rdomain, recursion_depth + 1) -- Pass incremented depth
-        else
-            wezterm.log_info('MAX R on: ' .. base_dir .. ' Leaving.')
-        end
-    end
-    print('************************************************')
-end ]]
 
 --- Sorts the projects table lexicographically by directory.
 -- @param projects The table of projects to be sorted.
@@ -161,7 +101,9 @@ local function find_and_load_projects(user_root)
 
     -- Start the search for projects
     find_projects(projects_base_dir, projects)
-    print('Added the projects on code')
+
+    -- TODO: do the same but for all the WSL distributions, automatically getting the
+    -- domain name instead of hardcoding them
 
     -- The base directory for code projects in the default WSL distro (if present)
     local wsl_unc_path = helpers.get_wsl_unc_path() or ''

@@ -1,5 +1,4 @@
 -- Pull in the wezterm API
-print('Entering the configuration file')
 local wezterm = require 'wezterm'
 local mux = wezterm.mux
 
@@ -8,28 +7,21 @@ local config = wezterm.config_builder()
 
 -- The declared hostname of the current machine
 local hostname = wezterm.hostname()
+
+-- Job cfg
+if hostname:match("^PC_ECO") then
+    -- config.default_domain = 'WSL:Ubuntu-24.04' -- TODO load it if present, from the helpers
+    -- split the function and get only the default distro
+end
+
 -- The user's home directory
 local user_root = wezterm.home_dir
--- The lua modules with the helpers for the configuration
-local wezterm_cfg = user_root .. '/.wezterm'
 
 -- Loading the helpers
 local helpers = require 'helpers'
-print('Before load projects')
+local projects_loader = require 'projects_loader'
 -- The projects that will be shown on the 'projects selector'
-local projects = helpers.load_projects(hostname, user_root)
-
-local wsl_domains = wezterm.default_wsl_domains()
-
-for idx, dom in ipairs(wsl_domains) do
-  if dom.name == 'WSL:Ubuntu-24.04' then
-    dom.default_prog = { 'zsh' }
-  end
-end
-
-config.wsl_domains = wsl_domains
-
-print('After load projects')
+local projects = projects_loader.load_projects(user_root)
 
 -- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
 -- my cfg contains custom configuration for launch the workspaces via -- workspaces and NOT --workspaces (wezterm built in one)

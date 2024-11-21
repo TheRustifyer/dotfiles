@@ -16,8 +16,6 @@
     cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [mergetool]
     prompt = false
-[gpg]
-	program = C:/msys64/usr/bin/gpg
 [status]
 	showUntrackedFiles = no
 [push]

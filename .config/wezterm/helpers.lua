@@ -13,7 +13,10 @@ local function switch_workspace(label, child_window, child_pane, project)
     local ws_name = label:match("([^/]+)%)?$")
     child_window:perform_action(action.SwitchToWorkspace {
         name = ws_name,
-        spawn = { cwd = project.dir },
+        spawn = {
+            cwd = project.dir,
+            domain = project.domain
+        },
     }, child_pane)
 
     local workspace = mux.get_active_workspace()
@@ -21,115 +24,65 @@ local function switch_workspace(label, child_window, child_pane, project)
         if window:get_workspace() == workspace then
             local pane = window:active_pane()
             local tab = pane:tab()
-            project.cfg(tab, child_pane, window, project.name, project.dir)
+            project.cfg(tab, child_pane, window, project.dir, project.domain)
         end
     end
 end
 
---- Checks if a given path is a directory.
--- @param path The path to check.
--- @return bool Returns true if the path is a directory, false otherwise.
-local function is_dir(path)
-    local f = io.popen('test -d "' .. path .. '" && echo true || echo false')
-    if not f then
-        return false -- If io.popen fails, return false (not a directory)
-    end
-
-    local output = f:read('*all')
-    f:close()
-
-    if not output then
-        return false -- If read fails, return false (not a directory)
-    end
-
-    -- Check if the output contains "true"
-    return output:match("true") ~= nil
-end
-
---- Default layout function for a project tab.
--- @param tab The tab object to set up.
--- @param pane The pane object to split.
--- @param window The window object containing the tab.
--- @param project_name The name of the project.
--- @param project_dir The directory of the project.
-local default_layout = function(tab, pane, window, project_name, project_dir)
-    tab:set_title(project_name .. ' - editor')
-    pane:split { direction = 'Right', size = 0.3, cwd = project_dir }
-
-    local tab_1 = window:spawn_tab { cwd = project_dir }
-    tab_1:set_title(project_name .. ' - lazygit')
-end
-
---- Checks if a directory has project markers (i.e., .git or README.md).
--- @param dir The directory to check for project markers.
--- @return bool Returns true if project markers are found, false otherwise.
-local function has_project_marker(dir)
-    return is_dir(dir .. '/.git') or #wezterm.glob(dir .. '/README.md') > 0
-end
-
---- Recursively finds projects within a base directory.
--- @param base_dir The base directory to search for projects.
--- @param projects A table that will be populated with found projects.
-local function find_projects(base_dir, projects)
-    -- Iterate over each item in the base directory
-    for _, dir in ipairs(wezterm.glob(base_dir .. '/*')) do
-        print('Checking dir: ' ..  dir)
-        if is_dir(dir) then
-            -- Check for project markers in the current directory
-            if has_project_marker(dir) then
-                print('Added proj: ' .. dir)
-                local proj_name = dir:match("([^/]+)$") -- Extract the project name
-                local project = { name = proj_name, cfg = default_layout, dir = dir, label = '' }
-                table.insert(projects, project)
-            end
-        end
+local function get_wsl_distros()
+    -- Query the default WSL distribution
+    local _, stdout, stderr = wezterm.run_child_process({ "wsl", "-l", "--quiet", "--all" })
+    if stdout then
+        return stdout
+    else
+        wezterm.log_error("Failed to get WSL distributions: " .. (stderr or "unknown error"))
+        return nil
     end
 end
 
---- Sorts the projects table lexicographically by directory.
--- @param projects The table of projects to be sorted.
-local function sort_projects(projects)
-    table.sort(projects, function(a, b)
-        return a.dir < b.dir
-    end)
+local function get_wsl_default_distro()
+    local wsl_distros = get_wsl_distros()
+
+    -- Find the default WSL distribution (first line in the output)
+    local distro_name = wsl_distros ~= nil and wsl_distros:match("^[^\r\n]+") or nil
+    print("Default distro name: " .. distro_name)
+    if not distro_name then
+        wezterm.log_info("No WSL distribution found")
+        return nil
+    end
+    return distro_name
 end
 
---- Finds and loads projects from a specified user root directory.
--- @param hostname The hostname of the machine, used for environment-specific configurations.
--- @param user_root The root directory where user projects are located.
--- @return table Returns a table of projects with their details and configurations.
-local function find_and_load_projects(hostname, user_root)
-    local projects = {}
-
-    -- The base directory for projects
-    local projects_base_dir = user_root .. '/code'
-    local own_projects = projects_base_dir .. '/own'
-    local zdc_projects = projects_base_dir .. '/zero_day_code'
-
-    -- Start the search for projects
-    -- find_projects(projects_base_dir, projects)
-    print('Added the projects on code')
-    find_projects(own_projects, projects)
-    find_projects(zdc_projects, projects)
-
-    -- Check if it's my job environment and load more projects configuration
-    if hostname:match("^PC_ECO") then
-        local job_cfg = require 'job_cfg'
-        for _, project in ipairs(job_cfg.projects) do
-            table.insert(projects, project)
-        end
-    end
-
-    -- Sort the projects lexicographically by directory
-    sort_projects(projects)
-
-    -- Create a list of project names for the dropdown table
-    for _, project in pairs(projects) do
-        project.label = project.name .. " (" .. project.dir .. ")"
-    end
-
-    return projects
+local function get_wsl_unc_path(distro_name)
+    local sanitized_distro_name = distro_name ~= nil and distro_name:gsub("[^%w%-]", "") or get_wsl_default_distro()
+    return sanitized_distro_name and "//wsl.localhost/" .. sanitized_distro_name or nil
 end
 
-return { switch_workspace = switch_workspace, load_projects = find_and_load_projects }
+local function strip_wsl_prefix(unc_path)
+  -- Match and remove the prefix for WSL UNC paths
+  local stripped_path = unc_path:gsub("^//wsl%.localhost/[^/]+", "")
+  return stripped_path
+end
 
+local function path_to_forward_slashes(path)
+    return path:gsub("\\", "/")
+end
+
+local function sanitize_str_null_term(input)
+    return input:gsub("%z", "") -- Removes all `\0` characters
+end
+
+local function get_project_name_from_path(path)
+     return path:match("([^/]+)$")
+end
+
+return {
+    get_project_name_from_path = get_project_name_from_path,
+    sanitize_str_null_term = sanitize_str_null_term,
+    path_to_forward_slashes = path_to_forward_slashes,
+    switch_workspace = switch_workspace,
+    get_wsl_unc_path = get_wsl_unc_path,
+    strip_wsl_prefix = strip_wsl_prefix,
+    get_wsl_default_distro = get_wsl_default_distro,
+    get_wsl_distros = get_wsl_distros
+}

@@ -29,11 +29,9 @@ function module.apply_to_config(config)
             label = 'PowerShell',
             args = { 'C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell', '-nol' },
         })
-
-        config.default_prog = msys2_mingw64
-    else
-        config.default_prog = { '/usr/bin/zsh' }
     end
+
+    config.default_prog = { 'zsh' }
     config.launch_menu = launch_menu
 end
 

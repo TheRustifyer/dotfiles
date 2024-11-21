@@ -5,3 +5,4 @@ alias config='git --git-dir="$HOME"/.cfg/ --work-tree="$HOME"'
 if [ -t 1 ]; then
   eval "$(starship init bash)"
 fi
+. "$HOME/.cargo/env"

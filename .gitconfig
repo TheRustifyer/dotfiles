@@ -1,11 +1,15 @@
 [user]
     name = Alex Vergara
     email = alex.vergara.dev@gmail.com
-    password = $in_$key
+[includeIf "gitdir:~/"]
+    path = ~/.gitconfig.personal
+[includeIf "gitdir/i:~/code/ecomt/"]
+    path = ~/.gitconfig.corporate
 [credentials]
     helper = store
 [core]
     autocrlf = input
+    editor = nvim -u NONE
 [init]
     defaultBranch = main
 [http]
@@ -20,3 +24,5 @@
 	showUntrackedFiles = no
 [push]
 	autoSetupRemote = true
+[commit]
+	gpgsign = true

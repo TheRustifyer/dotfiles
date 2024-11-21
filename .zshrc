@@ -1,20 +1,39 @@
 # HOME as $HOME, pls ;)
 export HOME="$HOME"
 
-HIST_STAMPS="dd.mm.yyyy"
-HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+export HIST_STAMPS="dd.mm.yyyy"
+# set the location and filename of the history file
+export HISTFILE="$HOME/.zsh_history"
+
+# set the maximum number of lines to be saved in the history file
+export HISTSIZE="100000"
+export SAVEHIST="$HISTSIZE"
 
 # User configuration
 export TERM=xterm-256color
-
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 # Preferred editor
 export EDITOR='nvim'
 # ZSH root
 fpath=(~/.zsh $fpath)
+# Disable the prompt asking for load .env files on your cwd
+export ZSH_DOTENV_PROMPT=false
+
+# enable comments "#" expressions in the prompt shell
+setopt INTERACTIVE_COMMENTS
+
+# append new history entries to the history file
+setopt APPEND_HISTORY
+
+# save each command to the history file as soon as it is executed
+setopt INC_APPEND_HISTORY
+
+# ignore recording duplicate consecutive commands in the history
+setopt HIST_IGNORE_DUPS
+
+# ignore commands that start with a space in the history
+setopt HIST_IGNORE_SPACE
 
 # ASDF
 if [ -d "$HOME/.asdf" ]; then
@@ -22,16 +41,44 @@ if [ -d "$HOME/.asdf" ]; then
   fpath=("${HOME}/.asdf/completions" $fpath)
 fi
 
+# Job CFG specifics
+if [ -f "$HOME/.job_cfg" ] && [ -r "$HOME/.job_cfg" ]; then
+    source "$HOME/.job_cfg"
+fi
+
 # The 'git' autocompletion script
 zstyle ':completion:*:*:git:*' script ~/.git-completion.bash
 autoload -Uz compinit && compinit
 
-# zsh built-in plugins
-plugins=(git)
+__git_files () {
+    _wanted files expl ‘local files’ _files
+}
 
-# Enabling the VI mode on ZSH by default, instead of the 'Emacs' one
-bindkey -v
+
+# zsh built-in plugins
+plugins=(git asdf)
+
+# Keybindings
+bindkey -v # Enabling the VI mode on ZSH by default, instead of the 'Emacs' one
 bindkey '^R' history-incremental-search-backward # Having the Ctrl+R keybinding for having a bash-like reverse search
+
+# navigate words using Ctrl + arrow keys
+# >>> CRTL + right arrow | CRTL + left arrow
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
+# search history using Up and Down keys
+# >>> up arrow | down arrow
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+
+# jump to the start and end of the command line
+# >>> CTRL + A | CTRL + E
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+# >>> Home | End
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
 
 # Set personal aliases
 # TODO: move them to their own mod
@@ -192,4 +239,3 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-completions/zsh-completions.plugin.zsh
 # source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-

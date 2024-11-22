@@ -103,7 +103,11 @@ alias ez='exec zsh'
 
 alias zshconf="nvim ~/.zshrc"
 alias zellijconf='nvim ~/.config/zellij/config.kdl'
-alias wezconf='nvim ~/.wezterm.lua'
+alias wezconf='cd ~/.config/wezterm'
+
+## Projects
+alias zork='cd $HOME/code/zdc/zork'
+alias zero='cd $HOME/code/zdc/zero'
 
 ## Custom tools
 
@@ -131,7 +135,7 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias nvimconf='cd ~/.config/nvim && nvim'
     alias nvimdir='cd ~/.config/nvim'
-    alias rmnvim="find ~/.cache ~/.local -type d -name '*nvim*' -exec rm -rf {} +"
+    alias rmnvim="fd '.*nvim.*' ~/.cache ~/.local --type d --exec rm -rf {}"
     alias alaconf='nvim ~/.config/alacritty/alacritty.toml'
 else
     alias wincode='cd ~/code'
@@ -184,6 +188,10 @@ export PATH="$HOME/.cargo/bin:$PATH"
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # This adds the packages downloaded via SNAP accessible via command line
     export PATH="/var/lib/snapd/snap/bin:$PATH"
+    # snap
+    export PATH="/snap/bin:$PATH"
+    # Raw LLVM suite (20)
+    export PATH="/usr/lib/llvm-20/bin:$PATH"
 fi
 # Windows specifics
 if [[ "$OSTYPE" != "linux-gnu"* ]]; then
@@ -239,3 +247,5 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-completions/zsh-completions.plugin.zsh
 # source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
+source /home/therustifyer/.config/broot/launcher/bash/br

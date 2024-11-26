@@ -45,7 +45,6 @@ local function get_wsl_default_distro()
 
     -- Find the default WSL distribution (first line in the output)
     local distro_name = wsl_distros ~= nil and wsl_distros:match("^[^\r\n]+") or nil
-    print("Default distro name: " .. distro_name)
     if not distro_name then
         wezterm.log_info("No WSL distribution found")
         return nil

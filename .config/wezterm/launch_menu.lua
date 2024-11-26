@@ -7,7 +7,7 @@ function module.apply_to_config(config)
 
     if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
         local msys2_clang64 = { 'cmd.exe ', '/k',
-            'C:/msys64/msys2_shell.cmd -defterm -here -no-start -clang64 -use-full-path -shell zsh' }
+            'C:/msys64/msys2_shell.cmd -defterm -here -no-start -clang64 -use-full-path -shell bash' }
         local msys2_mingw64 = { 'cmd.exe ', '/k',
             'C:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64 -use-full-path -shell zsh' }
         local msys2 = { 'cmd.exe ', '/k',
@@ -29,9 +29,11 @@ function module.apply_to_config(config)
             label = 'PowerShell',
             args = { 'C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell', '-nol' },
         })
+        config.default_prog = msys2_mingw64
+    else
+        config.default_prog = { 'zsh'}
     end
 
-    config.default_prog = { 'zsh' }
     config.launch_menu = launch_menu
 end
 

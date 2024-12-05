@@ -108,6 +108,7 @@ alias wezconf='cd ~/.config/wezterm'
 ## Projects
 alias zork='cd $HOME/code/zdc/zork'
 alias zero='cd $HOME/code/zdc/zero'
+alias zmk='cd $HOME/code/own/zmk'
 
 ## Custom tools
 
@@ -247,5 +248,3 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-completions/zsh-completions.plugin.zsh
 # source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-
-source /home/therustifyer/.config/broot/launcher/bash/br

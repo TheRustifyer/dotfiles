@@ -108,7 +108,7 @@ alias wezconf='cd ~/.config/wezterm'
 ## Projects
 alias zork='cd $HOME/code/zdc/zork'
 alias zero='cd $HOME/code/zdc/zero'
-alias zmk='cd $HOME/code/own/zmk'
+alias zmk='cd $HOME/code/own/zmk-config'
 
 ## Custom tools
 

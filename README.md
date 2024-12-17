@@ -353,7 +353,7 @@ Start-Service ssh-agent
 ```
 4. Now come back to the previous `cmd` shell, and add the previous generated *ssh-key* to the *ssh agent*
 ```cmd
-ssh-add "$HOME"/.ssh/id_ed25519
+ssh-add "%USERPROFILE%"/.ssh/id_ed25519
 ```
 5. If everything went correct, you'll see a message like this one:
 ```cmd
@@ -429,20 +429,6 @@ A prompt will appear. Do this in order:
 > The problem is that misses one key component, [`rustup`](https://rust-lang.github.io/rustup), which allows us to quickly download and interchange between *toolchains*
 > among other niceties, like installing `nightly` versions of the compiler to test the latest and/or unstable features.
 > If you plan to stick with the `gnu` variant triple and the `stable` channel, it could be a better option to consider.
-
-Last, but not least, here comes the trick. To use the gcc or clang linker and compiler from MSYS2 you have to create the `C:\Users\user\.cargo\config` file
-and just paste the folowing:
-
-```
-[target.x86_64-pc-windows-gnu]
-linker = "C:\\msys64\\mingw64\\bin\\clang++.exe"
-ar = "C:\\msys64\\mingw64\\bin\\llvm-ar.exe"
-```
-
-We are here instructing `Cargo` to use the `llvm-suite` tools to compile our `Rust` code targeting the `GNU` ABI.
-
-// TODO make a list talking about the advantages of using the `GNU ABI` and using `clang and lld` instead of their defaults
-// TODO isn't clang and lld the default as of 2024 of `rustc`?
 
 > ***And that's all. We can compile `Rust` code in `Windows` without requiring any of the `MSVC` Microsoft tools!***
 

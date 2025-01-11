@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# prompt for the sudo password at the beginning of the file
+sudo -v
+
 # Define colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -172,9 +175,21 @@ install_uasm() {
 
 ##### Terminal emulators and multiplexers  #####
 
-# Alacritty
+# Alacritty Installation and Setup
 function install_alacritty() {
     cargo install alacritty
+    local icon_path="$HOME/.local/share/icons/alacritty-term.svg"
+
+    # Download the Alacritty icon
+    echo "Downloading Alacritty icon..."
+    mkdir -p "$(dirname "$icon_path")"  # Ensure the directory exists
+    curl -sSL https://raw.githubusercontent.com/alacritty/alacritty/master/extra/logo/alacritty-term.svg -o "$icon_path"
+
+    # Ensure KDE recognizes the icon (optional but useful for updates)
+    echo "Refreshing KDE menu cache..."
+    kbuildsycoca5 2>/dev/null
+
+    echo "Alacritty installed and icon setup complete!"
 }
 
 function build_alacritty() {
@@ -233,7 +248,7 @@ install_lazygit() {
 terminal_tools() {
     # Here lives the ones available only on Linux
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-	install_packages "cargo" "rm-improved" "xcp"
+	    install_packages "cargo" "rm-improved" "xcp"
     fi
 
     install_packages "cargo" "starship" "bat" "lsd" "zoxide" "du-dust" "ripgrep" "fd-find" "sd" "procs" "bottom" "topgrade" "broot" "tokei"
@@ -243,7 +258,7 @@ terminal_tools() {
 gh_cli() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     	echo "Setting up GitHub CLI for Linux..."
-	install_arch_pkgs "github-cli"
+	    install_arch_pkgs "github-cli"
     else
         echo "Setting up GitHub CLI for Windows..."
     	git clone https://github.com/cli/cli.git gh-cli
@@ -287,7 +302,7 @@ install_packages() {
                 fi ;;
             pacman)
                 if ! pacman -Qi "$package" &> /dev/null; then
-                    sudo pacman -Sy "$package"
+                    sudo pacman -Sy "$package" --noconfirm
                 else
                     echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
                 fi ;;
@@ -305,7 +320,7 @@ install_packages() {
                 fi ;;
             yay)
                 if ! yay -Qi "$package" &> /dev/null; then
-                    yay -Sy "$package"
+                    yay -Sy "$package" --noconfirm
                 else
                     echo -e "${CHECKMARK}${GREEN} ${package} is already installed.${NC}"
                 fi ;;
@@ -409,6 +424,23 @@ download_personal_projects() {
     git clone -v ${personal_projects}/Rumble-LoL-Plugin ~/code/rumble-lol-plugin
 }
 
+setup_waydroid() {
+    git clone https://github.com/casualsnek/waydroid_script
+    cd waydroid_script
+    python3 -m venv venv
+    venv/bin/pip install -r requirements.txt
+    # Install something
+    sudo venv/bin/python3 main.py install gapps
+    sudo venv/bin/python3 main.py install magisk
+    sudo venv/bin/python3 main.py install libndk
+    sudo venv/bin/python3 main.py install libhoudini
+    sudo venv/bin/python3 main.py install smartdock
+    sudo venv/bin/python3 main.py install microg
+    sudo venv/bin/python3 main.py install mitm
+    # Some hacks
+    sudo venv/bin/python3 main.py hack nodataperm
+    sudo venv/bin/python3 main.py hack hidestatusbar
+}
 
 ################# Full setup for concrete Operating Systems #################
 # This configures my typical apps and packages, among other configurations in a Manjaro distro
@@ -437,13 +469,16 @@ setup_manjaro() {
     install_packages cargo "alacritty" "zellij"
 
     # Install system packages
-    install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz" "pipewire" "pipewire-pulse" "pipewire-alsa" "pipewire-jack"
+    install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz" "pipewire" "pipewire-pulse" "pipewire-alsa" "pipewire-jack" "android-tools" "weston"
 
     # Development technologies
     install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config" "strace" "fmedia"
 
     # More toolchains (via AUR)
-    install_packages yay "llvm16"
+    # install_packages yay "llvm16"
+
+    install_packages yay "waydroid"
+    setup_waydroid
 
     # Snap
     install_packages pacman "snapd"
@@ -458,7 +493,7 @@ setup_manjaro() {
 
     # Install apps and programs for confort/entertainment/communication
     install_packages pacman "discord" "ksnip" "lutris" "winetricks"
-    install_packages snap "steam" "whatsapp-for-linux"
+    install_packages snap "steam" "whatsapp-for-linux" "nordvpn"
 
     # Game Dev utils
     install_packages flatpak "flathub io.github.achetagames.epic_asset_manager"
@@ -524,6 +559,8 @@ while [[ "$#" -gt 0 ]]; do
 
         -dwp|--download-projects) download_personal_projects ;;
         -sm|--setup-manjaro) setup_manjaro ;;
+
+        -sw|--setup-waydroid) setup_waydroid ;;
 
         *) echo "Unknown option: $1"; exit 1 ;;
     esac

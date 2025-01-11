@@ -6,3 +6,5 @@ if [ -t 1 ]; then
   eval "$(starship init bash)"
 fi
 . "$HOME/.cargo/env"
+
+source /home/therustifyer/.config/broot/launcher/bash/br

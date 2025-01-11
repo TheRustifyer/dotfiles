@@ -37,12 +37,14 @@ setopt HIST_IGNORE_SPACE
 
 # ASDF
 if [ -d "$HOME/.asdf" ]; then
+  echo -e "Loading 'asdf'"
   . "$HOME/.asdf/asdf.sh"
   fpath=("${HOME}/.asdf/completions" $fpath)
 fi
 
 # Job CFG specifics
-if [ -f "$HOME/.job_cfg" ] && [ -r "$HOME/.job_cfg" ]; then
+if [ -f "$HOME/.job_cfg" ]; then
+    echo -e "Loading JOB configuration"
     source "$HOME/.job_cfg"
 fi
 

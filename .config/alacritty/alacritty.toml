@@ -1,4 +1,4 @@
-[shell]
+[terminal.shell]
 # program = "/usr/bin/tmux"
 program = "zellij"
 # args = [ "--session", "default" ]
@@ -52,3 +52,5 @@ style = "Regular"
 [font.offset]
 x = 0
 y = 0
+
+[terminal]

@@ -430,16 +430,15 @@ setup_waydroid() {
     python3 -m venv venv
     venv/bin/pip install -r requirements.txt
     # Install something
-    sudo venv/bin/python3 main.py install gapps
-    sudo venv/bin/python3 main.py install magisk
-    sudo venv/bin/python3 main.py install libndk
-    sudo venv/bin/python3 main.py install libhoudini
-    sudo venv/bin/python3 main.py install smartdock
-    sudo venv/bin/python3 main.py install microg
-    sudo venv/bin/python3 main.py install mitm
+    # sudo venv/bin/python3 main.py install gapps
+    sudo venv/bin/python3 main.py certified
+    sudo venv/bin/python3 main.py install magisk libndk libhoudini
+    # smartdock -- is buggy in the script, and let's waydroid unusable
+    # sudo venv/bin/python3 main.py install microg
+    # sudo venv/bin/python3 main.py install mitm
     # Some hacks
-    sudo venv/bin/python3 main.py hack nodataperm
-    sudo venv/bin/python3 main.py hack hidestatusbar
+    # sudo venv/bin/python3 main.py hack nodataperm
+    # sudo venv/bin/python3 main.py hack hidestatusbar
 }
 
 ################# Full setup for concrete Operating Systems #################
@@ -469,15 +468,15 @@ setup_manjaro() {
     install_packages cargo "alacritty" "zellij"
 
     # Install system packages
-    install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "xz" "pipewire" "pipewire-pulse" "pipewire-alsa" "pipewire-jack" "android-tools" "weston"
+    install_packages pacman "yay" "xclip" "github-cli" "zip" "unzip" "lzip" "xz" "pipewire" "pipewire-pulse" "pipewire-alsa" "pipewire-jack" "weston" "wl-clipboard"
 
     # Development technologies
-    install_packages pacman "base-devel" "gcc" "clang" "cmake" "ninja" "pkg-config" "strace" "fmedia"
+    install_packages pacman "base-devel" "gcc" "clang" "cmake" "docker" "docker-compose" "ninja" "pkg-config" "strace" "fmedia" "android-tools" "python-pipx"
 
     # More toolchains (via AUR)
     # install_packages yay "llvm16"
 
-    install_packages yay "waydroid"
+    install_packages yay "waydroid" "python-pyclip"
     setup_waydroid
 
     # Snap
@@ -489,11 +488,15 @@ setup_manjaro() {
     fi
 
     # Enabling and/or starting the needed services on demand
-    handle_daemon "snapd.socket"
+    handle_daemon "snapd.socket" "docker"
+
+    # cfg docker
+    sudo usermod -aG docker $USER
+    newgrp docker
 
     # Install apps and programs for confort/entertainment/communication
     install_packages pacman "discord" "ksnip" "lutris" "winetricks"
-    install_packages snap "steam" "whatsapp-for-linux" "nordvpn"
+    install_packages snap "steam" "whatsapp-linux-app" "nordvpn" "postman" "dbeaver-ce"
 
     # Game Dev utils
     install_packages flatpak "flathub io.github.achetagames.epic_asset_manager"

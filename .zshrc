@@ -126,6 +126,42 @@ alias find='fd'
 # Using `ripgrep` as a better `grep`
 # alias grep='rg' ## I am not quite ready yet :)
 
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias nvimconf='cd ~/.config/nvim && nvim'
+    alias nvimdir='cd ~/.config/nvim'
+    alias rmnvim="fd '.*nvim.*' ~/.cache ~/.local --type d --exec rm -rf {}"
+    alias alaconf='nvim ~/.config/alacritty/alacritty.toml'
+
+    # Weston, the compositor of gui envs
+    # # Weston creating a full HD windows within a X11 session
+    alias w11="weston --backend=x11-backend.so --width=$(xdpyinfo | awk '/dimensions:/ {print $2}' | cut -d'x' -f1) --height=$(xdpyinfo | awk '/dimensions:/ {print $2}' | cut -d'x' -f2)"
+    alias wd="w11 > /dev/null 2>&1 &"
+
+    # Run 'Waydroid' with 'Wayland'. That's the reason that we need Weston, due to X11 being the default in all my desktops.
+    # 'Waydroid' only runs on 'Wayland', and that's where comes 'Weston'
+    alias wss='WAYLAND_DISPLAY=waydroid-1 waydroid session start'
+    alias wl='waydroid show-full-ui'
+
+    # Clean Waydroid data (without removing it the installation from the system)
+    alias clwaydroid='sudo rm -rf /var/lib/waydroid /home/.waydroid ~/waydroid ~/.share/waydroid ~/.local/share/waydroid ~/.local/share/applications/*aydroid*' # last one can produce 'no matches'
+    alias multi_win_waydroid='waydroid prop set persist.waydroid.multi_windows true' # last one can produce 'no matches'
+ 
+    # GUI tools from shell
+    alias pd="postman > /dev/null 2>&1 &"
+    alias db='dbeaver-ce > /dev/null 2>&1 &'
+    alias wa='whatsapp-linux-app > /dev/null 2>&1 &'
+else
+    alias wincode='cd ~/code'
+    alias appdata='cd ~/AppData'
+
+    alias nvimconf='cd ~/AppData/Local/nvim && nvim'
+    alias nvimdir='cd ~/AppData/Local/nvim'
+
+    alias rmnvim='rm -rf ~/AppData/Local/nvim && rm -rf ~/AppData/Local/nvim-data'
+
+    alias alaconf='nvim ~/AppData/Roaming/alacritty/alacritty.toml'
+fi
+
 # Overpowering the access to edit my projects, "thanks" to the `Zellij` layouts
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias wzork='alacritty -e zellij --layout zork &'
@@ -133,22 +169,6 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 else
     alias wzork='alacritty -e zellij --layout zork_win &'
     alias wzero='alacritty -e zellij --layout zero_win &'
-fi
-
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    alias nvimconf='cd ~/.config/nvim && nvim'
-    alias nvimdir='cd ~/.config/nvim'
-    alias rmnvim="fd '.*nvim.*' ~/.cache ~/.local --type d --exec rm -rf {}"
-    alias alaconf='nvim ~/.config/alacritty/alacritty.toml'
-else
-    alias wincode='cd ~/code'
-    alias appdata='cd ~/AppData'
-
-    alias nvimconf='cd ~/AppData/Local/nvim && nvim'
-    alias nvimdir='cd ~/AppData/Local/nvim'
-    alias rmnvim='rm -rf ~/AppData/Local/nvim && rm -rf ~/AppData/Local/nvim-data'
-
-    alias alaconf='nvim ~/AppData/Roaming/alacritty/alacritty.toml'
 fi
 
 # Alias for some commands to be named as the Pacman package

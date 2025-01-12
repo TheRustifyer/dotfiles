@@ -2,7 +2,7 @@
 Name=Alacritty
 Comment=A fast, cross-platform terminal emulator
 Exec=~/.cargo/bin/alacritty
-Icon=utilities-terminal
+Icon=Icon=~/.local/share/icons/alacritty-term.svg
 Terminal=false
 Type=Application
 Categories=System;TerminalEmulator;

@@ -505,7 +505,7 @@ setup_manjaro() {
     install_flutter
 
     # Install the other code editors
-    install_packages snap "code" "rustrover" "clion" "--classic"
+    install_packages snap "code" "rustrover" "clion" "vscode" "--classic"
 
     # Download my most used repositories
     download_personal_projects

@@ -132,10 +132,12 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias rmnvim="fd '.*nvim.*' ~/.cache ~/.local --type d --exec rm -rf {}"
     alias alaconf='nvim ~/.config/alacritty/alacritty.toml'
 
-    # Weston, the compositor of gui envs
-    # # Weston creating a full HD windows within a X11 session
-    alias w11="weston --backend=x11-backend.so --width=$(xdpyinfo | awk '/dimensions:/ {print $2}' | cut -d'x' -f1) --height=$(xdpyinfo | awk '/dimensions:/ {print $2}' | cut -d'x' -f2)"
-    alias wd="w11 > /dev/null 2>&1 &"
+    if command -v xdpy &> /dev/null; then
+        # Weston, the compositor of gui envs
+        # # Weston creating a full HD windows within a X11 session
+        alias w11="weston --backend=x11-backend.so --width=$(xdpyinfo | awk '/dimensions:/ {print $2}' | cut -d'x' -f1) --height=$(xdpyinfo | awk '/dimensions:/ {print $2}' | cut -d'x' -f2)"
+        alias wd="w11 > /dev/null 2>&1 &"
+    fi
 
     # Run 'Waydroid' with 'Wayland'. That's the reason that we need Weston, due to X11 being the default in all my desktops.
     # 'Waydroid' only runs on 'Wayland', and that's where comes 'Weston'

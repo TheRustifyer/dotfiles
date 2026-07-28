@@ -1,4 +1,5 @@
 default_shell "zsh"
+
 theme "catppuccin-mocha"
 
 // layout_dir userHome "/.config/zellij/layouts" // waiting for the mantainers to implement relative links on the kdl parrsing

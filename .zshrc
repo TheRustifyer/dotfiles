@@ -227,7 +227,10 @@ if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     # The MSYS2 binary paths for the desired environments
     export PATH="/c/msys64/mingw64/bin:/c/msys64/clang64/bin:/c/msys64/usr/bin:/c/msys64/usr/local/bin:/c/msys64/opt/bin:$PATH"
 
-    #export GOROOT="/c/msys64/mingw64"
+    if [[ -o interactive && -z ${ZELLIJ:-} ]]; then
+        export SHELL='C:/msys64/usr/bin/zsh.exe'
+        exec zellij.exe
+    fi
 fi
 
 # The LLVM project, full suite. Defined after the msys2 to appear before on $PATH if the manual build is present on the system

@@ -1,4 +1,5 @@
 default_shell "zsh"
+default_cwd "~"
 
 theme "catppuccin-mocha"
 

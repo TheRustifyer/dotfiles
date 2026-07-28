@@ -1,9 +1,16 @@
+[general]
+working_directory = "C:/Users/therustifyer"
+
 [terminal.shell]
-program = "zellij"
+program = "C:/msys64/msys2_shell.cmd"
 args = [
-    "options",
-    "--default-shell",
-    "C:/msys64/usr/bin/zsh.exe",
+    "-defterm",
+    "-here",
+    "-no-start",
+    "-mingw64",
+    "-use-full-path",
+    "-shell",
+    "zsh",
 ]
 
 [bell]
@@ -11,15 +18,7 @@ duration = 10
 
 ### Font(s)
 [font]
-size = 11
-
-[font.normal]
-family = "FiraCode Nerd Font Mono"
-style = "Regular"
-
-[font.bold]
-family = "FiraCode Nerd Font Mono"
-style = "Bold"
+size = 12.5
 
 [window]
 decorations = "full"
